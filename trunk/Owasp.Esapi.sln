@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Owasp.Esapi", "Owasp.Esapi\Owasp.Esapi.csproj", "{540E261B-7D6B-43CA-93B0-6C132DE72729}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Owasp.Esapi.Test", "Owasp.Esapi.Test\Owasp.Esapi.Test.csproj", "{441B2E65-7054-431F-81F8-AFA65DA8F1CB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{540E261B-7D6B-43CA-93B0-6C132DE72729}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{540E261B-7D6B-43CA-93B0-6C132DE72729}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{540E261B-7D6B-43CA-93B0-6C132DE72729}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{540E261B-7D6B-43CA-93B0-6C132DE72729}.Release|Any CPU.Build.0 = Release|Any CPU
+		{441B2E65-7054-431F-81F8-AFA65DA8F1CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{441B2E65-7054-431F-81F8-AFA65DA8F1CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{441B2E65-7054-431F-81F8-AFA65DA8F1CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{441B2E65-7054-431F-81F8-AFA65DA8F1CB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
