@@ -42,6 +42,12 @@ namespace Owasp.Esapi.Test.Http
         {
             throw new NotImplementedException();
         }
+        
+        public object GetConfig()
+        {
+            throw new NotImplementedException();
+        }
+        
         public object GetSection(string sectionName)
         {
             throw new NotImplementedException();
