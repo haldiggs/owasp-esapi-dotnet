@@ -382,6 +382,12 @@ namespace Owasp.Esapi
             if (rule != null && Overlap(rule.roles, roles))
                 return rule;
 
+            // return default deny, if rule can't be found.
+            if (!part.Contains("/"))
+            {
+                return deny;
+            }
+            
             // if rule has not been found, strip off the last element and recurse
             part = part.Substring(0, (part.LastIndexOf('/')) - (0));
 

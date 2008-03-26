@@ -42,19 +42,24 @@ namespace Owasp.Esapi.Filters
             HttpResponse response = (HttpResponse) context.Response;
             try
             {
-                // figure out who the current user is
+                // figure out who the current user is                
                 try
                 {
-                    ((Authenticator) Esapi.Authenticator()).Context = WebContext.Cast(HttpContext.Current);
+                    ((Authenticator) Esapi.Authenticator()).Context = WebContext.Cast(HttpContext.Current);                    
                     Esapi.Authenticator().Login();
                 }
                 catch (AuthenticationException ex)
                 {
                     ((Authenticator)Esapi.Authenticator()).Logout();
                     // FIXME: use safeforward!
-                    // FIXME: make configurable with servletconfig
-                    response.Redirect("/Default.aspx");
-                    return;
+                    // FIXME: make configurable with config
+                    // int position = request.Url.ToString().LastIndexOf('/') + 1;
+                    // string page = request.Url.ToString().Substring(position, request.Url.ToString().Length - position);
+                    // if (!page.ToLower().Equals("default.aspx"))
+                    // {
+                    //    response.Redirect("default.aspx");   
+                    // }                    
+                    // return;
                 }
 
                 // log this request, obfuscating any parameter named password
@@ -78,8 +83,6 @@ namespace Owasp.Esapi.Filters
             {
                 logger.LogSpecial("Security error in ESAPI Filter", ex);
                 response.Output.WriteLine("<H1>Security Error</H1>");
-                // Note: Why would we do this?
-                //e.printStackTrace(response.getWriter());
             }
         }
     
@@ -88,7 +91,6 @@ namespace Owasp.Esapi.Filters
         /// </summary>
         public void Dispose()
         {
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -97,7 +99,7 @@ namespace Owasp.Esapi.Filters
         /// <param name="context">The HTTP application context.</param>
         public void Init(HttpApplication context)
         {
-            throw new NotImplementedException();
+            context.BeginRequest += new EventHandler(Application_BeginRequest);            
         }
 
         #endregion

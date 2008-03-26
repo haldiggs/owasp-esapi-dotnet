@@ -1,4 +1,4 @@
-﻿/// <summary> OWASP Enterprise Security API .NET (ESAPI.NET)
+﻿///// <summary> OWASP Enterprise Security API .NET (ESAPI.NET)
 /// 
 /// This file is part of the Open Web Application Security Project (OWASP)
 /// Enterprise Security API (ESAPI) project. For details, please see
@@ -524,7 +524,7 @@ namespace Owasp.Esapi
             // save the current request and response in the threadlocal variables            
             if (!Esapi.HttpUtilities().SecureChannel)
             {
-                new AuthenticationCredentialsException("Session exposed", "Authentication attempt made over non-SSL connection. Check web.xml and server configuration");
+                throw new AuthenticationCredentialsException("Session exposed", "Authentication attempt made over non-SSL connection. Check web.xml and server configuration");
             }
             User user = (User) null;
 

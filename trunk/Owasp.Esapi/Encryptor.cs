@@ -102,10 +102,7 @@ namespace Owasp.Esapi
                 // 13 is the code for DSA
                 asymmetricKeyPair = new CspParameters(13);
 
-                // TODO: Right now we are using the machine key store, which breaks if the user moves machines
-                // or is using a web farm. We should try to find a way to generate a key container based
-                // on the password.
-                asymmetricKeyPair.Flags = CspProviderFlags.UseMachineKeyStore;
+                // The asymmetric key will be stored in the key container using the name ESAPI.
                 asymmetricKeyPair.KeyContainerName = "ESAPI";
                 // Set up signing keypair using the master password and salt
                 // FIXME: Enhance - make DSA configurable

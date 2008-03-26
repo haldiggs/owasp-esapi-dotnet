@@ -960,7 +960,9 @@ namespace Owasp.Esapi
         /// </param>
         protected internal void SetLastHostAddress(string remoteHost)
         {
-            if (!lastHostAddress.Equals(remoteHost))
+            // If the last host address was never set, it should be blank (and we can't raise an exception
+            // or we loop through here infinitely with logging.
+            if (!lastHostAddress.Equals("") && !lastHostAddress.Equals(remoteHost))
             {
                 new AuthenticationHostException("Host change", "User session just jumped from " + lastHostAddress + " to " + remoteHost);
                 lastHostAddress = remoteHost;
