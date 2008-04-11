@@ -339,7 +339,10 @@ namespace Owasp.Esapi
         public bool IsValidHttpRequest(IHttpRequest request)
         {
             bool result = true;
-            IEnumerator i1 = request.Params.GetEnumerator();
+            ArrayList parameterNames = new ArrayList();
+            parameterNames.AddRange(new ArrayList(request.Form.AllKeys));
+            parameterNames.AddRange(new ArrayList(request.QueryString.AllKeys));
+            IEnumerator i1 = parameterNames.GetEnumerator();
             while (i1.MoveNext())
             {                
                 string name = (string) i1.Current;

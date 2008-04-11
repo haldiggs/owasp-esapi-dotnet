@@ -66,10 +66,18 @@ namespace Owasp.Esapi.Filters
                 logger.LogHttpRequest(ILogger_Fields.SECURITY, WebContext.Cast(request), new ArrayList (ignore));
 
                 // check access to this URL
-                Esapi.AccessController().IsAuthorizedForUrl(request.Url.ToString());
+                if (!Esapi.AccessController().IsAuthorizedForUrl(request.RawUrl.ToString()))
+                {
+                    context.Items["message"] = "Unauthorized";
+                    context.Server.Transfer("login.aspx");                        
+                }
 
-                // verify if this request meets the baseline input requirements
-                Esapi.Validator().IsValidHttpRequest(WebContext.Cast(request));
+                // verify if this request meets the baseline input requirements                
+                if (!Esapi.Validator().IsValidHttpRequest(WebContext.Cast(request)))
+                {
+                    context.Items["message"] = "Validation error";
+                    context.Server.Transfer("login.aspx");
+                }
 
                 // check for CSRF attacks and set appropriate caching headers
                 IHttpUtilities utils = Esapi.HttpUtilities();

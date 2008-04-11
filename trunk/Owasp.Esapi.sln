@@ -5,6 +5,22 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Owasp.Esapi", "Owasp.Esapi\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Owasp.Esapi.Test", "Owasp.Esapi.Test\Owasp.Esapi.Test.csproj", "{441B2E65-7054-431F-81F8-AFA65DA8F1CB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{89F0287D-A4F0-4A57-94C9-744C7C3AAC67}"
+	ProjectSection(SolutionItems) = preProject
+		Dependencies\HttpInterfaces.pdb = Dependencies\HttpInterfaces.pdb
+		Dependencies\log4net.dll = Dependencies\log4net.dll
+		Dependencies\log4net.xml = Dependencies\log4net.xml
+		Dependencies\nunit.core.dll = Dependencies\nunit.core.dll
+		Dependencies\nunit.core.interfaces.dll = Dependencies\nunit.core.interfaces.dll
+		Dependencies\nunit.framework.dll = Dependencies\nunit.framework.dll
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Owasp.Esapi.SampleWebApp", "Owasp.Esapi.SampleWebApp\Owasp.Esapi.SampleWebApp.csproj", "{F8D2BF6E-6035-4639-88BA-8DED615EBA17}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpInterfaces", "HttpInterfaces\HttpInterfaces.csproj", "{40765C72-70B0-43EB-B667-67409205BE1D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeftTech.DuckTyping", "DuckTyping\DeftTech.DuckTyping.csproj", "{6A9688F0-7DDB-4E98-A47A-9CCE83225423}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +35,18 @@ Global
 		{441B2E65-7054-431F-81F8-AFA65DA8F1CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{441B2E65-7054-431F-81F8-AFA65DA8F1CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{441B2E65-7054-431F-81F8-AFA65DA8F1CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8D2BF6E-6035-4639-88BA-8DED615EBA17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8D2BF6E-6035-4639-88BA-8DED615EBA17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8D2BF6E-6035-4639-88BA-8DED615EBA17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8D2BF6E-6035-4639-88BA-8DED615EBA17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40765C72-70B0-43EB-B667-67409205BE1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40765C72-70B0-43EB-B667-67409205BE1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40765C72-70B0-43EB-B667-67409205BE1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40765C72-70B0-43EB-B667-67409205BE1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A9688F0-7DDB-4E98-A47A-9CCE83225423}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A9688F0-7DDB-4E98-A47A-9CCE83225423}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A9688F0-7DDB-4E98-A47A-9CCE83225423}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A9688F0-7DDB-4E98-A47A-9CCE83225423}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

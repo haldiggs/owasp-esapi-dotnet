@@ -2,12 +2,7 @@
 #
 
 /                | any       | deny  | default deny
-/nobody          | any       | deny  |
-/ESAPITest       | any       | allow |
-/ESAPITest/admin | admin     | allow |
-/test/admin      | admin     | allow |
-/test/user       | user      | allow |
-/test/none       | any       | deny  |
-/test/all        | any       | allow |
+/default.aspx    | any       | allow |
+/login.aspx		 | any       | allow |
 *.gif            | any       | allow |
 *.exe            | any       | deny
