@@ -479,24 +479,22 @@ namespace Owasp.Esapi.Test
         {
             // FIXME: ENHANCE shouldn't this just be one timeout method that does both checks???
             System.Console.Out.WriteLine("IsSessionAbsoluteTimeout");
-
-            // Note: Let's see how ASP.NET deals with this before testing.
-
-            //Authenticator instance = Authenticator();
-            //string oldPassword = instance.GenerateStrongPassword();
-            //User user = CreateTestUser(oldPassword);
-            //long now = (System.DateTime.Now.Ticks - 621355968000000000) / 10000;            
-            //MockHttpContext context = new MockHttpContext();
-            //IHttpSession session = context.Session;
-            //int s1 = (int) now - 1000 * 60 * 60 * 3;
-            //session.Timeout = s1;
-            //Assert.IsTrue(user.IsSessionAbsoluteTimeout(session));
-            //MockHttpContext context2 = new MockHttpContext();
-            //IHttpSession session2 = context.Session;
-            //int s2 = (int)now - 1000 * 60 * 60 * 1;
-            //session2.Timeout = s2;            
-            //Assert.IsFalse(user.IsSessionAbsoluteTimeout(session2));
-        }
+		    String oldPassword = Esapi.Authenticator().GenerateStrongPassword();
+		    User user = CreateTestUser(oldPassword);
+		    long now = DateTime.Now.Ticks;
+            MockHttpContext context = new MockHttpContext();
+            IHttpRequest request = context.Request;
+            IHttpResponse response = context.Response;
+            IHttpSession session = context.Session;
+            ((Authenticator)Esapi.Authenticator()).Context = context;				
+		    // set session creation -3 hours (default is 2 hour timeout)		
+		    session.Timeout =  Convert.ToInt32(now - 1000 * 60 * 60 * 3);
+		    Assert.IsTrue(user.IsSessionAbsoluteTimeout());
+		
+		    // set session creation -1 hour (default is 2 hour timeout)
+		    session.Timeout = Convert.ToInt32(now - 1000 * 60 * 60 * 1);
+		    Assert.IsFalse(user.IsSessionAbsoluteTimeout());
+	        }
 
         /// <summary> Test of IsSessionTimeout method, of class
         /// Owasp.Esapi.IntrusionDetector.

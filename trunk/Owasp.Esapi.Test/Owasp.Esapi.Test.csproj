@@ -45,6 +45,7 @@
       <HintPath>..\Dependencies\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Web" />
     <Reference Include="System.XML" />
   </ItemGroup>
@@ -57,6 +58,7 @@
     <Compile Include="EncryptedPropertiesTest.cs" />
     <Compile Include="EncryptorTest.cs" />
     <Compile Include="Errors\EnterpriseSecurityExceptionTest.cs" />
+    <Compile Include="EsapiTest.cs" />
     <Compile Include="ExecutorTest.cs" />
     <Compile Include="HttpUtilitiesTest.cs" />
     <Compile Include="Http\MockHttpContext.cs" />
@@ -69,11 +71,19 @@
     <Compile Include="LoggerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomizerTest.cs" />
+    <Compile Include="SafeFileTest.cs" />
     <Compile Include="UserTest.cs" />
     <Compile Include="ValidatorTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="bin\Debug\.svn\all-wcprops" />
+    <None Include="bin\Debug\.svn\entries" />
+    <None Include="bin\Debug\.svn\format" />
+    <None Include="bin\Debug\Owasp.Esapi.Test.dll.config" />
+    <None Include="resources\ESAPI.properties" />
+    <None Include="resources\keystore" />
+    <None Include="resources\test.properties" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HttpInterfaces\HttpInterfaces.csproj">
@@ -86,7 +96,38 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="bin\Debug\" />
+    <Content Include="bin\Debug\DeftTech.DuckTyping.dll" />
+    <Content Include="bin\Debug\DeftTech.DuckTyping.pdb" />
+    <Content Include="bin\Debug\DeftTech.DuckTyping.xml" />
+    <Content Include="bin\Debug\HttpInterfaces.dll" />
+    <Content Include="bin\Debug\HttpInterfaces.pdb" />
+    <Content Include="bin\Debug\log4net.dll" />
+    <Content Include="bin\Debug\log4net.xml" />
+    <Content Include="bin\Debug\NGenerics.dll" />
+    <Content Include="bin\Debug\NGenerics.xml" />
+    <Content Include="bin\Debug\nunit.core.dll" />
+    <Content Include="bin\Debug\nunit.core.interfaces.dll" />
+    <Content Include="bin\Debug\nunit.framework.dll" />
+    <Content Include="bin\Debug\Owasp.Esapi.dll" />
+    <Content Include="bin\Debug\Owasp.Esapi.pdb" />
+    <Content Include="bin\Debug\Owasp.Esapi.Test.dll" />
+    <Content Include="bin\Debug\Owasp.Esapi.Test.pdb" />
+    <Content Include="resources\antisamy-esapi.xml" />
+    <Content Include="resources\DataAccessRules.txt" />
+    <Content Include="resources\FileAccessRules.txt" />
+    <Content Include="resources\FunctionAccessRules.txt" />
+    <Content Include="resources\multipart.txt" />
+    <Content Include="resources\ServiceAccessRules.txt" />
+    <Content Include="resources\URLAccessRules.txt" />
+    <Content Include="resources\users.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Debug\.svn\prop-base\" />
+    <Folder Include="bin\Debug\.svn\props\" />
+    <Folder Include="bin\Debug\.svn\text-base\" />
+    <Folder Include="bin\Debug\.svn\tmp\prop-base\" />
+    <Folder Include="bin\Debug\.svn\tmp\props\" />
+    <Folder Include="bin\Debug\.svn\tmp\text-base\" />
     <Folder Include="obj\Debug\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

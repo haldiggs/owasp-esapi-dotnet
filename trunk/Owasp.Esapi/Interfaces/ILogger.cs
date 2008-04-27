@@ -54,20 +54,25 @@ namespace Owasp.Esapi.Interfaces
     public interface ILogger
     {			
 		// FIXME: ENHANCE Is this type approach right? Should it be configurable somehow?
-		
+
+        /// <summary> 
+        /// Format the Source IP address, URL, URL parameters, and all form
+        /// parameters into a string suitable for the log file. Be careful not
+        /// to log sensitive information, and consider masking with the
+        /// logHTTPRequest( List parameterNamesToObfuscate ) method.     
+        /// </summary>
+        
+        void LogHttpRequest();
+        
 		/// <summary> Format the Source IP address, URL, URL parameters, and all form
 		/// parameters into a string for the log file. The list of parameters to
 		/// obfuscate should be specified in order to prevent sensitive informatiton
 		/// from being logged. If a null list is provided, then all parameters will
 		/// be logged.
 		/// </summary>
-		/// <param name="type">The log type.
-		/// </param>
-		/// <param name="request">The request object to validate.
-		/// </param>
 		/// <param name="parameterNamesToObfuscate">The sensitive parameters to obfuscate in the log entry.
 		/// </param>
-		void  LogHttpRequest(string type, IHttpRequest request, IList parameterNamesToObfuscate);
+		void  LogHttpRequest(IList parameterNamesToObfuscate);
 		
 		
 		/// <summary> Log critical messages.

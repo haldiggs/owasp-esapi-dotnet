@@ -315,6 +315,12 @@ namespace Owasp.Esapi
         //
         //private String connectionChannel = null;
 
+        
+            
+        // TODO: Push to configuration? 
+        // Maximum legal role size 
+        private const int MAX_ROLE_LENGTH = 250;
+                
         /// <summary> Instantiates a new user.</summary>
         protected internal User()
         {
@@ -380,7 +386,7 @@ namespace Owasp.Esapi
         public User(string accountName, string password1, string password2)
         {
 
-            Esapi.Authenticator().VerifyAccountNameStrength("Create User", accountName);
+            Esapi.Authenticator().VerifyAccountNameStrength(accountName);
 
             if (password1 == null)
             {
@@ -414,7 +420,7 @@ namespace Owasp.Esapi
         public void AddRole(string role)
         {
             string roleName = role.ToLower();
-            if (Esapi.Validator().IsValidDataFromBrowser("addRole", "RoleName", roleName))
+            if (Esapi.Validator().IsValidInput("addRole", "RoleName", roleName, MAX_ROLE_LENGTH, false))
             {
                 roles.Add(roleName);
                 logger.LogCritical(ILogger_Fields.SECURITY, "Role " + roleName + " added to " + AccountName);
@@ -682,15 +688,14 @@ namespace Owasp.Esapi
         /// <summary> 
         /// Tests to see if the user's session has exceeded the absolute time out.        
         /// </summary>
-        /// <param name="session">
         /// The users session.
         /// </param>
         /// <returns> 
         /// true, if users session has exceeded the absolute time out.
         /// </returns>
-        /// <seealso cref="Owasp.Esapi.Interfaces.IUser.IsSessionAbsoluteTimeout(IHttpSession)">
+        /// <seealso cref="Owasp.Esapi.Interfaces.IUser.IsSessionAbsoluteTimeout()">
         /// </seealso>
-        public bool IsSessionAbsoluteTimeout(IHttpSession session)
+        public bool IsSessionAbsoluteTimeout()
         {
             // TODO: We can't really figure out when the session was created, from the ASP.NET API
             DateTime deadline = new DateTime(DateTime.Now.Ticks + 1000 * 60 * 60 * 2);
@@ -701,15 +706,12 @@ namespace Owasp.Esapi
         /// <summary> 
         /// Tests to see if the user's session has timed out from inactivity.        
         /// </summary>
-        /// <param name="session">
-        /// The users session
-        /// </param>
         /// <returns> 
         /// true, if the users session has timed out from inactivity.
         /// </returns>
-        /// <seealso cref="Owasp.Esapi.Interfaces.IUser.IsSessionTimeout(IHttpSession)">
+        /// <seealso cref="Owasp.Esapi.Interfaces.IUser.IsSessionTimeout()">
         /// </seealso>
-        public bool IsSessionTimeout(IHttpSession session)
+        public bool IsSessionTimeout()
         {            
             // TODO: We can't figure out when it is was last accessed either.
             DateTime deadline = new DateTime(DateTime.Now.Ticks + 1000 * 60 * 20);

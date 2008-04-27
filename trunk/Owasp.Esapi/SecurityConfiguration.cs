@@ -388,6 +388,14 @@ namespace Owasp.Esapi
 
         private const string LOG_LEVEL = "LogLevel";
 
+        
+        // FIXME: Update to standard pattern
+        protected const int MAX_REDIRECT_LOCATION = 1000;
+    
+        protected const int MAX_FILE_NAME_LENGTH = 1000;
+    
+    
+        
         /// <summary> The directory for resources.
         /// </summary>        
         private static string resourceDirectory;

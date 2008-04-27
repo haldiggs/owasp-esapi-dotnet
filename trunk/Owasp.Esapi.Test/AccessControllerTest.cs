@@ -17,6 +17,7 @@
 using System;
 using NUnit.Framework;
 using System.Collections;
+using Owasp.Esapi.Errors;
 using Owasp.Esapi.Interfaces;
 using Owasp.Esapi.Test.Http;
 
@@ -94,6 +95,19 @@ namespace Owasp.Esapi.Test
 			Assert.IsTrue(accessController.IsAuthorizedForUrl("/test/user"));
 			Assert.IsTrue(accessController.IsAuthorizedForUrl("/test/all"));
 			Assert.IsFalse(accessController.IsAuthorizedForUrl("/test/none"));
+
+            try
+            {
+                accessController.AssertAuthorizedForUrl("/test/admin");
+                accessController.AssertAuthorizedForUrl("/nobody");
+                Assert.Fail("Expection expected when user attempting to access unauthorized URL.");
+            }
+            catch (AccessControlException e)
+            {
+                // expected
+            }
+
+            
 		}
 		
 		/// <summary> Test of IsAuthorizedForFunction method, of class
@@ -122,6 +136,18 @@ namespace Owasp.Esapi.Test
 			Assert.IsFalse(accessController.IsAuthorizedForFunction("/FunctionAdeny"));
 			Assert.IsTrue(accessController.IsAuthorizedForFunction("/FunctionB"));
 			Assert.IsFalse(accessController.IsAuthorizedForFunction("/FunctionBdeny"));
+
+            try
+            {
+                accessController.AssertAuthorizedForFunction("/FunctionA");
+                accessController.AssertAuthorizedForFunction("/FunctionAdeny");
+                Assert.Fail("Expection expected when user attempting to access unauthorized function.");
+            }
+            catch (AccessControlException e)
+            {
+                // expected
+            }
+
 		}
 		
 		/// <summary> Test of IsAuthorizedForData method, of class
@@ -147,6 +173,19 @@ namespace Owasp.Esapi.Test
 			Assert.IsTrue(accessController.IsAuthorizedForData("/Data1"));
 			Assert.IsTrue(accessController.IsAuthorizedForData("/Data2"));
 			Assert.IsFalse(accessController.IsAuthorizedForData("/not_listed"));
+
+            try
+            {
+                accessController.AssertAuthorizedForData("/Data1");
+                accessController.AssertAuthorizedForData("/not_listed");
+                Assert.Fail("Expection expected when user attempting to access unauthorized data.");
+            }
+            catch (AccessControlException e)
+            {
+                // expected
+            }
+
+		    
 		}
 		
 		/// <summary> Test of IsAuthorizedForFile method, of class
@@ -173,6 +212,18 @@ namespace Owasp.Esapi.Test
 			Assert.IsTrue(accessController.IsAuthorizedForFile("/Dir/File1"));
 			Assert.IsTrue(accessController.IsAuthorizedForFile("/Dir/File2"));
 			Assert.IsFalse(accessController.IsAuthorizedForFile("/Dir/ridiculous"));
+
+            try
+            {
+                accessController.AssertAuthorizedForFile("/Dir/File1");
+                accessController.AssertAuthorizedForFile("/Dir/ridiculous");
+                Assert.Fail("Expection expected when user attempting to access unauthorized file.");
+            }
+            catch (AccessControlException e)
+            {
+                // expected
+            }
+
 		}
 		
 		/// <summary> Test of IsAuthorizedForBackendService method, of class
@@ -199,6 +250,24 @@ namespace Owasp.Esapi.Test
 			Assert.IsTrue(accessController.IsAuthorizedForService("/services/ServiceA"));
 			Assert.IsTrue(accessController.IsAuthorizedForService("/services/ServiceB"));
 			Assert.IsFalse(accessController.IsAuthorizedForService("/test/ridiculous"));
-		}	
+
+            try
+            {
+                accessController.AssertAuthorizedForService("/services/ServiceA");
+                accessController.AssertAuthorizedForService("/test/ridiculous");
+                Assert.Fail("Expection expected when user attempting to access unauthorized backend service.");
+            }
+            catch (AccessControlException e)
+            {
+                // expected
+            }
+
+		    
+		}
+        public void testMatchRule()
+        {
+            Esapi.Authenticator().SetCurrentUser(null);
+            Assert.IsFalse(Esapi.AccessController().IsAuthorizedForUrl("/nobody"));
+        }
     }
 }

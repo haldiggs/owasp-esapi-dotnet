@@ -29,9 +29,11 @@ namespace Owasp.Esapi.Test.Http
         private string userHostName = "";
         private string userHostAddress = "";
         private NameValueCollection parameters = new NameValueCollection();
-        private Uri url = new Uri("http://example.com");
+        private Uri url = new Uri("https://localhost/");
         private HttpCookieCollection cookies = new HttpCookieCollection();
         private NameValueCollection headers = new NameValueCollection();
+        private NameValueCollection form = new NameValueCollection();
+        private NameValueCollection queryString = new NameValueCollection();
         private IHttpFileCollection fileCollection;
         public MockHttpRequest(string path, byte[] data)
         {            
@@ -155,7 +157,7 @@ namespace Owasp.Esapi.Test.Http
         }
         public NameValueCollection Form
         {
-            get { throw new NotImplementedException(); }
+            get { return form; }
         }
         public NameValueCollection Headers
         {
@@ -207,7 +209,7 @@ namespace Owasp.Esapi.Test.Http
         }
         public NameValueCollection QueryString
         {
-            get { throw new NotImplementedException(); }
+            get { return queryString; }
         }
         public string RawUrl
         {

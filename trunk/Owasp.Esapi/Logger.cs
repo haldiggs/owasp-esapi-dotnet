@@ -66,22 +66,24 @@ namespace Owasp.Esapi
             //(SecurityConfiguration) Esapi.SecurityConfiguration()).LogLevel;            
         }
 
+        public void LogHttpRequest()
+        {
+            LogHttpRequest(null);
+        }
+        
         /// <summary> Formats an HTTP request into a log suitable string. This implementation logs the remote host IP address (or
         /// hostname if available), the request method (GET/POST), the URL, and all the querystring and form parameters. All
         /// the paramaters are presented as though they were in the URL even if they were in a form. Any parameters that
         /// match items in the parameterNamesToObfuscate are shown as eight asterisks.
         /// 
         /// </summary>
-        /// <param name="type">The log type.
-        /// </param>
-        /// <param name="request">The request object to validate.
-        /// </param>
         /// <param name="parameterNamesToObfuscate">The sensitive parameters to obfuscate in the log entry.
         /// </param>
-        /// <seealso cref="Owasp.Esapi.Interfaces.ILogger.LogHttpRequest(string, IHttpRequest, IList)">
+        /// <seealso cref="Owasp.Esapi.Interfaces.ILogger.LogHttpRequest(IList)">
         /// </seealso>
-        public virtual void LogHttpRequest(string type, IHttpRequest request, IList parameterNamesToObfuscate)
+        public virtual void LogHttpRequest(IList parameterNamesToObfuscate)
         {
+            IHttpRequest request = ((Authenticator) Esapi.Authenticator()).Context.Request;
             StringBuilder parameters = new StringBuilder();
             IEnumerator i = request.Params.Keys.GetEnumerator();            
             while (i.MoveNext())
@@ -90,7 +92,7 @@ namespace Owasp.Esapi
                 // Note: Do we need to deal with multiple identical values here?
                 string value = request.Params[key];
                 parameters.Append(key + "=");
-                if (parameterNamesToObfuscate.Contains(key))
+                if (parameterNamesToObfuscate!=null && parameterNamesToObfuscate.Contains(key))
                 {
                     parameters.Append("********");
                 }
@@ -102,7 +104,7 @@ namespace Owasp.Esapi
                     parameters.Append("&");
             }
             string msg = request.RequestType + " " + request.Url + (parameters.Length > 0 ? "?" + parameters : "");
-            LogSuccess(type, msg);
+            LogSuccess(ILogger_Fields.SECURITY, msg);
         }
 
         /// <summary> Gets the logger.

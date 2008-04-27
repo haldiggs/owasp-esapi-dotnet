@@ -47,6 +47,14 @@ namespace Owasp.Esapi
         {
         }
 
+            
+        // TODO: Push to configuration? 
+        /// <summary>
+        /// Maximum legal system command size 
+        /// </summary>
+        private readonly int MAX_SYSTEM_COMMAND_LENGTH = 2500;
+    
+        
 
         /// <summary> Executes a system command after checking that the executable exists and
         /// that the parameters have not been subject to injection with untrusted
@@ -95,7 +103,7 @@ namespace Owasp.Esapi
                 while (i.MoveNext())
                 {                    
                     string param = (System.String)i.Current;
-                    if (!validator.IsValidDataFromBrowser("fixme", "SystemCommand", param))
+                    if (!validator.IsValidInput("fixme", "SystemCommand", param, MAX_SYSTEM_COMMAND_LENGTH, false))
                     {
                         throw new ExecutorException("Execution failure", "Illegal characters in parameter to executable: " + param);
                     }

@@ -132,11 +132,15 @@ namespace Owasp.Esapi
 		public  void  SafeAddCookie(string name, string cookieValue, int maxAge, string domain, string path)
 		{
             // TODO - Potentially try to work with HttpCookies
-			IHttpResponse response = ((Authenticator) Esapi.Authenticator()).CurrentResponse;
-			// Set-Cookie:<name>=<value>[; <name>=<value>][; expires=<date>][;
+            IHttpResponse response = ((Authenticator)Esapi.Authenticator()).CurrentResponse;
+            // FIXME: Enhance - this most likely occurs if someone calls setNoCacheHeaders() before login
+            if (response == null) throw new NullReferenceException("Can't set response header until current response is set, typically via login");
+
+		    // Set-Cookie:<name>=<value>[; <name>=<value>][; expires=<date>][;
 			// domain=<domain_name>][; path=<some_path>][; secure][;HttpOnly
 			// FIXME: AAA test if setting a separate set-cookie header for each cookie works!
-			string header = name + "=" + cookieValue;
+            
+		    string header = name + "=" + cookieValue;
 			if (maxAge != - 1)
 				header += ("; Max-Age=" + maxAge);
 			if (domain != null)
@@ -164,7 +168,10 @@ namespace Owasp.Esapi
         public  void  SafeAddHeader(string name, string val)
 		{
 			IHttpResponse response = ((Authenticator) Esapi.Authenticator()).CurrentResponse;
-			// FIXME: AAA consider using the regex for header names and header values here
+            // FIXME: Enhance - this most likely occurs if someone calls setNoCacheHeaders() before login
+            if (response == null) throw new NullReferenceException("Can't set response header until current response is set, typically via login");
+
+            // FIXME: AAA consider using the regex for header names and header values here
 			Regex headerName = ((SecurityConfiguration) Esapi.SecurityConfiguration()).GetValidationPattern("HTTPHeaderName");
 			if (!headerName.IsMatch(name))
 			{
@@ -177,6 +184,40 @@ namespace Owasp.Esapi
 			}
 			response.AppendHeader(name, val);
 		}
+
+        /// <summary>
+        /// Sets a header to an HttpResponse after checking for special
+        /// characters (such as CRLF injection) that could enable attacks like
+        /// response splitting and other header-based attacks that nobody has thought
+        /// of yet.
+        /// </summary>
+        /// <param name="name">The name of the header.
+        /// </param>
+        /// <param name="val">The value of the cookie.
+        /// </param>
+        /// <seealso cref="Owasp.Esapi.Interfaces.IHttpUtilities.SafeSetHeader(string, string)">
+        /// </seealso>
+        public void SafeSetHeader(String name, String value) 
+        {
+            IHttpResponse response = ((Authenticator)Esapi.Authenticator()).CurrentResponse;
+            // FIXME: Enhance - this most likely occurs if someone calls setNoCacheHeaders() before login
+            if (response == null) throw new NullReferenceException("Can't set response header until current response is set, typically via login");
+
+            Regex headerName = ((SecurityConfiguration)Esapi.SecurityConfiguration()).GetValidationPattern("HTTPHeaderName");
+            if (!headerName.IsMatch(name))
+            {
+                throw new ValidationException("Invalid header", "Attempt to set a header name that violates the global rule in Esapi.properties: " + name);
+            } 
+                        
+            Regex headerValue = ((SecurityConfiguration)Esapi.SecurityConfiguration()).GetValidationPattern("HTTPHeaderValue");
+            if (!headerValue.IsMatch(value))
+            {
+                throw new ValidationException("Invalid header", "Attempt to set a header value that violates the global rule in Esapi.properties: " + headerValue);
+            }
+		    response.Headers[name] = value;
+	}
+        
+        
 		
 		//FIXME: AAA add these to the interface
 		/// <summary> Return exactly what was sent to prevent URL rewriting. URL rewriting is intended to be a session management
@@ -274,7 +315,7 @@ namespace Owasp.Esapi
 						
 			if (request[user.CsrfToken] == null)
 			{
-				throw new IntrusionException("Authentication failed", "Attempt to access application without appropriate token");
+                throw new IntrusionException("Authentication failed", "Possibly forged HTTP request without proper CSRF token detected");
 			}
 		}
 		
@@ -316,15 +357,7 @@ namespace Owasp.Esapi
 		{
 			IHttpRequest request = ((Authenticator) Esapi.Authenticator()).CurrentRequest;
 			HttpCookieCollection cookies = request.Cookies;
-			HttpCookie c = null;
-			foreach (HttpCookie cookie in cookies)
-			{
-				if (cookie.Name.Equals("state"))
-				{
-					c = cookie;
-				}
-			}
-			string encrypted = c.Value;
+			string encrypted = cookies["state"].Value;
 			string cleartext = Esapi.Encryptor().Decrypt(encrypted);
 			
 			return QueryToMap(cleartext);
@@ -355,20 +388,27 @@ namespace Owasp.Esapi
         /// </summary>
         /// <param name="cleartext">The decrypted string (cleartext).</param>
         /// <returns>The encrypted string (ciphertext).</returns>
-		public  void  EncryptStateInCookie(IDictionary cleartext)
+		public void EncryptStateInCookie(IDictionary cleartext)
 		{
 			StringBuilder sb = new StringBuilder();			
-			IEnumerator i = new ArrayList(cleartext).GetEnumerator();		
+			IEnumerator i = new ArrayList(cleartext).GetEnumerator();
+            bool first = true;
 			while (i.MoveNext())
 			{
 				try
-				{					
-					DictionaryEntry entry = (DictionaryEntry) i.Current;					
+				{		
+				    if (!first)
+				    {
+                        sb.Append("&");
+				    } else
+				    {
+				        first = false;
+				    }
+				    DictionaryEntry entry = (DictionaryEntry) i.Current;					
 					string name = Esapi.Encoder().EncodeForUrl(entry.Key.ToString());					
 					string cookieValue = Esapi.Encoder().EncodeForUrl(entry.Value.ToString());
 					sb.Append(name + "=" + cookieValue);					
-					if (i.MoveNext())
-						sb.Append("&");
+					
 				}
 				catch (EncodingException e)
 				{
@@ -393,10 +433,13 @@ namespace Owasp.Esapi
         /// </param>
 		/// <seealso cref="Owasp.Esapi.Interfaces.IHttpUtilities.GetSafeFileUploads(FileInfo, FileInfo)">
 		/// </seealso>        
-        public void GetSafeFileUploads(FileInfo tempDir, FileInfo finalDir)
+        public IList GetSafeFileUploads(FileInfo tempDir, FileInfo finalDir)
         {
+            ArrayList newFiles = new ArrayList();
             try
             {
+                if (!tempDir.Exists) tempDir.Create();
+                if (!finalDir.Exists) finalDir.Create();
                 IHttpFileCollection fileCollection = ((Authenticator)Esapi.Authenticator()).CurrentRequest.Files;
                 if (fileCollection.AllKeys.Length == 0)
                 {
@@ -411,7 +454,7 @@ namespace Owasp.Esapi
                     {
                         String[] fparts = Regex.Split(file.FileName, "[\\/\\\\]");
                         String filename = fparts[fparts.Length - 1];
-                        if (!Esapi.Validator().IsValidFileName("upload", filename))
+                        if (!Esapi.Validator().IsValidFileName("upload", filename, false))
                         {
                             throw new ValidationUploadException("Upload only simple filenames with the following extensions " + Esapi.SecurityConfiguration().AllowedFileExtensions, "Invalid filename for upload");
                         }
@@ -419,7 +462,7 @@ namespace Owasp.Esapi
                         FileInfo f = new FileInfo(finalDir.ToString() +  "\\" + filename);
                         if (f.Exists)
                         {
-                            String[] parts = Regex.Split(filename, "\\.");
+                            String[] parts = Regex.Split(filename, "\\./");
                             String extension = "";
                             if (parts.Length > 1)
                             {
@@ -430,8 +473,8 @@ namespace Owasp.Esapi
                             // Not sure if this is good enough solution for file overwrites
                             f = new FileInfo(finalDir + "\\" + filenm + Guid.NewGuid() + "." + extension);
                         }
-                        file.SaveAs(f.FullName);                        
-
+                        file.SaveAs(f.FullName);
+                        newFiles.Add(f);
                         logger.LogCritical(ILogger_Fields.SECURITY, "File successfully uploaded: " + f);                        
                     }
                 }
@@ -445,6 +488,7 @@ namespace Owasp.Esapi
                     throw (ValidationException)ex;
                 throw new ValidationUploadException("Upload failure", "Problem during upload");
             }
+            return newFiles;
         }
 
         /// <summary> Kill all cookies received in the last request from the browser. Note that new cookies set by the application in
@@ -546,7 +590,9 @@ namespace Owasp.Esapi
 		public void SafeSendRedirect(string context, string location)
 		{
 			IHttpResponse response = ((Authenticator) Esapi.Authenticator()).CurrentResponse;
-			if (!Esapi.Validator().IsValidRedirectLocation(context, location))
+            // FIXME: Enhance - this most likely occurs if someone calls setNoCacheHeaders() before login
+            if (response == null) throw new NullReferenceException("Can't set response header until current response is set, typically via login");
+            if (!Esapi.Validator().IsValidRedirectLocation(context, location, false))
 			{
 				throw new ValidationException("Redirect failed", "Bad redirect location: " + location);
 			}			
@@ -566,6 +612,8 @@ namespace Owasp.Esapi
 		public  void  SafeSetContentType()
 		{
 			IHttpResponse response = ((Authenticator) Esapi.Authenticator()).CurrentResponse;
+            // FIXME: Enhance - this most likely occurs if someone calls setNoCacheHeaders() before login
+            if (response == null) throw new NullReferenceException("Can't set response header until current response is set, typically via login");
 			response.ContentType = ((SecurityConfiguration) Esapi.SecurityConfiguration()).ResponseContentType;
 		}
 		
@@ -577,7 +625,8 @@ namespace Owasp.Esapi
 		public  void  SetNoCacheHeaders()
 		{
 			IHttpResponse response = ((Authenticator) Esapi.Authenticator()).CurrentResponse;
-			
+            if (response == null) throw new NullReferenceException("Can't set response header until current response is set, typically via login");
+		
 			// HTTP 1.1
 			response.AppendHeader("Cache-Control", "no-store");
 			response.AppendHeader("Cache-Control", "no-cache");
@@ -587,7 +636,7 @@ namespace Owasp.Esapi
 			response.AppendHeader("Pragma", "no-cache");
 			response.AppendHeader("Expires", DateTime.MinValue.ToString("r"));
 		}
-
+        
 
         /// <summary>
         /// Static constructor.

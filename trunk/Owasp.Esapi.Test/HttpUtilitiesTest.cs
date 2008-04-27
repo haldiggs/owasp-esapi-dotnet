@@ -109,7 +109,7 @@ namespace Owasp.Esapi.Test
             ((MockHttpRequest) context.Request).Files = fileCollection;
             try
             {
-                Esapi.HttpUtilities().GetSafeFileUploads(home, home);
+                ArrayList list = (ArrayList) Esapi.HttpUtilities().GetSafeFileUploads(home, home);
             }
             catch (ValidationException e)
             {
@@ -148,6 +148,7 @@ namespace Owasp.Esapi.Test
         {
             System.Console.Out.WriteLine("IsValidHTTPRequest");
             MockHttpContext context = new MockHttpContext();
+            ((Authenticator)Esapi.Authenticator()).Context = context;
             IHttpRequest request = context.Request;
             request.Params.Add("p1", "v1");
             request.Params.Add("p2", "v3");
@@ -158,11 +159,11 @@ namespace Owasp.Esapi.Test
             request.Cookies.Add(new HttpCookie("c1", "v1"));
             request.Cookies.Add(new HttpCookie("c2", "v2"));
             request.Cookies.Add(new HttpCookie("c3", "v3"));
-            Assert.IsTrue(Esapi.Validator().IsValidHttpRequest(request));
+            Assert.IsTrue(Esapi.Validator().IsValidHttpRequest());
             request.Params.Add("bad_name", "bad*value");
             request.Headers.Add("bad_name", "bad*vaslue");
             request.Cookies.Add(new HttpCookie("bad_name", "bad*value"));
-            Assert.IsFalse(Esapi.Validator().IsValidHttpRequest(request));
+            Assert.IsFalse(Esapi.Validator().IsValidHttpRequest());
         }
 
 
@@ -250,6 +251,73 @@ namespace Owasp.Esapi.Test
             Assert.IsTrue(response.Headers["Set-Cookie"].Split(',').Length == 2);
         }
 
+
+        [Test]
+        public void Test_GetStateFromEncryptedCookie()
+        {
+            Console.Out.WriteLine("Test_GetStateFromEncryptedCookie");
+            IHttpContext context = new MockHttpContext();
+            IHttpRequest request = context.Request;
+            IHttpResponse response = context.Response;
+            ((Authenticator)Esapi.Authenticator()).Context = context;
+            Hashtable map = new Hashtable();
+            map.Add("one", "aspect");
+            map.Add("two", "ridiculous");
+            map.Add("test_hard", "&(@#*!^|;,.");
+            try
+            {
+                Esapi.HttpUtilities().EncryptStateInCookie(map);
+                String value = response.Headers["Set-Cookie"];
+                int start = value.IndexOf("state=") + "state=".Length;
+                int end = value.IndexOf(";", start);
+                String encrypted = value.Substring(start, end - start);
+                // String encrypted = response.getCookie("state").getValue();
+                request.Cookies.Add(new HttpCookie("state", encrypted));
+                IDictionary state = Esapi.HttpUtilities().DecryptStateFromCookie();
+                foreach (String k in map.Keys)
+                {
+                    String origname = k;
+                    String origvalue = map[k].ToString();
+                    Assert.AreEqual(state[origname], origvalue);
+                }
+            }
+            catch (EncryptionException e)
+            {
+                Assert.Fail("Encryption exception");
+            }
+        }
+
+        [Test]
+        public void Test_SaveStateInEncryptedCookie()
+        {
+            Console.Out.WriteLine("Test_SaveStateInEncryptedCookie");
+            IHttpContext context = new MockHttpContext();
+            IHttpRequest request = context.Request;
+            IHttpResponse response = context.Response;
+            ((Authenticator)Esapi.Authenticator()).Context = context;
+
+            Hashtable map = new Hashtable();
+            map.Add("one", "aspect");
+            map.Add("two", "ridiculous");
+            map.Add("test_hard", "&(@#*!^|;,.");
+            try
+            {
+                Esapi.HttpUtilities().EncryptStateInCookie(map);
+                String value = response.Headers["Set-Cookie"];
+                int start = value.IndexOf("state=") + "state=".Length;
+                int end = value.IndexOf(";", start);
+                String encrypted = value.Substring(start, end - start);
+                Esapi.Encryptor().Decrypt(encrypted);
+            }
+            catch (EncryptionException e)
+            {
+                Assert.Fail("Encryption Exception");
+            }
+        }
+        
+        
+        
+        
         /// <summary> Test of SetNoCacheHeaders.</summary>
         [Test]
         public void Test_SetNoCacheHeaders()

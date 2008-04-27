@@ -66,13 +66,14 @@ namespace Owasp.Esapi.Test
             System.Console.Out.WriteLine("LogHTTPRequest");
             string[] ignore = new string[] { "password" };            
             MockHttpContext context = new MockHttpContext();
-            IHttpRequest request = context.Request;            
-            Logger.GetLogger("logger", "logger").LogHttpRequest(Owasp.Esapi.Interfaces.ILogger_Fields.SECURITY, request, new ArrayList(ignore));
+            ((Authenticator)Esapi.Authenticator()).Context = context;
+            IHttpRequest request = context.Request;
+            Logger.GetLogger("logger", "logger").LogHttpRequest(new ArrayList(ignore));
             request.Params.Add("one", "one");
             request.Params.Add("two", "two1");
             request.Params.Add("two", "two2");
             request.Params.Add("password", "jwilliams");
-            Logger.GetLogger("logger", "logger").LogHttpRequest(Owasp.Esapi.Interfaces.ILogger_Fields.SECURITY, request, new ArrayList(ignore));
+            Logger.GetLogger("logger", "logger").LogHttpRequest(new ArrayList(ignore));
         }
 
         /// <summary> Test of LogSuccess method, of class Owasp.Esapi.Logger.</summary>

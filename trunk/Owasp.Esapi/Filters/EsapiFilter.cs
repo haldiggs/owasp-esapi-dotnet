@@ -63,7 +63,7 @@ namespace Owasp.Esapi.Filters
                 }
 
                 // log this request, obfuscating any parameter named password
-                logger.LogHttpRequest(ILogger_Fields.SECURITY, WebContext.Cast(request), new ArrayList (ignore));
+                logger.LogHttpRequest(new ArrayList (ignore));
 
                 // check access to this URL
                 if (!Esapi.AccessController().IsAuthorizedForUrl(request.RawUrl.ToString()))

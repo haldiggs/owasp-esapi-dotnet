@@ -128,7 +128,7 @@ namespace Owasp.Esapi
         // FIXME: consider adding flag for logging
         // FIXME: perhaps an enumeration for context (i.e. the layer the call is made from)
 
-        /// <summary> Checks if an account is authorized to access the referenced URL. The implementation should allow
+        /// <summary> Returns true if an account is authorized to access the referenced URL. The implementation should allow
         /// access to be granted to any part of the URI.
         /// 
         /// </summary>
@@ -140,28 +140,14 @@ namespace Owasp.Esapi
         /// </seealso>
         public bool IsAuthorizedForUrl(string url)
         {
-            if ((urlMap.Count == 0))
+            if (urlMap.Count == 0)
             {
-                try
-                {
-                    urlMap = LoadRules(new FileInfo(resourceDirectory.FullName + "\\" + "URLAccessRules.txt"));
-                }
-                catch (AccessControlException ex)
-                {
-                    return false;
-                }
+                urlMap = LoadRules(new FileInfo(resourceDirectory.FullName + "\\" + "URLAccessRules.txt"));
             }
-            try
-            {
-                return MatchRule(urlMap, url);
-            }
-            catch (AccessControlException ex)
-            {
-                return false;
-            }
+            return MatchRule(urlMap, url);
         }
 
-        /// <summary> Checks if an account is authorized to access the referenced function. The implementation should define the
+        /// <summary> Returns true if an account is authorized to access the referenced function. The implementation should define the
         /// function "namespace" to be enforced. Choosing something simple like the classname of action classes or menu item
         /// names will make this implementation easier to use.
         /// 
@@ -174,28 +160,18 @@ namespace Owasp.Esapi
         /// </seealso>
         public bool IsAuthorizedForFunction(string functionName)
         {
-            if ((functionMap.Count == 0))
-            {
-                try
-                {
-                    functionMap = LoadRules(new FileInfo(resourceDirectory.FullName + "\\" + "FunctionAccessRules.txt"));
-                }
-                catch (AccessControlException ex)
-                {
-                    return false;
-                }
-            }
             try
             {
-                return MatchRule(functionMap, functionName);
+                AssertAuthorizedForFunction(functionName);
+                return true;
             }
-            catch (AccessControlException ex)
+            catch (Exception e)
             {
                 return false;
             }
         }
 
-        /// <summary> Checks if an account is authorized to access the referenced data. The implementation should define the data
+        /// <summary> Returns true if an account is authorized to access the referenced data. The implementation should define the data
         /// "namespace" to be enforced.
         /// 
         /// </summary>
@@ -207,28 +183,18 @@ namespace Owasp.Esapi
         /// </seealso>
         public bool IsAuthorizedForData(string key)
         {
-            if ((dataMap.Count == 0))
-            {
-                try
-                {
-                    dataMap = LoadRules(new FileInfo(resourceDirectory.FullName + "\\" + "DataAccessRules.txt"));
-                }
-                catch (AccessControlException ex)
-                {
-                    return false;
-                }
-            }
             try
             {
-                return MatchRule(dataMap, key);
+                AssertAuthorizedForData(key);
+                return true;
             }
-            catch (AccessControlException ex)
+            catch (Exception e)
             {
                 return false;
             }
         }
 
-        /// <summary> Checks if an account is authorized to access the referenced file. The implementation should be extremely careful
+        /// <summary> Returns true if an account is authorized to access the referenced file. The implementation should be extremely careful
         /// about canonicalization.
         /// 
         /// </summary>
@@ -240,30 +206,18 @@ namespace Owasp.Esapi
         /// </seealso>
         public bool IsAuthorizedForFile(string filepath)
         {
-            if ((fileMap.Count == 0))
-            {
-                try
-                {
-                    fileMap = LoadRules(new FileInfo(resourceDirectory.FullName + "\\" + "FileAccessRules.txt"));
-                }
-                catch (AccessControlException ex)
-                {
-                    return false;
-                }
-            }
             try
             {
-                // FIXME: AAA think about canonicalization here - use Java file canonicalizer
-                // remember that Windows paths have \ instad of /
-                return MatchRule(fileMap, filepath.Replace("\\\\", "/"));
+                AssertAuthorizedForFile(filepath);
+                return true;
             }
-            catch (AccessControlException ex)
+            catch (Exception e)
             {
                 return false;
             }
         }
 
-        /// <summary> Checks if an account is authorized to access the referenced service. This can be used in applications that
+        /// <summary> Returns true if an account is authorized to access the referenced service. This can be used in applications that
         /// provide access to a variety of backend services.
         /// 
         /// </summary>
@@ -275,26 +229,86 @@ namespace Owasp.Esapi
         /// </seealso>
         public bool IsAuthorizedForService(string serviceName)
         {
-            if ((serviceMap.Count == 0))
-            {
-                try
-                {
-                    serviceMap = LoadRules(new FileInfo(resourceDirectory.FullName + "\\" + "ServiceAccessRules.txt"));
-                }
-                catch (AccessControlException ex)
-                {
-                    return false;
-                }
-            }
             try
             {
-                return MatchRule(serviceMap, serviceName);
+                AssertAuthorizedForService(serviceName);
+                return true;
             }
-            catch (AccessControlException ex)
+            catch (Exception e)
             {
                 return false;
             }
         }
+
+
+
+        public void AssertAuthorizedForUrl(String url)
+        {
+            if (urlMap == null || urlMap.Count == 0)
+            {
+                urlMap = LoadRules(new FileInfo(resourceDirectory + "\\" + "URLAccessRules.txt"));
+            }
+            if (!MatchRule(urlMap, url))
+            {
+                throw new AccessControlException("Not authorized for URL", "Not authorized for URL: " + url);
+            }
+        }
+
+
+        public void AssertAuthorizedForFunction(String functionName)
+        {
+            if (functionMap == null || functionMap.Count == 0)
+            {
+                functionMap = LoadRules(new FileInfo(resourceDirectory + "\\" + "FunctionAccessRules.txt"));
+            }
+            if (!MatchRule(functionMap, functionName))
+            {
+                throw new AccessControlException("Not authorized for function", "Not authorized for function: " + functionName);
+            }
+        }
+
+
+        public void AssertAuthorizedForData(String key)
+        {
+            if (dataMap == null || dataMap.Count == 0)
+            {
+                dataMap = LoadRules(new FileInfo(resourceDirectory + "\\" + "DataAccessRules.txt"));
+            }
+            if (!MatchRule(dataMap, key))
+            {
+                throw new AccessControlException("Not authorized for function", "Not authorized for data: " + key);
+            }
+        }
+
+        public void AssertAuthorizedForFile(String filepath)
+        {
+            if (fileMap == null || fileMap.Count == 0)
+            {
+                fileMap = LoadRules(new FileInfo(resourceDirectory + "\\" + "FileAccessRules.txt"));
+            }
+            // FIXME: AAA think about canonicalization here - use file canonicalizer
+            // remember that Windows paths have \ instead of /
+            if (!MatchRule(fileMap, filepath.Replace("\\\\", "/")))
+            {
+                throw new AccessControlException("Not authorized for file", "Not authorized for file: " + filepath);
+            }
+        }
+
+
+        public void AssertAuthorizedForService(String serviceName)
+        {
+            if (serviceMap == null || serviceMap.Count == 0)
+            {
+                serviceMap = LoadRules(new FileInfo(resourceDirectory + "\\" + "ServiceAccessRules.txt"));
+            }
+            if (!MatchRule(serviceMap, serviceName))
+            {
+                throw new AccessControlException("Not authorized for service", "Not authorized for service: " + serviceName);
+            }
+        }
+        
+
+
 
         /// <summary> Match a rule, based on a path.
         /// 
@@ -310,10 +324,6 @@ namespace Owasp.Esapi
         {
             // get users roles
             IUser user = Esapi.Authenticator().GetCurrentUser();
-            if (user == null)
-            {
-                return false;
-            }
             IList roles = user.Roles;
             // search for the first rule that matches the path and rules
             Rule rule = SearchForRule(map, roles, path);
@@ -345,7 +355,7 @@ namespace Owasp.Esapi
             }
             catch (EncodingException ee)
             {
-                throw new AccessControlException("Internal error", "Failed to canonicaliize input ", ee);
+                logger.LogWarning(ILogger_Fields.SECURITY, "Failed to canonicalize input: " + path);
             }
 
             string part = canonical;
@@ -458,20 +468,16 @@ namespace Owasp.Esapi
                         rule.allow = action.ToUpper().Equals("allow".ToUpper());
                         if (map.Contains(rule.path))
                         {
-                            throw new AccessControlException("Access control failure", "Problem in access control file. Duplicate rule " + rule);
+                            logger.LogWarning(ILogger_Fields.SECURITY, "Problem in access control file. Duplicate rule ignored: " + rule);
                         }
                         map[rule.path] = rule;
                     }
                 }
                 return map;
             }
-            catch (IOException e)
+            catch (Exception e)
             {
-                throw new AccessControlException("Access control failure", "Failure loading access control file " + f, e);
-            }
-            catch (ValidationException e1)
-            {
-                throw new AccessControlException("Access control failure", "Failure loading access control file " + f, e1);
+                logger.LogWarning(ILogger_Fields.SECURITY, "Problem in access control file", e);
             }
             finally
             {
@@ -487,6 +493,7 @@ namespace Owasp.Esapi
                     logger.LogWarning(Owasp.Esapi.Interfaces.ILogger_Fields.SECURITY, "Failure closing access control file: " + f, e);
                 }
             }
+            return map;
         }
         
         /// <summary> The Rule class.</summary>

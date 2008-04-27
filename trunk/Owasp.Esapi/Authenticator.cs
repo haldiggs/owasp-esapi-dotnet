@@ -160,6 +160,14 @@ namespace Owasp.Esapi
         }
 
 
+        // TODO: Push to configuration? 
+        /// <summary>
+        ///Maximum legal account name size  
+        /// </summary>
+        private readonly int MAX_ACCOUNT_NAME_LENGTH = 250;
+    
+
+        
         /// <summary> Fail safe main program to add or update an account in an emergency.
         /// [P]
         /// Warning: this method does not perform the level of validation and checks
@@ -615,8 +623,6 @@ namespace Owasp.Esapi
 		/// brute force attack, however the real strength comes from the name length and complexity.
         /// 
         /// </summary>
-        /// <param name="context">The context for the verification.
-        /// </param>
         /// <param name="newAccountName">The account name to validate the strength of.
         /// 
         /// </param>
@@ -625,14 +631,14 @@ namespace Owasp.Esapi
         /// </returns>
         /// <seealso cref="Owasp.Esapi.Interfaces.IAuthenticator.VerifyAccountNameStrength(string, string)">
         /// </seealso>
-        public void VerifyAccountNameStrength(string context, string newAccountName)
+        public void VerifyAccountNameStrength(string newAccountName)
         {
             if (newAccountName == null)
             {
                 throw new AuthenticationCredentialsException("Invalid account name", "Attempt to create account with a null account name");
             }
             // FIXME: ENHANCE make the lengths configurable?
-            if (!Esapi.Validator().IsValidDataFromBrowser(context, "AccountName", newAccountName))
+            if (!Esapi.Validator().IsValidInput("VerifyAccountNameStrength", "AccountName", newAccountName, MAX_ACCOUNT_NAME_LENGTH, false))
             {
                 throw new AuthenticationCredentialsException("Invalid account name", "New account name is not valid: " + newAccountName);
             }
@@ -661,7 +667,10 @@ namespace Owasp.Esapi
         protected internal void LoadUsersIfNecessary()
         {
             string ResourceDirectory = ((SecurityConfiguration)Esapi.SecurityConfiguration()).ResourceDirectory.FullName;
-            userDB = new FileInfo(ResourceDirectory+"\\" + "users.txt");
+            if (userDB == null)
+            {
+                userDB = new FileInfo(ResourceDirectory+"\\" + "users.txt");
+            }
             long now = (DateTime.Now.Ticks);
             // We only check at most every checkInterval milliseconds
             if (now - lastChecked < checkInterval)
@@ -669,12 +678,17 @@ namespace Owasp.Esapi
                 return;
             }
             lastChecked = now;
-            
-            long lastModified = userDB.LastWriteTime.Ticks;
-            if (this.lastModified == lastModified)
+            if (lastModified == userDB.LastWriteTime.Ticks)
             {
                 return;
             }
+            LoadUsersImmediately();
+        }
+
+
+
+        protected void LoadUsersImmediately()
+        {
             // file was touched so reload it
             lock (this)
             {
@@ -686,7 +700,7 @@ namespace Owasp.Esapi
 
                 StreamReader reader = null;
                 try
-                {                    
+                {
                     Hashtable map = new Hashtable();
                     reader = new StreamReader(userDB.FullName, System.Text.Encoding.Default);
                     string line = null;
@@ -703,7 +717,7 @@ namespace Owasp.Esapi
                                 }
                                 map[user.AccountName] = user;
                             }
-                        }                        
+                        }
                     }
                     userMap = map;
                     this.lastModified = lastModified;
@@ -729,7 +743,7 @@ namespace Owasp.Esapi
                 }
             }
         }
- 
+        
         /// <summary> Saves the user database to the file system. In this implementation you must call save to commit any changes to
         /// the user file. Otherwise changes will be lost when the program ends.
         /// 

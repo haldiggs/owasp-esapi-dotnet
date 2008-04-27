@@ -112,5 +112,15 @@ namespace Owasp.Esapi.Interfaces
         /// <returns> true, if the user is authorized for the service.
         /// </returns>
         bool IsAuthorizedForService(string serviceName);
+        
+        
+        
+        // FIXME: these should log! isAuthorizedForXXXshould not log (for use in UI)
+        void AssertAuthorizedForUrl(String url);
+        void AssertAuthorizedForFunction(String functionName);
+        void AssertAuthorizedForData(String key);
+        void AssertAuthorizedForFile(String filepath);
+        void AssertAuthorizedForService(String serviceName);
+        
     }
 }

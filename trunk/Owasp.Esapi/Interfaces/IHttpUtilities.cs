@@ -15,6 +15,7 @@
 /// <created>  2008 </created>
 
 using System;
+using System.Collections;
 using System.IO;
 using HttpInterfaces;
 
@@ -106,7 +107,7 @@ namespace Owasp.Esapi.Interfaces
         /// <param name="finalDir">The final directory to write to.
         /// </param>
         /// <throws>  ValidationException the validation exception </throws>
-        void GetSafeFileUploads(FileInfo tempDir, FileInfo finalDir);
+        IList GetSafeFileUploads(FileInfo tempDir, FileInfo finalDir);
 
         /// <summary> Kill all cookies received in the last request from the browser. Note that new cookies set by the application in
         /// this response may not be killed by this method.        
@@ -167,6 +168,49 @@ namespace Owasp.Esapi.Interfaces
         /// 
         /// </summary>
         void SetNoCacheHeaders();
+
+        /// <summary>
+        /// Stores a Map of data in an encrypted cookie.
+        /// </summary>
+        /// <param name="cleartext"></param> 
+        void EncryptStateInCookie(IDictionary cleartext);
+        
+        /// <summary>
+        /// Retrieves a map of data from the encrypted cookie. 
+        /// </summary>
+        /// <returns></returns>
+        IDictionary DecryptStateFromCookie();
+        
+        /// <summary>
+        /// Encrypts a hidden field value for use in HTML.
+        /// </summary>
+        /// <param name="value">The plaintext value</param>
+        /// <returns>The encrypted value</returns>
+        String EncryptHiddenField(String value);
+
+        /// <summary>
+        /// Decrypts an encrypted hidden field value and returns the cleartest. If the field does not decrypt properly,
+        /// an IntrusionException is thrown to indicate tampering.
+        /// </summary>
+        /// <param name="encrypted">The encrypted string</param>
+        /// <returns>The decrypted string</returns>
+        String DecryptHiddenField(String encrypted);
+
+        /// <summary>
+        /// Takes a querystring (i.e. everything after the ? in the URL) and 
+        /// returns an encrypted string containing the parameters.	
+        /// </summary>
+        /// <param name="query">The query string to be encrypted</param>
+        /// <returns>The encrypted query string</returns>
+        String EncryptQueryString(String query);
+
+        /// <summary>
+        /// Takes an encrypted querystring and returns a Map containing the original parameters.
+        /// </summary>
+        /// <param name="encrypted">The encrypted query string</param>
+        /// <returns>The decrypted query string</returns>
+        IDictionary DecryptQueryString(String encrypted);
+
 
     }
 }

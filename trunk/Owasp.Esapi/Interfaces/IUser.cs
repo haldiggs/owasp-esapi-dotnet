@@ -244,13 +244,10 @@ namespace Owasp.Esapi.Interfaces
         /// <summary> 
         /// Tests to see if the user's session has exceeded the absolute time out.        
         /// </summary>
-        /// <param name="session">
-        /// The users session.
-        /// </param>
         /// <returns> 
         /// true, if users session has exceeded the absolute time out.
         /// </returns>
-        bool IsSessionAbsoluteTimeout(IHttpSession session);
+        bool IsSessionAbsoluteTimeout();
 
         /// <summary> 
         /// Tests to see if the user's session has timed out from inactivity.        
@@ -261,7 +258,7 @@ namespace Owasp.Esapi.Interfaces
         /// <returns> 
         /// true, if the users session has timed out from inactivity.
         /// </returns>
-        bool IsSessionTimeout(IHttpSession session);
+        bool IsSessionTimeout();
 
         /// <summary> Locks the users account.</summary>
         void Lock();

@@ -157,6 +157,12 @@ namespace Owasp.Esapi.Interfaces
 
         }
 
+        FileInfo ResourceDirectory
+        {
+            get;
+            set;
+        }
+        
         /// <summary> 
         /// The intrusion detection quota for a particular events.
         /// </summary>
@@ -166,5 +172,6 @@ namespace Owasp.Esapi.Interfaces
         /// <returns> The threshold for the event.
         /// </returns>
         Threshold GetQuota(string eventName);        
+    
     }
 }

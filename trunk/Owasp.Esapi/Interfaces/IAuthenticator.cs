@@ -154,15 +154,13 @@ namespace Owasp.Esapi.Interfaces
         /// <summary> Validates the strength of the account name.
         /// 
         /// </summary>
-        /// <param name="context">The context for the verification.
-        /// </param>
         /// <param name="accountName">The account name to validate the strength of.
         /// 
         /// </param>
         /// <returns> true, if the account name has sufficient strength.
         /// 
         /// </returns>
-        void VerifyAccountNameStrength(string context, string accountName);
+        void VerifyAccountNameStrength(string accountName);
 
         /// <summary> Validates the strength of the password.
         /// 
