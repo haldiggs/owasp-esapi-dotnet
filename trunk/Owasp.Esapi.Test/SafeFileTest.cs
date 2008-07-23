@@ -119,13 +119,17 @@ namespace Owasp.Esapi.Test
         public void Test_AlternateDataStream()
         {
             Console.Out.WriteLine("Test_AlternateDataStream");
-            String goodFileName = Esapi.SecurityConfiguration().ResourceDirectory + "/ESAPI.properties:secret.txt";
-            FileInfo goodFile = new FileInfo(goodFileName);
-            if (goodFile.Exists)
+            try
             {
-                Console.Out.WriteLine("  Fail:" + goodFileName);
+                String goodFileName = Esapi.SecurityConfiguration().ResourceDirectory + "/ESAPI.properties:secret.txt";
+                FileInfo goodFile = new FileInfo(goodFileName);
                 Assert.Fail();
             }
+            catch
+            {
+                //Expected
+            }
+                        
         }
 	
 
@@ -234,7 +238,7 @@ namespace Owasp.Esapi.Test
                 Assert.IsTrue(goodFile2.SafeFileInfo.Exists);
 
                 // test URI constructor
-                String uri = "file:///" + Esapi.SecurityConfiguration().ResourceDirectory.ToString().Replace("\\\\", "/") + "/ESAPI.properties";
+                String uri = "file:///" + Esapi.SecurityConfiguration().ResourceDirectory.ToString().Replace("\\", "/") + "/ESAPI.properties";
                 Console.Out.WriteLine(uri);
                 SafeFile goodFile3 = new SafeFile(new Uri(uri));
                 Assert.IsTrue(goodFile3.SafeFileInfo.Exists);

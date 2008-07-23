@@ -96,7 +96,7 @@ namespace Owasp.Esapi.Test
         public void Test_GetFileUploads()
         {
             System.Console.Out.WriteLine("GetFileUploads");            
-            FileInfo home = ((SecurityConfiguration)Esapi.SecurityConfiguration()).ResourceDirectory;
+            DirectoryInfo home = new DirectoryInfo(((SecurityConfiguration)Esapi.SecurityConfiguration()).ResourceDirectory.ToString());
             byte[] bytes = GetBytesFromFile(new FileInfo(home.FullName + "\\" + "multipart.txt"));
             
             System.Console.Out.WriteLine("===========\n" + new ASCIIEncoding().GetString(bytes) + "\n===========");

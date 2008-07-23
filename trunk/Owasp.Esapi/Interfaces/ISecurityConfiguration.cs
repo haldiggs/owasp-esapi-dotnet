@@ -162,7 +162,12 @@ namespace Owasp.Esapi.Interfaces
             get;
             set;
         }
-        
+
+        bool RequireSecureChannel
+        {
+            get;
+        }
+
         /// <summary> 
         /// The intrusion detection quota for a particular events.
         /// </summary>

@@ -11,7 +11,7 @@
 namespace Owasp.Esapi.SampleWebApp {
     
     public partial class Login {
-        protected System.Web.UI.HtmlControls.HtmlForm form1;
+        protected System.Web.UI.HtmlControls.HtmlForm LoginForm;
         protected System.Web.UI.WebControls.Label UsernameLabel;
         protected System.Web.UI.WebControls.TextBox UsernameTextBox;
         protected System.Web.UI.WebControls.Label PasswordLabel;

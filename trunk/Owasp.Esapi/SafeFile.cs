@@ -41,7 +41,13 @@ namespace Owasp.Esapi
         private FileInfo safeFileInfo;
         public SafeFile(String path)
         {
-            safeFileInfo = new FileInfo(path);
+            try
+            {
+                safeFileInfo = new FileInfo(path);
+            } catch (ArgumentException ex)
+            {
+                throw new ValidationException("File path was invalid.", "File path caused ArgumentException", ex);
+            }
             DoDirCheck(safeFileInfo.DirectoryName);
             DoFileCheck(safeFileInfo.Name);
             
@@ -49,7 +55,7 @@ namespace Owasp.Esapi
                 
         public SafeFile(Uri uri)
         {
-            safeFileInfo = new FileInfo(uri.ToString());
+            safeFileInfo = new FileInfo(new Uri(uri.ToString()).LocalPath);
             DoDirCheck(safeFileInfo.DirectoryName);
             DoFileCheck(safeFileInfo.Name);
             

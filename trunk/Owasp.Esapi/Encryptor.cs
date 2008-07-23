@@ -188,7 +188,7 @@ namespace Owasp.Esapi
                 CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write);
                 // Convert the data to a byte array.
                 Encoding textConverter = Encoding.GetEncoding(encoding);
-                byte[] plaintextBytes = textConverter.GetBytes(plaintext);
+                byte[] plaintextBytes = textConverter.GetBytes(plaintext);                
                 // Encrypt the data by writing it to the CryptoStream object.
                 // Write all data to the crypto stream and flush it.
                 csEncrypt.Write(plaintextBytes, 0, plaintextBytes.Length);

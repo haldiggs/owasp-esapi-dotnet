@@ -15,11 +15,13 @@
 /// <created>  2008 </created>
 
 using System;
+using System.Security.Principal;
 using System.Web;
 using Owasp.Esapi.Interfaces;
 using Owasp.Esapi.Errors;
 using HttpInterfaces;
 using System.Collections;
+using System.Web.SessionState;
 
 namespace Owasp.Esapi.Filters
 {
@@ -76,7 +78,6 @@ namespace Owasp.Esapi.Filters
                 if (!Esapi.Validator().IsValidHttpRequest(WebContext.Cast(request)))
                 {
                     context.Items["message"] = "Validation error";
-                    context.Server.Transfer("login.aspx");
                 }
 
                 // check for CSRF attacks and set appropriate caching headers

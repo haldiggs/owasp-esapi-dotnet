@@ -613,6 +613,7 @@ namespace Owasp.Esapi.Test
             // test good parameters
             string[] args = new string[] { accountName, password, role };
             Authenticator.Main(args);
+            ((Authenticator)Esapi.Authenticator()).LoadUsersImmediately();
             User u2 = (User) Esapi.Authenticator().GetUser(accountName);
             Assert.IsNotNull(u2);
             Assert.IsTrue(u2.IsInRole(role));

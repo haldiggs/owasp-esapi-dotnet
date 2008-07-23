@@ -304,7 +304,7 @@ namespace Owasp.Esapi
                 }
 
                 // get the canonical path without the drive letter if present
-                String cpath = new FileInfo(canonical).Name.Replace("\\\\", "/");
+                String cpath = new DirectoryInfo(input).FullName.Replace("\\", "/");
                 String temp = cpath.ToLower();
                 if (temp.Length >= 2 && temp[0] >= 'a' && temp[0] <= 'z' && temp[1] == ':')
                 {
@@ -312,7 +312,7 @@ namespace Owasp.Esapi
                 }
 
                 // prepare the input without the drive letter if present
-                String escaped = canonical.Replace("\\\\", "/");
+                String escaped = canonical.Replace("\\", "/");
                 temp = escaped.ToLower();
                 if (temp.Length >= 2 && temp[0] >= 'a' && temp[0] <= 'z' && temp[1] == ':')
                 {

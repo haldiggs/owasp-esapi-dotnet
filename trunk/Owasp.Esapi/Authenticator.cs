@@ -154,7 +154,15 @@ namespace Owasp.Esapi
         {
             get
             {
-                return (Context == null ? null : Context.Session);
+                try
+                {
+                    return (Context == null ? null : Context.Session);
+                } catch (NullReferenceException ex)
+                {
+                    // Weird behavior with Duck Typing causes Context.Session to throw NRE 
+                    // even when Context is instantiated
+                    return null;
+                }
             }
 
         }
@@ -530,7 +538,7 @@ namespace Owasp.Esapi
             IHttpResponse response = Context.Response;
 
             // save the current request and response in the threadlocal variables            
-            if (!Esapi.HttpUtilities().SecureChannel)
+            if (Esapi.SecurityConfiguration().RequireSecureChannel && !Esapi.HttpUtilities().SecureChannel)
             {
                 throw new AuthenticationCredentialsException("Session exposed", "Authentication attempt made over non-SSL connection. Check web.xml and server configuration");
             }
@@ -620,7 +628,7 @@ namespace Owasp.Esapi
      
         /// <summary> Validates the strength of the account name.
         /// This implementation simply verifies that account names are at least 5 characters long. This helps to defeat a
-		/// brute force attack, however the real strength comes from the name length and complexity.
+        /// brute force attack, however the real strength comes from the name length and complexity.
         /// 
         /// </summary>
         /// <param name="newAccountName">The account name to validate the strength of.
@@ -687,7 +695,7 @@ namespace Owasp.Esapi
 
 
 
-        protected void LoadUsersImmediately()
+        public void LoadUsersImmediately()
         {
             // file was touched so reload it
             lock (this)

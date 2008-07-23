@@ -433,13 +433,19 @@ namespace Owasp.Esapi
         /// </param>
 		/// <seealso cref="Owasp.Esapi.Interfaces.IHttpUtilities.GetSafeFileUploads(FileInfo, FileInfo)">
 		/// </seealso>        
-        public IList GetSafeFileUploads(FileInfo tempDir, FileInfo finalDir)
+        public IList GetSafeFileUploads(DirectoryInfo tempDir, DirectoryInfo finalDir)
         {
             ArrayList newFiles = new ArrayList();
             try
             {
-                if (!tempDir.Exists) tempDir.Create();
-                if (!finalDir.Exists) finalDir.Create();
+                if (!tempDir.Exists)
+                {
+                    tempDir.Create();
+                }
+                if (!finalDir.Exists)
+                {
+                    finalDir.Create();
+                }
                 IHttpFileCollection fileCollection = ((Authenticator)Esapi.Authenticator()).CurrentRequest.Files;
                 if (fileCollection.AllKeys.Length == 0)
                 {
@@ -456,7 +462,12 @@ namespace Owasp.Esapi
                         String filename = fparts[fparts.Length - 1];
                         if (!Esapi.Validator().IsValidFileName("upload", filename, false))
                         {
-                            throw new ValidationUploadException("Upload only simple filenames with the following extensions " + Esapi.SecurityConfiguration().AllowedFileExtensions, "Invalid filename for upload");
+                            string extensions = "";
+                            foreach (string ext in Esapi.SecurityConfiguration().AllowedFileExtensions)
+                            {
+                                extensions += ext + "|";
+                            }
+                            throw new ValidationUploadException("Upload only simple filenames with the following extensions "  + extensions,"Invalid filename for upload");
                         }
                         logger.LogCritical(ILogger_Fields.SECURITY, "File upload requested: " + filename);
                         FileInfo f = new FileInfo(finalDir.ToString() +  "\\" + filename);

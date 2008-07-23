@@ -107,7 +107,7 @@ namespace Owasp.Esapi.Interfaces
         /// <param name="finalDir">The final directory to write to.
         /// </param>
         /// <throws>  ValidationException the validation exception </throws>
-        IList GetSafeFileUploads(FileInfo tempDir, FileInfo finalDir);
+        IList GetSafeFileUploads(DirectoryInfo tempDir, DirectoryInfo finalDir);
 
         /// <summary> Kill all cookies received in the last request from the browser. Note that new cookies set by the application in
         /// this response may not be killed by this method.        

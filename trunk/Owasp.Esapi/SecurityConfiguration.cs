@@ -342,6 +342,14 @@ namespace Owasp.Esapi
 
         }
 
+        public bool RequireSecureChannel
+        {
+            get
+            {
+                return Convert.ToBoolean(properties[REQUIRE_SECURE_CHANNEL]);
+            }
+        }
+        
         /// <summary>The properties. </summary>    
         private NameValueCollection properties = new NameValueCollection();
 
@@ -388,7 +396,8 @@ namespace Owasp.Esapi
 
         private const string LOG_LEVEL = "LogLevel";
 
-        
+        private const string REQUIRE_SECURE_CHANNEL = "RequireSecureChannel";
+
         // FIXME: Update to standard pattern
         protected const int MAX_REDIRECT_LOCATION = 1000;
     

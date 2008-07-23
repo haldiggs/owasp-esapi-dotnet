@@ -697,10 +697,11 @@ namespace Owasp.Esapi
         /// </seealso>
         public bool IsSessionAbsoluteTimeout()
         {
+            throw new NotImplementedException();
             // TODO: We can't really figure out when the session was created, from the ASP.NET API
-            DateTime deadline = new DateTime(DateTime.Now.Ticks + 1000 * 60 * 60 * 2);
-            DateTime now = DateTime.Now;
-            return (now > deadline);
+            //DateTime deadline = new DateTime(DateTime.Now.Ticks + 1000 * 60 * 60 * 2);
+            //DateTime now = DateTime.Now;
+            //return (now > deadline);
         }
 
         /// <summary> 

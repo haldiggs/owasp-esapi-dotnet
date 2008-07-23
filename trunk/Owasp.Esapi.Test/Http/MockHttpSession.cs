@@ -27,6 +27,7 @@ namespace Owasp.Esapi.Test.Http
 
         Hashtable contents = new Hashtable();
         String sessionId = Guid.NewGuid().ToString();
+        int timeout = 20;
 
         public void Abandon()
         {
@@ -134,11 +135,11 @@ namespace Owasp.Esapi.Test.Http
         {
             get
             {
-                throw new NotImplementedException();
+                return timeout;
             }
             set
             {
-                throw new NotImplementedException();
+                timeout = value;
             }
         }
 

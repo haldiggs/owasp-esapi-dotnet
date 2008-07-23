@@ -7,13 +7,14 @@ using System.Web.SessionState;
 namespace HttpInterfaces
 {
 	public interface IHttpSession : ICollection
-	{
-		object this[string key] { get; set; }
+	{       
+	    
+	    object this[string key] { get; set; }
 
 		string SessionID { get; }
 
 		int Timeout { get; set; }
-
+	    
 		bool IsNewSession { get; }
 
 		SessionStateMode Mode { get; }
