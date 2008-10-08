@@ -259,7 +259,7 @@ namespace Owasp.Esapi
         /// </returns>
         private string EntityEncode(string input, char[] baseChars, char[] immune)
         {
-            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            StringBuilder sb = new StringBuilder();
             EncodedStringReader reader = new EncodedStringReader(input);
             while (reader.HasNext())
             {

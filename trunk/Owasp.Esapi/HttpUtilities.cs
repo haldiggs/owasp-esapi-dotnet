@@ -656,5 +656,15 @@ namespace Owasp.Esapi
 		{
 			logger = Logger.GetLogger("Esapi", "HttpUtilities");
 		}
+
+        #region IHttpUtilities Members
+
+
+        public void checkCSRFToken()
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        #endregion
     }
 }

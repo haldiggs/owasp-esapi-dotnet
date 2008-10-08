@@ -212,5 +212,6 @@ namespace Owasp.Esapi.Interfaces
         IDictionary DecryptQueryString(String encrypted);
 
 
+        void checkCSRFToken();
     }
 }

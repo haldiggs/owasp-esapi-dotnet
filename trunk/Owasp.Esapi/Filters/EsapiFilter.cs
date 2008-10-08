@@ -44,45 +44,44 @@ namespace Owasp.Esapi.Filters
             HttpResponse response = (HttpResponse) context.Response;
             try
             {
-                // figure out who the current user is                
-                try
-                {
-                    ((Authenticator) Esapi.Authenticator()).Context = WebContext.Cast(HttpContext.Current);                    
-                    Esapi.Authenticator().Login();
-                }
-                catch (AuthenticationException ex)
-                {
-                    ((Authenticator)Esapi.Authenticator()).Logout();
-                    // FIXME: use safeforward!
-                    // FIXME: make configurable with config
-                    // int position = request.Url.ToString().LastIndexOf('/') + 1;
-                    // string page = request.Url.ToString().Substring(position, request.Url.ToString().Length - position);
-                    // if (!page.ToLower().Equals("default.aspx"))
-                    // {
-                    //    response.Redirect("default.aspx");   
-                    // }                    
-                    // return;
-                }
+                //// figure out who the current user is                
+                //try
+                //{
+                //    ((Authenticator) Esapi.Authenticator()).Context = WebContext.Cast(HttpContext.Current);                    
+                //    Esapi.Authenticator().Login();
+                //}
+                //catch (AuthenticationException ex)
+                //{
+                //    ((Authenticator)Esapi.Authenticator()).Logout();
+                //    // FIXME: use safeforward!
+                //    // FIXME: make configurable with config
+                //    // int position = request.Url.ToString().LastIndexOf('/') + 1;
+                //    // string page = request.Url.ToString().Substring(position, request.Url.ToString().Length - position);
+                //    // if (!page.ToLower().Equals("default.aspx"))
+                //    // {
+                //    //    response.Redirect("default.aspx");   
+                //    // }                    
+                //    // return;
+                //}
 
-                // log this request, obfuscating any parameter named password
-                logger.LogHttpRequest(new ArrayList (ignore));
+                //// log this request, obfuscating any parameter named password
+                ////logger.LogHttpRequest(new ArrayList (ignore));
 
-                // check access to this URL
-                if (!Esapi.AccessController().IsAuthorizedForUrl(request.RawUrl.ToString()))
-                {
-                    context.Items["message"] = "Unauthorized";
-                    context.Server.Transfer("login.aspx");                        
-                }
-
-                // verify if this request meets the baseline input requirements                
-                if (!Esapi.Validator().IsValidHttpRequest(WebContext.Cast(request)))
-                {
-                    context.Items["message"] = "Validation error";
-                }
+                //// check access to this URL
+                //if (!Esapi.AccessController().IsAuthorizedForUrl(request.RawUrl.ToString()))
+                //{
+                //    context.Items["message"] = "Unauthorized";
+                //    context.Server.Transfer("login.aspx");                        
+                //}
+                //// verify if this request meets the baseline input requirements                
+                //if (!Esapi.Validator().IsValidHttpRequest(WebContext.Cast(request)))
+                //{
+                //    context.Items["message"] = "Validation error";
+                //}
 
                 // check for CSRF attacks and set appropriate caching headers
                 IHttpUtilities utils = Esapi.HttpUtilities();
-                // utils.checkCSRFToken();
+                utils.checkCSRFToken();
                 utils.SetNoCacheHeaders();
                 utils.SafeSetContentType();
 
