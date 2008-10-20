@@ -1,12 +1,12 @@
-﻿/// <summary> OWASP Enterprise Security API .NET (Esapi.NET)
+﻿/// <summary> OWASP .NET Enterprise Security API (.NET ESAPI)
 /// 
 /// This file is part of the Open Web Application Security Project (OWASP)
-/// Enterprise Security API (Esapi) project. For details, please see
-/// http://www.owasp.org/esapi.
+/// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
+/// http://www.owasp.org/index.php/.NET_ESAPI.
 /// 
 /// Copyright (c) 2008 - The OWASP Foundation
 /// 
-/// The Esapi is published by OWASP under the LGPL. You should read and accept the
+/// The .NET ESAPI is published by OWASP under the LGPL. You should read and accept the
 /// LICENSE before you use, modify, and/or redistribute this software.
 /// 
 /// </summary>
@@ -15,16 +15,16 @@
 /// <created>  2008 </created>
 
 using System;
-using System.IO;
-using HttpInterfaces;
-using Owasp.Esapi.Interfaces;
-using System.Web;
-using System.Web.SessionState;
 using System.Collections;
-using Owasp.Esapi.Errors;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web.UI.HtmlControls;
+using System.Web;
+using HttpInterfaces;
+using Owasp.Esapi.Errors;
+using Owasp.Esapi.Interfaces;
+using Org.Owasp.CsrfGuard;
+using Org.Owasp.CsrfGuard.ResponseFilters;
 
 namespace Owasp.Esapi
 {
@@ -67,6 +67,10 @@ namespace Owasp.Esapi
 		/// <summary>The logger. </summary>
 		private static readonly Logger logger;
 		
+        
+        private CSRFGuard csrfGuard;
+        private Token token;
+        
 		/// <summary>The max bytes. </summary>		
 		internal int maxBytes;
 		
@@ -80,39 +84,6 @@ namespace Owasp.Esapi
 		
 		// FIXME: Enhance - consider adding AddQueryChecksum(String href) that would just verify that none of the parameters in the querystring have changed.  Could do the same for forms.
 		// FIXME: Enhance - also VerifyQueryChecksum()
-		
-		
-		
-		// FIXME: need to make this easier to add to forms.
-        /// <summary> Adds the current user's CSRF token (see User.GetCSRFToken()) to the URL for purposes of preventing CSRF attacks.
-        /// This method should be used on all URLs to be put into all links and forms the application generates.        
-        /// </summary>
-        /// <param name="href"> The URL to append the CSRF token to.
-        /// </param>
-        /// <returns> The updated href with the CSRF token parameter.
-        /// </returns>
-		/// <seealso cref="Owasp.Esapi.Interfaces.IHttpUtilities.AddCsrfToken(string)">
-		/// </seealso>
-		public string AddCsrfToken(string href)
-		{
-			User user = (User) Esapi.Authenticator().GetCurrentUser();
-			
-			// FIXME: AAA getCurrentUser should never return null
-			if (user.Anonymous || user == null)
-			{
-				return href;
-			}
-			
-			if ((href.IndexOf('?') != - 1) || (href.IndexOf('&') != - 1))
-			{
-				return href + "&" + user.CsrfToken;
-			}
-			else
-			{
-				return href + "?" + user.CsrfToken;
-			}
-		}
-		
 		
 		/// <summary> Adds a cookie to the HttpResponse that uses Secure and HttpOnly
 		/// flags.
@@ -193,7 +164,7 @@ namespace Owasp.Esapi
         /// </summary>
         /// <param name="name">The name of the header.
         /// </param>
-        /// <param name="val">The value of the cookie.
+        /// <param name="value">The value of the cookie.
         /// </param>
         /// <seealso cref="Owasp.Esapi.Interfaces.IHttpUtilities.SafeSetHeader(string, string)">
         /// </seealso>
@@ -296,27 +267,52 @@ namespace Owasp.Esapi
 			}
 			return session;
 		}
+
+
+
+        // FIXME: need to make this easier to add to forms.
+        /// <summary> Adds the current user's CSRF token (see User.GetCSRFToken()) to the URL for purposes of preventing CSRF attacks.
+        /// This method should be used on all URLs to be put into all links and forms the application generates.        
+        /// </summary>
+        /// <param name="href"> The URL to append the CSRF token to.
+        /// </param>
+        /// <returns> The updated href with the CSRF token parameter.
+        /// </returns>
+        /// <seealso cref="Owasp.Esapi.Interfaces.IHttpUtilities.AddCsrfToken(string)">
+        /// </seealso>
+        public string AddCsrfToken(string href)
+        {
+            IHttpContext context = ((Authenticator)Esapi.Authenticator()).Context;            
+            csrfGuard = new CSRFGuard(context.ApplicationInstance);
+            token = new Token(csrfGuard.CsrfTokenName, csrfGuard.CsrfTokenValue);
+            return null;
+        }
 		
-		
-		
-		// FIXME: ENHANCE - add configuration for entry pages that don't require a token 
         /// <summary> Checks the CSRF token in the URL (see User.GetCSRFToken()) against the user's CSRF token and throws
         /// an exception if they don't match.
         /// </summary>
         /// <seealso cref="Owasp.Esapi.Interfaces.IHttpUtilities.VerifyCsrfToken()">
         /// </seealso>
 		public void  VerifyCsrfToken()
-		{
-			IHttpRequest request = ((Authenticator) Esapi.Authenticator()).CurrentRequest;
-			User user = (User) Esapi.Authenticator().GetCurrentUser();
-			// if this is the first request after logging in, let them pass
-			if (user.IsFirstRequest())
-				return ;
-						
-			if (request[user.CsrfToken] == null)
-			{
-                throw new IntrusionException("Authentication failed", "Possibly forged HTTP request without proper CSRF token detected");
-			}
+		{           
+            IHttpResponse response = ((Authenticator) Esapi.Authenticator()).CurrentResponse;
+            try
+            {
+                if (response.ContentType.StartsWith("text/html"))
+                {
+                    // TODO:  create ConfigurationException to deal with bad configs
+                    Type type = Type.GetType(App.Configuration.ResponseFilter, true);
+                    ResponseFilterBase respFilter =
+                        Activator.CreateInstance(type, new object[3] { response.Filter, token.Name, token.Value })
+                        as ResponseFilterBase;                    
+                    response.Filter = respFilter;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new IntrusionException("Authentication failed", "Possibly forged HTTP request without proper CSRF token detected", e);                                
+            }
+            
 		}
 		
         /// <summary>
@@ -656,15 +652,5 @@ namespace Owasp.Esapi
 		{
 			logger = Logger.GetLogger("Esapi", "HttpUtilities");
 		}
-
-        #region IHttpUtilities Members
-
-
-        public void checkCSRFToken()
-        {
-            throw new Exception("The method or operation is not implemented.");
-        }
-
-        #endregion
     }
 }

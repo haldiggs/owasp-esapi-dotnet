@@ -1,16 +1,16 @@
-/// <summary> OWASP Enterprise Security API .NET (ESAPI.NET)
+/// <summary> OWASP .NET Enterprise Security API (.NET ESAPI)
 /// 
 /// This file is part of the Open Web Application Security Project (OWASP)
-/// Enterprise Security API (ESAPI) project. For details, please see
-/// http://www.owasp.org/esapi.
+/// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
+/// http://www.owasp.org/index.php/.NET_ESAPI.
 /// 
 /// Copyright (c) 2008 - The OWASP Foundation
 /// 
-/// The ESAPI is published by OWASP under the LGPL. You should read and accept the
+/// The .NET ESAPI is published by OWASP under the LGPL. You should read and accept the
 /// LICENSE before you use, modify, and/or redistribute this software.
 /// 
 /// </summary>
-/// <author>  Alex Smolen [a href="http://www.foundstone.com"]Foundstone[/a]
+/// <author>  Alex Smolen <a href="http://www.foundstone.com">Foundstone</a>
 /// </author>
 /// <created>  2008 </created>
 
@@ -27,7 +27,7 @@ namespace Owasp.Esapi
     /// property. The difference from the Java implemenation has to do with the fact the FileInfo is
     /// sealed.
     /// </summary>
-    /// <author>  Alex Smolen [a href="http://www.foundstone.com"]Foundstone[/a]
+    /// <author>  Alex Smolen <a href="http://www.foundstone.com">Foundstone</a>
     /// </author>
     /// <since> April 23, 2008
     /// </since>
@@ -39,6 +39,10 @@ namespace Owasp.Esapi
         readonly String percents = "(%)([0-9a-fA-F])([0-9a-fA-F])";
         
         private FileInfo safeFileInfo;
+        /// <summary>
+        /// SafeFile constructor takes path as parameter
+        /// </summary>
+        /// <param name="path">Path to file</param>
         public SafeFile(String path)
         {
             try
@@ -49,10 +53,13 @@ namespace Owasp.Esapi
                 throw new ValidationException("File path was invalid.", "File path caused ArgumentException", ex);
             }
             DoDirCheck(safeFileInfo.DirectoryName);
-            DoFileCheck(safeFileInfo.Name);
-            
+            DoFileCheck(safeFileInfo.Name);            
         }
                 
+        /// <summary>
+        /// Constructor for SafeFile which takes URI as parameter
+        /// </summary>
+        /// <param name="uri">URI to file</param>
         public SafeFile(Uri uri)
         {
             safeFileInfo = new FileInfo(new Uri(uri.ToString()).LocalPath);
@@ -126,7 +133,7 @@ namespace Owasp.Esapi
             return -1;
         }
 
-        public string GetMatches(string text, string regex)
+        private string GetMatches(string text, string regex)
         {
             MatchCollection matches = Regex.Matches(text, regex);
             if (matches.Count != 0)
@@ -144,7 +151,9 @@ namespace Owasp.Esapi
             return null;
         }
     
-
+        /// <summary>
+        /// Returns the FileInfo for the SafeFile
+        /// </summary>
         public FileInfo SafeFileInfo
         {
             get

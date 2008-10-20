@@ -1,12 +1,12 @@
-﻿/// <summary> OWASP Enterprise Security API .NET (ESAPI.NET)
+﻿/// <summary> OWASP .NET Enterprise Security API (.NET ESAPI)
 /// 
 /// This file is part of the Open Web Application Security Project (OWASP)
-/// Enterprise Security API (ESAPI) project. For details, please see
-/// http://www.owasp.org/esapi.
+/// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
+/// http://www.owasp.org/index.php/.NET_ESAPI.
 /// 
 /// Copyright (c) 2008 - The OWASP Foundation
 /// 
-/// The ESAPI is published by OWASP under the LGPL. You should read and accept the
+/// The .NET ESAPI is published by OWASP under the LGPL. You should read and accept the
 /// LICENSE before you use, modify, and/or redistribute this software.
 /// 
 /// </summary>
@@ -28,13 +28,10 @@ namespace Owasp.Esapi
 
     /// <summary> Reference implementation of the IEncoder interface. This implementation takes
     /// a whitelist approach, encoding everything not specifically identified in a
-    /// list of "immune" characters. Several methods follow the approach in the [a
-    /// href="http://www.microsoft.com/downloads/details.aspx?familyid=efb9c819-53ff-4f82-bfaf-e11625130c25&displaylang=en"]
-    /// Microsoft AntiXSS Library[/a].
-    /// 
+    /// list of "immune" characters.
     /// </summary>
-    /// <author>  [a href="mailto:alex.smolen@foundstone.com?subject=ESAPI.NET question">Alex Smolen[/a] at[a
-    /// href="http://www.foundstone.com"]Foundstone[/a]
+    /// <author>  <a href="mailto:alex.smolen@foundstone.com?subject=.NET+ESAPI question">Alex Smolen</a> at<a
+    /// href="http://www.foundstone.com">Foundstone</a>
     /// </author>
     /// <since> February 20, 2008
     /// </since>
@@ -143,21 +140,21 @@ namespace Owasp.Esapi
         /// double-encoding is difficult for parsers, and combining several encoding
         /// schemes in double-encoding makes it even harder. Consider decoding
         /// 
-        /// [PRE]
+        /// <pre>
         /// &amp;lt;
-        /// [/PRE]
+        /// </pre>
         /// 
         /// or
         /// 
-        /// [PRE]
+        /// <pre>
         /// %26lt;
-        /// [/PRE]
+        /// </pre>
         /// 
         /// or
         /// 
-        /// [PRE]
+        /// <pre>
         /// &amp;lt;
-        /// [/PRE].
+        /// </pre>.
         /// 
         /// This implementation disallows ALL double-encoded characters and throws an
         /// IntrusionException when they are detected. Also, named entities that are
@@ -492,12 +489,12 @@ namespace Owasp.Esapi
         /// <summary> This implementation encodes almost everything and may overencode. The
         /// difficulty is that XPath has no built in mechanism for escaping
         /// characters. It is possible to use XQuery in a parameterized way to
-        /// prevent injection. For more information, refer to [a
-        /// href="http://www.ibm.com/developerworks/xml/library/x-xpathinjection.html"]this
-        /// article[/a] which specifies the following list of characters as the most
-        /// dangerous: ^&amp;&quot;*'[](). [a
+        /// prevent injection. For more information, refer to <a
+        /// href="http://www.ibm.com/developerworks/xml/library/x-xpathinjection.html">this
+        /// article</a> which specifies the following list of characters as the most
+        /// dangerous: ^&amp;&quot;*'[](). <a
         /// href="http://www.packetstormsecurity.org/papers/bypass/Blind_XPath_Injection_20040518.pdf">This
-        /// paper[/a] suggests disallowing ' and " in queries.
+        /// paper</a> suggests disallowing ' and " in queries.
         /// 
         /// </summary>
         /// <param name="input"> The value to encode.
@@ -513,9 +510,9 @@ namespace Owasp.Esapi
 
         /// <summary> Encode data for use in an XML element. This method first canonicalizes
         /// and detects any double-encoding. If this check passes, then the data is
-        /// encoded using a whitelist. The implementation should follow the [a
-        /// href="http://www.w3schools.com/xml/xml_encoding.asp"]XML Encoding
-        /// Standard[/a] from the W3C.
+        /// encoded using a whitelist. The implementation should follow the <a
+        /// href="http://www.w3schools.com/xml/xml_encoding.asp">XML Encoding
+        /// Standard</a> from the W3C.
         /// [p]
         /// The use of a real XML parser is strongly encouraged. However, in the
         /// hopefully rare case that you need to make sure that data is safe for
@@ -535,8 +532,8 @@ namespace Owasp.Esapi
         }
 
         /// <summary> Encode data for use in an XML attribute. The implementation should follow
-        /// the [a href="http://www.w3schools.com/xml/xml_encoding.asp"]XML Encoding
-        /// Standard[/a] from the W3C. This method first canonicalizes and detects
+        /// the <a href="http://www.w3schools.com/xml/xml_encoding.asp">XML Encoding
+        /// Standard</a> from the W3C. This method first canonicalizes and detects
         /// any double-encoding. If this check passes, then the data is encoded using
         /// a whitelist.
         /// [p]
@@ -843,13 +840,13 @@ namespace Owasp.Esapi
             /// <summary>
             /// Return a character or null if no good character can be parsed. Badly
             /// formed characters that simply can't be parsed are dropped, such as
-            /// &ridi; for which there is no reasonable translation. Characters that
+            /// &amp;ridi; for which there is no reasonable translation. Characters that
             /// aren't terminated by a semicolon are also dropped. Note that this is
             /// legal html
             /// 
-            /// [PRE]
+            /// <pre>
             /// &lt;body onload=&quot;&amp;#x61ler&amp;#116('xss body')&quot;&gt;
-            /// [/PRE]
+            /// </pre>
             /// </summary>
             /// <param name="s">The string to parse from.</param>
             /// <param name="startIndex">The index to begin parsing at.</param>

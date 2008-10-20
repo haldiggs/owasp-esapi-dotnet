@@ -1,12 +1,12 @@
-﻿///// <summary> OWASP Enterprise Security API .NET (ESAPI.NET)
+﻿/// <summary> OWASP .NET Enterprise Security API (.NET ESAPI)
 /// 
 /// This file is part of the Open Web Application Security Project (OWASP)
-/// Enterprise Security API (ESAPI) project. For details, please see
-/// http://www.owasp.org/esapi.
+/// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
+/// http://www.owasp.org/index.php/.NET_ESAPI.
 /// 
 /// Copyright (c) 2008 - The OWASP Foundation
 /// 
-/// The ESAPI is published by OWASP under the LGPL. You should read and accept the
+/// The .NET ESAPI is published by OWASP under the LGPL. You should read and accept the
 /// LICENSE before you use, modify, and/or redistribute this software.
 /// 
 /// </summary>
@@ -30,19 +30,16 @@ namespace Owasp.Esapi
     /// reference implementation captures information about users in a simple text file format that contains user information
     /// separated by the pipe "|" character. Here's an example of a single line from the users.txt file:
     /// 
-    /// <PRE>
-    /// 
+    /// <pre>
     /// account name | hashed password | roles | lockout | status | remember token | old password hashes | last
     /// hostname | last change | last login | last failed | expiration | failed
     /// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     /// mitch | 44k/NAzQUlrCq9musTGGkcMNmdzEGJ8w8qZTLzpxLuQ= | admin,user | unlocked | enabled | token |
     /// u10dW4vTo3ZkoM5xP+blayWCz7KdPKyKUojOn9GJobg= | 192.168.1.255 | 1187201000926 | 1187200991568 | 1187200605330 |
     /// 2187200605330 | 1
-    /// 
-    /// </PRE>
-    /// 
+    /// </pre>
     /// </summary>
-    /// <author>  <a href="mailto:alex.smolen@foundstone.com?subject=ESAPI.NET question">Alex Smolen</a> at <a
+    /// <author>  <a href="mailto:alex.smolen@foundstone.com?subject=.NET+ESAPI question">Alex Smolen</a> at <a
     /// href="http://www.foundstone.com">Foundstone</a>
     /// </author>
     /// <since> February 20, 2008
@@ -183,11 +180,11 @@ namespace Owasp.Esapi
         /// with the username and password strength requirements.
         /// [/P]
         /// Example: Use this to add the alice account with the admin role to the users file: 
-        /// [PRE]
+        /// <pre>
         /// TODO - Fix
         /// Update Esapi.config file config section esapi/authentication
         /// 
-        /// [/PRE]
+        /// </pre>
         /// 
         /// </summary>
         /// <param name="args">The arguments for the main method (standard).

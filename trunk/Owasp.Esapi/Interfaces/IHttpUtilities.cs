@@ -1,16 +1,16 @@
-﻿/// <summary> OWASP Enterprise Security API .NET (ESAPI.NET)
+﻿/// <summary> OWASP .NET Enterprise Security API (.NET ESAPI)
 /// 
 /// This file is part of the Open Web Application Security Project (OWASP)
-/// Enterprise Security API (ESAPI) project. For details, please see
-/// http://www.owasp.org/esapi.
+/// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
+/// http://www.owasp.org/index.php/.NET_ESAPI.
 /// 
 /// Copyright (c) 2008 - The OWASP Foundation
 /// 
-/// The ESAPI is published by OWASP under the LGPL. You should read and accept the
+/// The .NET ESAPI is published by OWASP under the LGPL. You should read and accept the
 /// LICENSE before you use, modify, and/or redistribute this software.
 /// 
 /// </summary>
-/// <author>  Alex Smolen <a href="http://www.foundstone.com">Foundstone[/a]
+/// <author>  Alex Smolen <a href="http://www.foundstone.com">Foundstone</a>
 /// </author>
 /// <created>  2008 </created>
 
@@ -25,7 +25,7 @@ namespace Owasp.Esapi.Interfaces
     /// <summary> The IHTTPUtilities interface is a collection of methods that provide additional security related to HTTP requests,
     /// responses, sessions, cookies, headers, and logging.
     /// [P]
-    /// [img src="doc-files/HTTPUtilities.jpg" height="600"]
+    /// [img src="doc-files/HTTPUtilities.jpg" height="600">
     /// [P]
     /// 
     /// </summary>
@@ -46,15 +46,6 @@ namespace Owasp.Esapi.Interfaces
             get;
 
         }
-
-        /// <summary> Adds the current user's CSRF token (see User.GetCSRFToken()) to the URL for purposes of preventing CSRF attacks.
-        /// This method should be used on all URLs to be put into all links and forms the application generates.        
-        /// </summary>
-        /// <param name="href"> The URL to append the CSRF token to.
-        /// </param>
-        /// <returns> The updated href with the CSRF token parameter.
-        /// </returns>
-        string AddCsrfToken(string href);
 
 
         /// <summary> Adds a cookie to the specified HttpServletResponse and adds the Http-Only flag.
@@ -92,7 +83,18 @@ namespace Owasp.Esapi.Interfaces
         /// </returns>        
         IHttpSession ChangeSessionIdentifier();
 
+
+        /// <summary> Adds the current user's CSRF token (see User.GetCSRFToken()) to the URL for purposes of preventing CSRF attacks.
+        /// This method should be used on all URLs to be put into all links and forms the application generates.        
+        /// </summary>
+        /// <param name="href"> The URL to append the CSRF token to.
+        /// </param>
+        /// <returns> The updated href with the CSRF token parameter.
+        /// </returns>
+        string AddCsrfToken(string href);
+        
         /// <summary> Checks the CSRF token in the URL (see User.GetCSRFToken()) against the user's CSRF token and throws
+        /// an exception if they don't match.
         /// an exception if they don't match.
         /// </summary>
         void VerifyCsrfToken();
@@ -144,27 +146,27 @@ namespace Owasp.Esapi.Interfaces
         /// intermediate proxies or caches. Implementations should set headers for the expected browsers. The safest approach
         /// is to set all relevant headers to their most restrictive setting. These include:
         /// 
-        /// [PRE]
+        /// <pre>
         /// 
         /// Cache-Control: no-store[BR]
         /// Cache-Control: no-cache[BR]
         /// Cache-Control: must-revalidate[BR]
         /// Expires: -1[BR]
         /// 
-        /// [/PRE]
+        /// </pre>
         /// 
         /// Note that the header "pragma: no-cache" is only useful in HTTP requests, not HTTP responses. So even though there
         /// are many articles recommending the use of this header, it is not helpful for preventing browser caching. For more
         /// information, please refer to the relevant standards:
-        /// [UL]
-        /// [LI][a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html"]HTTP/1.1 Cache-Control "no-cache"[/a]
-        /// [LI][a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9.1"]HTTP/1.1 Cache-Control "no-store"[/a]
-        /// [LI][a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9.2"]HTTP/1.0 Pragma "no-cache"[/a]
-        /// [LI][a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.32"]HTTP/1.0 Expires[/a]
-        /// [LI][a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.21"]IE6 Caching Issues[/a]
-        /// [LI][a href="http://support.microsoft.com/kb/937479"]Firefox browser.cache.disk_cache_ssl[/a]
-        /// [LI][a href="http://www.mozilla.org/quality/networking/docs/netprefs.html"]Mozilla[/a]
-        /// [/UL]
+        /// <ul>
+        /// <li><a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html">HTTP/1.1 Cache-Control "no-cache"</a></li>
+        /// <li><a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9.1">HTTP/1.1 Cache-Control "no-store"</a></li>
+        /// <li><a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9.2">HTTP/1.0 Pragma "no-cache"</a></li>
+        /// <li><a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.32">HTTP/1.0 Expires</a></li>
+        /// <li><a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.21">IE6 Caching Issues</a></li>
+        /// <li><a href="http://support.microsoft.com/kb/937479">Firefox browser.cache.disk_cache_ssl</a></li>
+        /// <li><a href="http://www.mozilla.org/quality/networking/docs/netprefs.html">Mozilla</a></li>
+        /// </ul>
         /// 
         /// </summary>
         void SetNoCacheHeaders();
@@ -211,7 +213,5 @@ namespace Owasp.Esapi.Interfaces
         /// <returns>The decrypted query string</returns>
         IDictionary DecryptQueryString(String encrypted);
 
-
-        void checkCSRFToken();
     }
 }

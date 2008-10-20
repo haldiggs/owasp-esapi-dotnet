@@ -1,12 +1,12 @@
-﻿/// <summary> OWASP Enterprise Security API .NET (Esapi.NET)
+﻿/// <summary> OWASP .NET Enterprise Security API (.NET ESAPI)
 /// 
 /// This file is part of the Open Web Application Security Project (OWASP)
-/// Enterprise Security API (ESAPI) project. For details, please see
-/// http://www.owasp.org/Esapi.
+/// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
+/// http://www.owasp.org/index.php/.NET_ESAPI.
 /// 
 /// Copyright (c) 2008 - The OWASP Foundation
 /// 
-/// The ESAPI is published by OWASP under the LGPL. You should read and accept the
+/// The .NET ESAPI is published by OWASP under the LGPL. You should read and accept the
 /// LICENSE before you use, modify, and/or redistribute this software.
 /// 
 /// </summary>
@@ -31,7 +31,7 @@ namespace Owasp.Esapi
     /// The first step is to create a namespace for the resources being accessed. For
     /// files and URL's, this is easy as they already have a namespace. Be extremely
     /// careful about canonicalizing when relying on information from the user in an
-    /// access ctnrol decision.
+    /// access control decision.
     /// 
     /// For functions, data, and services, you will have to come up with your own
     /// namespace for the resources being accessed. You might simply define a flat
@@ -40,16 +40,14 @@ namespace Owasp.Esapi
     /// namespace with a hierarchical structure, such as:
     /// 
     /// /functions
-    /// [ul]
-    /// [li]purchasing[/li]
-    /// [li]shipping[/li]
-    /// [li]inventory[/li]
-    /// [/ul]
+    /// purchasing
+    /// shipping
+    /// inventory
+    /// 
     /// /admin
-    /// [ul]
-    /// [li]createUser[/li]
-    /// [li]deleteUser[/li]
-    /// [/ul]
+    /// createUser
+    /// deleteUser
+    /// 
     /// Once you've defined your namespace, you have to work out the rules that
     /// govern access to the different parts of the namespace. This implementation
     /// allows you to attach a simple access control list (ACL) to any part of the
@@ -59,27 +57,27 @@ namespace Owasp.Esapi
     /// 
     /// There is a single configuration file supporting each of the five methods in
     /// the IAccessController interface. These files are located in the ESAPI
-    /// resources directory as specified when the JVM was started. The use of a
+    /// resources directory as specified when the CLR was started. The use of a
     /// default deny rule is STRONGLY recommended. The file format is as follows:
     /// 
-    /// [pre]
+    /// <pre>
     /// path          | role,role   | allow/deny | comment
     /// ------------------------------------------------------------------------------------
     /// /banking/*    | user,admin  | allow      | authenticated users can access /banking
     /// /admin        | admin       | allow      | only admin role can access /admin
     /// /             | any         | deny       | default deny rule
-    /// [/pre]
+    /// </pre>
     /// 
     /// To find the matching rules, the four mapping rules are used in the following order:
-    /// [ul]
-    /// [li]exact match, e.g. /access/login[/li]
-    /// [li]longest path prefix match, beginning / and ending /*, e.g. /access/* or /*[/li]
-    /// [li]extension match, beginning *., e.g. *.css[/li]
-    /// [li]default rule, specified by the single character pattern /[/li]
-    /// [/ul]
+    /// <ul>
+    /// <li>exact match, e.g. /access/login</li>
+    /// <li>longest path prefix match, beginning / and ending /*, e.g. /access/* or /*</li>
+    /// <li>extension match, beginning *., e.g. *.css</li>S
+    /// <li>default rule, specified by the single character pattern /</li>
+    /// </ul>
     /// 
     /// </summary>
-    /// <author>  <a href="mailto:alex.smolen@foundstone.com?subject=Esapi.NET question">Alex Smolen</a> at <a
+    /// <author>  <a href="mailto:alex.smolen@foundstone.com?subject=.NET+ESAPI question">Alex Smolen</a> at <a
     /// href="http://www.foundstone.com">Foundstone</a>
     /// </author>
     /// <since> February 20, 2008

@@ -1,12 +1,12 @@
-﻿/// <summary> OWASP Enterprise Security API .NET (ESAPI.NET)
+﻿/// <summary> OWASP .NET Enterprise Security API (.NET ESAPI)
 /// 
 /// This file is part of the Open Web Application Security Project (OWASP)
-/// Enterprise Security API (ESAPI) project. For details, please see
-/// http://www.owasp.org/esapi.
+/// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
+/// http://www.owasp.org/index.php/.NET_ESAPI.
 /// 
 /// Copyright (c) 2008 - The OWASP Foundation
 /// 
-/// The ESAPI is published by OWASP under the LGPL. You should read and accept the
+/// The .NET ESAPI is published by OWASP under the LGPL. You should read and accept the
 /// LICENSE before you use, modify, and/or redistribute this software.
 /// 
 /// </summary>
@@ -77,9 +77,9 @@ namespace Owasp.Esapi.Interfaces
         /// itself be encoded according to a "Content-Transfer-Encoding" header. See
         /// the HttpUtilties.GetSafeFileUploads() method.
         /// 
-        /// For more information on form encoding, please refer to the [a
+        /// For more information on form encoding, please refer to the <a
         /// href="http://www.w3.org/TR/html4/interact/forms.html#h-17.13.4">W3C
-        /// specifications[/a].
+        /// specifications</a>.
         /// 
         /// </summary>
         /// <param name="input">Unvalidated input from an HTTP request.
@@ -186,9 +186,9 @@ namespace Owasp.Esapi.Interfaces
 
         /// <summary> Encode data for use in an XML element. This method first canonicalizes
         /// and detects any double-encoding. If this check passes, then the data is
-        /// encoded using a whitelist. The implementation should follow the [a
-        /// href="http://www.w3schools.com/xml/xml_encoding.asp"]XML Encoding
-        /// Standard[/a] from the W3C.
+        /// encoded using a whitelist. The implementation should follow the <a
+        /// href="http://www.w3schools.com/xml/xml_encoding.asp">XML Encoding
+        /// Standard</a> from the W3C.
         /// [p]
         /// The use of a real XML parser is strongly encouraged. However, in the
         /// hopefully rare case that you need to make sure that data is safe for
@@ -203,8 +203,8 @@ namespace Owasp.Esapi.Interfaces
         string EncodeForXml(string input);
 
         /// <summary> Encode data for use in an XML attribute. The implementation should follow
-        /// the [a href="http://www.w3schools.com/xml/xml_encoding.asp"]XML Encoding
-        /// Standard[/a] from the W3C. This method first canonicalizes and detects
+        /// the <a href="http://www.w3schools.com/xml/xml_encoding.asp">XML Encoding
+        /// Standard</a> from the W3C. This method first canonicalizes and detects
         /// any double-encoding. If this check passes, then the data is encoded using
         /// a whitelist.
         /// [p]

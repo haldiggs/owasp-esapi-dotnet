@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <doc>
-    <assembly>
+    [assembly>
         <name>log4net</name>
     </assembly>
     <members>
@@ -8214,7 +8214,7 @@
             
             ...
             
-            DOMConfigurator.Configure(new FileInfo(ConfigurationSettings.AppSettings["log4net-config-file"]));
+            DOMConfigurator.Configure(new FileInfo(ConfigurationSettings.AppSettings["log4net-config-file">));
             </code>
             <para>
             In the <c>.config</c> file, the path to the log4net can be specified like this :
@@ -8279,7 +8279,7 @@
             
             ...
             
-            DOMConfigurator.Configure(new FileInfo(ConfigurationSettings.AppSettings["log4net-config-file"]));
+            DOMConfigurator.Configure(new FileInfo(ConfigurationSettings.AppSettings["log4net-config-file">));
             </code>
             <para>
             In the <c>.config</c> file, the path to the log4net can be specified like this :
@@ -8897,7 +8897,7 @@
             
             ...
             
-            XmlConfigurator.Configure(new FileInfo(ConfigurationSettings.AppSettings["log4net-config-file"]));
+            XmlConfigurator.Configure(new FileInfo(ConfigurationSettings.AppSettings["log4net-config-file">));
             </code>
             <para>
             In the <c>.config</c> file, the path to the log4net can be specified like this :
@@ -8983,7 +8983,7 @@
             
             ...
             
-            XmlConfigurator.Configure(new FileInfo(ConfigurationSettings.AppSettings["log4net-config-file"]));
+            XmlConfigurator.Configure(new FileInfo(ConfigurationSettings.AppSettings["log4net-config-file">));
             </code>
             <para>
             In the <c>.config</c> file, the path to the log4net can be specified like this :
@@ -10120,7 +10120,7 @@
             </para>
             <para>
             When logging at level INFO the actual level used is not <see cref="F:log4net.Core.Level.Info"/> but
-            the value of <c>LoggerRepository.LevelMap["INFO"]</c>. The default value for this is
+            the value of <c>LoggerRepository.LevelMap["INFO"></c>. The default value for this is
             <see cref="F:log4net.Core.Level.Info"/>, but this can be changed by reconfiguring the level map.
             </para>
             <para>
@@ -26965,7 +26965,7 @@
             You do not need to use this method if you always guarantee to call
             the <see cref="M:System.IDisposable.Dispose"/> method of the <see cref="T:System.IDisposable"/>
             returned from <see cref="M:log4net.Util.ThreadContextStack.Push(System.String)"/> even in exceptional circumstances,
-            for example by using the <c>using(log4net.ThreadContext.Stacks["NDC"].Push("Stack_Message"))</c> 
+            for example by using the <c>using(log4net.ThreadContext.Stacks["NDC">.Push("Stack_Message"))</c> 
             syntax.
             </para>
             </remarks>
@@ -27001,7 +27001,7 @@
             </remarks>
             <example>Simple example of using the <c>Push</c> method with the <c>using</c> keyword.
             <code lang="C#">
-            using(log4net.ThreadContext.Stacks["NDC"].Push("Stack_Message"))
+            using(log4net.ThreadContext.Stacks["NDC">.Push("Stack_Message"))
             {
             	log.Warn("This should have an ThreadContext Stack message");
             }
@@ -27486,7 +27486,7 @@
             </remarks>
             <example>
             <code lang="C#">
-            GlobalContext.Properties["hostname"] = Environment.MachineName;
+            GlobalContext.Properties["hostname"> = Environment.MachineName;
             </code>
             </example>
             <threadsafety static="true" instance="true"/>
@@ -27547,13 +27547,13 @@
             </remarks>
             <example>Example of using the thread context properties to store a username.
             <code lang="C#">
-            LogicalThreadContext.Properties["user"] = userName;
+            LogicalThreadContext.Properties["user"> = userName;
             log.Info("This log message has a LogicalThreadContext Property called 'user'");
             </code>
             </example>
             <example>Example of how to push a message into the context stack
             <code lang="C#">
-            using(LogicalThreadContext.Stacks["LDC"].Push("my context message"))
+            using(LogicalThreadContext.Stacks["LDC">.Push("my context message"))
             {
             	log.Info("This log message has a LogicalThreadContext Stack message that includes 'my context message'");
             
@@ -28346,7 +28346,7 @@
             <note>
             <para>
             The NDC is deprecated and has been replaced by the <see cref="P:log4net.ThreadContext.Stacks"/>.
-            The current NDC implementation forwards to the <c>ThreadContext.Stacks["NDC"]</c>.
+            The current NDC implementation forwards to the <c>ThreadContext.Stacks["NDC"></c>.
             </para>
             </note>
             <para>
@@ -28395,7 +28395,7 @@
             <note>
             <para>
             The NDC is deprecated and has been replaced by the <see cref="P:log4net.ThreadContext.Stacks"/>.
-            The current NDC implementation forwards to the <c>ThreadContext.Stacks["NDC"]</c>.
+            The current NDC implementation forwards to the <c>ThreadContext.Stacks["NDC"></c>.
             </para>
             </note>
             <para>
@@ -28412,7 +28412,7 @@
             <note>
             <para>
             The NDC is deprecated and has been replaced by the <see cref="P:log4net.ThreadContext.Stacks"/>.
-            The current NDC implementation forwards to the <c>ThreadContext.Stacks["NDC"]</c>.
+            The current NDC implementation forwards to the <c>ThreadContext.Stacks["NDC"></c>.
             </para>
             </note>
             <para>
@@ -28431,7 +28431,7 @@
             <note>
             <para>
             The NDC is deprecated and has been replaced by the <see cref="P:log4net.ThreadContext.Stacks"/>.
-            The current NDC implementation forwards to the <c>ThreadContext.Stacks["NDC"]</c>.
+            The current NDC implementation forwards to the <c>ThreadContext.Stacks["NDC"></c>.
             </para>
             </note>
             <para>
@@ -28457,7 +28457,7 @@
             <note>
             <para>
             The NDC is deprecated and has been replaced by the <see cref="P:log4net.ThreadContext.Stacks"/>.
-            The current NDC implementation forwards to the <c>ThreadContext.Stacks["NDC"]</c>.
+            The current NDC implementation forwards to the <c>ThreadContext.Stacks["NDC"></c>.
             </para>
             </note>
             <para>
@@ -28480,7 +28480,7 @@
             <note>
             <para>
             The NDC is deprecated and has been replaced by the <see cref="P:log4net.ThreadContext.Stacks"/>.
-            The current NDC implementation forwards to the <c>ThreadContext.Stacks["NDC"]</c>.
+            The current NDC implementation forwards to the <c>ThreadContext.Stacks["NDC"></c>.
             </para>
             </note>
             <para>
@@ -28508,7 +28508,7 @@
             <note>
             <para>
             The NDC is deprecated and has been replaced by the <see cref="P:log4net.ThreadContext.Stacks"/>.
-            The current NDC implementation forwards to the <c>ThreadContext.Stacks["NDC"]</c>.
+            The current NDC implementation forwards to the <c>ThreadContext.Stacks["NDC"></c>.
             </para>
             </note>
             <para>
@@ -28525,7 +28525,7 @@
             <note>
             <para>
             The NDC is deprecated and has been replaced by the <see cref="P:log4net.ThreadContext.Stacks"/>.
-            The current NDC implementation forwards to the <c>ThreadContext.Stacks["NDC"]</c>.
+            The current NDC implementation forwards to the <c>ThreadContext.Stacks["NDC"></c>.
             </para>
             </note>
             <para>
@@ -28546,7 +28546,7 @@
             <note>
             <para>
             The NDC is deprecated and has been replaced by the <see cref="P:log4net.ThreadContext.Stacks"/>.
-            The current NDC implementation forwards to the <c>ThreadContext.Stacks["NDC"]</c>.
+            The current NDC implementation forwards to the <c>ThreadContext.Stacks["NDC"></c>.
             </para>
             </note>
             <para>
@@ -28588,13 +28588,13 @@
             </remarks>
             <example>Example of using the thread context properties to store a username.
             <code lang="C#">
-            ThreadContext.Properties["user"] = userName;
+            ThreadContext.Properties["user"> = userName;
             log.Info("This log message has a ThreadContext Property called 'user'");
             </code>
             </example>
             <example>Example of how to push a message into the context stack
             <code lang="C#">
-            using(ThreadContext.Stacks["NDC"].Push("my context message"))
+            using(ThreadContext.Stacks["NDC">.Push("my context message"))
             {
             	log.Info("This log message has a ThreadContext Stack message that includes 'my context message'");
             

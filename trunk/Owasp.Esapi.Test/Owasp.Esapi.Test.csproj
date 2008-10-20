@@ -61,6 +61,7 @@
     <Compile Include="EsapiTest.cs" />
     <Compile Include="ExecutorTest.cs" />
     <Compile Include="HttpUtilitiesTest.cs" />
+    <Compile Include="Http\MockHttpApplication.cs" />
     <Compile Include="Http\MockHttpContext.cs" />
     <Compile Include="Http\MockHttpFileCollection.cs" />
     <Compile Include="Http\MockHttpPostedFile.cs" />

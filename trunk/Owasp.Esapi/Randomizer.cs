@@ -1,12 +1,12 @@
-﻿/// <summary> OWASP Enterprise Security API .NET (Esapi.NET)
+﻿/// <summary> OWASP .NET Enterprise Security API (.NET ESAPI)
 /// 
 /// This file is part of the Open Web Application Security Project (OWASP)
-/// Enterprise Security API (Esapi) project. For details, please see
-/// http://www.owasp.org/Esapi.
+/// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
+/// http://www.owasp.org/index.php/.NET_ESAPI.
 /// 
 /// Copyright (c) 2008 - The OWASP Foundation
 /// 
-/// The Esapi is published by OWASP under the LGPL. You should read and accept the
+/// The .NET ESAPI is published by OWASP under the LGPL. You should read and accept the
 /// LICENSE before you use, modify, and/or redistribute this software.
 /// 
 /// </summary>
@@ -28,7 +28,7 @@ namespace Owasp.Esapi
     /// cryptographically strong source of entropy. The specific algorithm used is configurable in Esapi.properties.
     /// 
     /// </summary>
-    /// <author>  Alex Smolen [a href="http://www.foundstone.com"]Foundstone[/a]
+    /// <author>  Alex Smolen <a href="http://www.foundstone.com">Foundstone</a>
     /// </author>
     /// <since> February 20, 2008
     /// </since>

@@ -1,12 +1,12 @@
-﻿/// <summary> OWASP Enterprise Security API .NET (ESAPI.NET)
+﻿/// <summary> OWASP .NET Enterprise Security API (.NET ESAPI)
 /// 
 /// This file is part of the Open Web Application Security Project (OWASP)
-/// Enterprise Security API (ESAPI) project. For details, please see
-/// http://www.owasp.org/esapi.
+/// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
+/// http://www.owasp.org/index.php/.NET_ESAPI.
 /// 
 /// Copyright (c) 2008 - The OWASP Foundation
 /// 
-/// The ESAPI is published by OWASP under the LGPL. You should read and accept the
+/// The .NET ESAPI is published by OWASP under the LGPL. You should read and accept the
 /// LICENSE before you use, modify, and/or redistribute this software.
 /// 
 /// </summary>
@@ -33,14 +33,14 @@ namespace Owasp.Esapi.Interfaces
     /// overlapping privileges. These methods encourage the use of complex boolean tests throughout the code. The point of
     /// this interface is to centralize access control logic so that it is easy to use and easy to verify.
     /// 
-    /// 
+    /// <pre>
     /// if (Esapi.AccessController.().IsAuthorizedForFunction( BUSINESS_FUNCTION ) ) 
     /// {
     /// ... access is allowed
     /// } else {
     /// ... attack in progress
     /// }
-    /// 
+    /// </pre>
     /// 
     /// Note that in the user interface layer, access control checks can be used to control whether particular controls are
     /// rendered or not. These checks are supposed to fail when an unauthorized user is logged in, and do not represent
@@ -48,14 +48,14 @@ namespace Owasp.Esapi.Interfaces
     /// function or access any data in your application. Therefore, access control checks in the user interface should be
     /// repeated in both the business logic and data layers.
     /// 
-    /// 
+    /// <pre>
     /// &lt;% if ( Esapi.AccessController().IsAuthorizedForFunction( ADMIN_FUNCTION ) ) 
     /// { %&gt;
     /// &lt;a href=&quot;/doAdminFunction&quot;&gt;ADMIN&lt;/a&gt;
     /// &lt;% } else { %&gt;
     /// &lt;a href=&quot;/doNormalFunction&quot;&gt;NORMAL&lt;/a&gt;
     /// &lt;% } %&gt;
-    /// 
+    /// </pre>
     /// 
     /// </summary>
     /// <author>  Alex Smolen (alex.smolen@foundstone.com)

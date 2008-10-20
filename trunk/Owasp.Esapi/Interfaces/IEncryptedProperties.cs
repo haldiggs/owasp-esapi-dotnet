@@ -1,12 +1,12 @@
-﻿/// <summary> OWASP Enterprise Security API .NET (ESAPI.NET)
+﻿/// <summary> OWASP .NET Enterprise Security API (.NET ESAPI)
 /// 
 /// This file is part of the Open Web Application Security Project (OWASP)
-/// Enterprise Security API (ESAPI) project. For details, please see
-/// http://www.owasp.org/esapi.
+/// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
+/// http://www.owasp.org/index.php/.NET_ESAPI.
 /// 
 /// Copyright (c) 2008 - The OWASP Foundation
 /// 
-/// The ESAPI is published by OWASP under the LGPL. You should read and accept the
+/// The .NET ESAPI is published by OWASP under the LGPL. You should read and accept the
 /// LICENSE before you use, modify, and/or redistribute this software.
 /// 
 /// </summary>
@@ -21,7 +21,7 @@ namespace Owasp.Esapi.Interfaces
     /// <summary> The IEncryptedProperties interface is a properties file where all the data is
     /// encrypted before it is added, and decrypted when it retrieved.
     /// [P]
-    /// [img src="doc-files/EncryptedProperties.jpg" height="600"]
+    /// [img src="doc-files/EncryptedProperties.jpg" height="600">
     /// [P]
     /// 
     /// </summary>

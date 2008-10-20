@@ -1,12 +1,12 @@
-﻿/// <summary> OWASP Enterprise Security API .NET (ESAPI.NET)
+﻿/// <summary> OWASP .NET Enterprise Security API (.NET ESAPI)
 /// 
 /// This file is part of the Open Web Application Security Project (OWASP)
-/// Enterprise Security API (ESAPI) project. For details, please see
-/// http://www.owasp.org/esapi.
+/// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
+/// http://www.owasp.org/index.php/.NET_ESAPI.
 /// 
 /// Copyright (c) 2008 - The OWASP Foundation
 /// 
-/// The ESAPI is published by OWASP under the LGPL. You should read and accept the
+/// The .NET ESAPI is published by OWASP under the LGPL. You should read and accept the
 /// LICENSE before you use, modify, and/or redistribute this software.
 /// 
 /// </summary>
@@ -26,12 +26,12 @@ namespace Owasp.Esapi.Interfaces
     /// implementation with a strong "master key", and that they protect this secret
     /// as much as possible.
     /// [P]
-    /// [img src="doc-files/Encryptor.jpg" height="600"]
+    /// [img src="doc-files/Encryptor.jpg" height="600">
     /// [P]
     /// Possible future enhancements (depending on feedback) might include:
-    /// [UL]
-    /// [LI]encryptFile[/LI]
-    /// [/UL]
+    /// <ul>
+    /// <li>encryptFile</li>
+    /// </ul>
     /// 
     /// </summary>
     /// <author>  Alex Smolen (alex.smolen@foundstone.com)
@@ -56,7 +56,7 @@ namespace Owasp.Esapi.Interfaces
         /// salt. The salt helps to protect against a rainbow table attack by mixing
         /// in some extra data with the plaintext. Some good choices for a salt might
         /// be an account name or some other string that is known to the application
-        /// but not to an attacker.  See [a href="http://www.matasano.com/log/958/enough-with-the-rainbow-tables-what-you-need-to-know-about-secure-password-schemes/"]this article[/a] for 
+        /// but not to an attacker.  See <a href="http://www.matasano.com/log/958/enough-with-the-rainbow-tables-what-you-need-to-know-about-secure-password-schemes/">this article</a> for 
 	    /// more information about hashing as it pertains to password schemes.
         /// 
         /// </summary>

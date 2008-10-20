@@ -28,52 +28,52 @@ http://www.w3.org/TR/html401/struct/global.html
 		<regexp name="number" value="[0-9]+"/>
 		<regexp name="anything" value=".*"/>
 		<regexp name="numberOrPercent" value="(\d)+(%{0,1})"/>
-		<regexp name="paragraph" value="[a-zA-Z0-9,'\.\s-_\(\)]*"/>	
-		<regexp name="htmlId" value="[a-zA-Z0-9-_]+"/>
-		<regexp name="htmlTitle" value="[a-zA-Z0-9\s-_',:\[\]!\.]*"/> <!-- force non-empty with a '+' at the end instead of '*' -->
-		<regexp name="htmlClass" value="[a-zA-Z0-9\s,-_]+"/>
+		<regexp name="paragraph" value="<a-zA-Z0-9,'\.\s-_\(\)]*"/>	
+		<regexp name="htmlId" value="<a-zA-Z0-9-_]+"/>
+		<regexp name="htmlTitle" value="<a-zA-Z0-9\s-_',:\[\]!\.]*"/> <!-- force non-empty with a '+' at the end instead of '*' -->
+		<regexp name="htmlClass" value="<a-zA-Z0-9\s,-_]+"/>
 
 		<regexp name="onsiteURL" value="([\w\\/\.\?=&amp;;#-]+|#(\w)+)"/>
 		<regexp name="offsiteURL" value="(http|https|mailto):\/\/[\w-\?\./=#&amp;,;]+"/>
 		
 		<regexp name="boolean" value="(true|false)"/>
-		<regexp name="singlePrintable" value="[a-zA-Z0-9]{1}"/> <!-- \w allows the '_' character -->
+		<regexp name="singlePrintable" value="<a-zA-Z0-9]{1}"/> <!-- \w allows the '_' character -->
 
 		<!-- This is for elements (ex: elemName { ... }) -->
-		<regexp name="cssElementSelector" value="[a-zA-Z0-9-_]+|\*"/>
+		<regexp name="cssElementSelector" value="<a-zA-Z0-9-_]+|\*"/>
 		
 		<!--  This is to list out any element names that are *not* valid -->
 		<regexp name="cssElementExclusion" value=""/>
 		
 		<!--  This if for classes (ex: .className { ... }) -->
-		<regexp name="cssClassSelector" value="\.[a-zA-Z0-9-_]+"/>
+		<regexp name="cssClassSelector" value="\.<a-zA-Z0-9-_]+"/>
 
 		<!--  This is to list out any class names that are *not* valid -->
 		<regexp name="cssClassExclusion" value=""/>
 		
 		<!--  This is for ID selectors (ex: #myId { ... } -->
-		<regexp name="cssIDSelector" value="#[a-zA-Z0-9-_]+"/>
+		<regexp name="cssIDSelector" value="#<a-zA-Z0-9-_]+"/>
 		
 		<!--  This is to list out any IDs that are *not* valid -->
 		<regexp name="cssIDExclusion" value=""/>
 		
 		<!--  This is for pseudo-element selector (ex. foo:pseudo-element { ... } -->
-		<regexp name="cssPseudoElementSelector" value=":[a-zA-Z0-9-_]+"/>
+		<regexp name="cssPseudoElementSelector" value=":<a-zA-Z0-9-_]+"/>
 		
 		<!--  This is to list out any psuedo-element names that are *not* valid -->
 		<regexp name="cssPsuedoElementExclusion" value=""/>
 		
-		<!--  This is for attribute selectors (ex. foo[attr=value] { ... } -->
-		<regexp name="cssAttributeSelector" value="\[[a-zA-Z0-9-_]+((=|~=|\|=){1}[a-zA-Z0-9-_]+){1}\]"/>
+		<!--  This is for attribute selectors (ex. foo<attr=value] { ... } -->
+		<regexp name="cssAttributeSelector" value="\[<a-zA-Z0-9-_]+((=|~=|\|=){1}<a-zA-Z0-9-_]+){1}\]"/>
 		
 		<!--  This is to list out any attribute names that are *not* valid -->
 		<regexp name="cssAttributeExclusion" value=""/>
 		
 		<!--  This is for resources referenced from CSS (such as background images and other imported stylesheets) -->
-		<regexp name="cssUri" value="url\((\.\.|/|[a-zA-Z0-9\. ]+)*[a-zA-Z0-9\_]+\.(gif|jpg|ico|png|css)\)|url\((http|https|mailto)://[a-zA-Z0-9][a-zA-Z0-9\.]*\.[a-zA-Z]{2,5}(:[\d]+){0,1}/(\.\.|/|[a-zA-Z0-9 ]+)*[a-zA-Z0-9\\_]+\.(gif|jpg|ico|png|css)\)"/>		
+		<regexp name="cssUri" value="url\((\.\.|/|<a-zA-Z0-9\. ]+)*<a-zA-Z0-9\_]+\.(gif|jpg|ico|png|css)\)|url\((http|https|mailto)://<a-zA-Z0-9]<a-zA-Z0-9\.]*\.<a-zA-Z]{2,5}(:[\d]+){0,1}/(\.\.|/|<a-zA-Z0-9 ]+)*<a-zA-Z0-9\\_]+\.(gif|jpg|ico|png|css)\)"/>		
 
 		<!--  This is for comments within CSS (ex. /* comment */) -->
-		<regexp name="cssCommentText" value="[a-zA-Z0-9-_,\.\s]+"/>
+		<regexp name="cssCommentText" value="<a-zA-Z0-9-_,\.\s]+"/>
 		
 		<regexp name="integer" value="(-|\+)?[0-9]+"/>
 		<regexp name="number" value="(-|\+)?([0-9]+(.[0-9]+)?)"/>		
@@ -109,7 +109,7 @@ http://www.w3.org/TR/html401/struct/global.html
 		
 		<attribute name="id" description="The 'id' of any HTML attribute should not contain anything besides letters and numbers">
 			<regexp-list>
-				<regexp value="[a-zA-Z0-9_\-\:]+"/>
+				<regexp value="<a-zA-Z0-9_\-\:]+"/>
 			</regexp-list>
 		</attribute>
 	
@@ -121,7 +121,7 @@ http://www.w3.org/TR/html401/struct/global.html
 
 		<attribute name="lang" description="The 'lang' attribute tells the browser what language the element's attribute values and content are written in">
 		 	<regexp-list>
-		 		<regexp value="[a-zA-Z]{2,20}"/>
+		 		<regexp value="<a-zA-Z]{2,20}"/>
 		 	</regexp-list>
 		 </attribute>
 		 <attribute name="title" description="The 'title' attribute provides text that shows up in a 'tooltip' when a user hovers their mouse over the element">
@@ -160,7 +160,7 @@ http://www.w3.org/TR/html401/struct/global.html
 		
 		<attribute name="name">
 		 	<regexp-list>
-		 		<regexp value="[a-zA-Z0-9-_]+"/>
+		 		<regexp value="<a-zA-Z0-9-_]+"/>
 		 	</regexp-list>
 		 </attribute>
 		
@@ -226,7 +226,7 @@ http://www.w3.org/TR/html401/struct/global.html
 		 
 		 <attribute name="headers" description="The 'headers' attribute is a space-separated list of cell IDs">
 		 	<regexp-list>
-			 	<regexp value="[a-zA-Z0-9\s*]*"/>
+			 	<regexp value="<a-zA-Z0-9\s*]*"/>
 		 	</regexp-list>
 		 </attribute>
 		 
@@ -243,7 +243,7 @@ http://www.w3.org/TR/html401/struct/global.html
 
 		<attribute name="axis" description="The 'headers' attribute is a comma-separated list of related header cells">
 		 	<regexp-list>
-			 	<regexp value="[a-zA-Z0-9\s*,]*"/>
+			 	<regexp value="<a-zA-Z0-9\s*,]*"/>
 		 	</regexp-list>		
 		</attribute> 
 		

@@ -1,12 +1,12 @@
-﻿/// <summary> OWASP Enterprise Security API .NET (ESAPI.NET)
+﻿/// <summary> OWASP .NET Enterprise Security API (.NET ESAPI)
 /// 
 /// This file is part of the Open Web Application Security Project (OWASP)
-/// Enterprise Security API (ESAPI) project. For details, please see
-/// http://www.owasp.org/esapi.
+/// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
+/// http://www.owasp.org/index.php/.NET_ESAPI.
 /// 
 /// Copyright (c) 2008 - The OWASP Foundation
 /// 
-/// The ESAPI is published by OWASP under the LGPL. You should read and accept the
+/// The .NET ESAPI is published by OWASP under the LGPL. You should read and accept the
 /// LICENSE before you use, modify, and/or redistribute this software.
 /// 
 /// </summary>
@@ -91,14 +91,13 @@ namespace Owasp.Esapi.Test
         [Test]
         public void Test_IsValidSafeHTML()
         {
-            // TODO - Not implemented yet.
-            //System.Console.Out.WriteLine("IsValidSafeHTML");
-            //IValidator validator = Esapi.Validator();
-            //Assert.IsTrue(validator.IsValidSafeHtml("test", "<b>Jeff</b>", 100, false));
-            //Assert.IsTrue(validator.IsValidSafeHtml("test", "<a href=\"http://www.aspectsecurity.com\">Aspect Security</a>", 100, false));
-            //Assert.IsFalse(validator.IsValidSafeHtml("test", "Test. <script>alert(document.cookie)</script>", 100, false));
+            System.Console.Out.WriteLine("IsValidSafeHTML");
+            IValidator validator = Esapi.Validator();
+            Assert.IsTrue(validator.IsValidSafeHtml("test", "<b>Jeff</b>", 100, false));
+            Assert.IsTrue(validator.IsValidSafeHtml("test", "<a href=\"http://www.aspectsecurity.com\">Aspect Security</a>", 100, false));
+            Assert.IsFalse(validator.IsValidSafeHtml("test", "Test. <script>alert(document.cookie)</script>", 100, false));
             //This one can't be caught properly by Anti-Samy
-            //Assert.IsFalse(validator.IsValidSafeHtml("test", "\" onload=\"alert(document.cookie)\" ", 100, false));
+            Assert.IsFalse(validator.IsValidSafeHtml("test", "\" onload=\"alert(document.cookie)\" ", 100, false));
         }
 
        

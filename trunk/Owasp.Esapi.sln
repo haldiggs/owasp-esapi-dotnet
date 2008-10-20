@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Owasp.Esapi.Test", "Owasp.E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{89F0287D-A4F0-4A57-94C9-744C7C3AAC67}"
 	ProjectSection(SolutionItems) = preProject
+		Dependencies\AntiSamy.dll = Dependencies\AntiSamy.dll
+		Dependencies\AntiXssLibrary.dll = Dependencies\AntiXssLibrary.dll
+		Dependencies\CSRFGuard.dll = Dependencies\CSRFGuard.dll
+		Dependencies\HtmlAgilityPack.dll = Dependencies\HtmlAgilityPack.dll
 		Dependencies\log4net.dll = Dependencies\log4net.dll
 		Dependencies\log4net.xml = Dependencies\log4net.xml
 		Dependencies\nunit.core.dll = Dependencies\nunit.core.dll

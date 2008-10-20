@@ -1,12 +1,12 @@
-﻿/// <summary> OWASP Enterprise Security API .NET (ESAPI.NET)
+﻿/// <summary> OWASP .NET Enterprise Security API (.NET ESAPI)
 /// 
 /// This file is part of the Open Web Application Security Project (OWASP)
-/// Enterprise Security API (ESAPI) project. For details, please see
-/// http://www.owasp.org/esapi.
+/// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
+/// http://www.owasp.org/index.php/.NET_ESAPI.
 /// 
 /// Copyright (c) 2008 - The OWASP Foundation
 /// 
-/// The ESAPI is published by OWASP under the LGPL. You should read and accept the
+/// The .NET ESAPI is published by OWASP under the LGPL. You should read and accept the
 /// LICENSE before you use, modify, and/or redistribute this software.
 /// 
 /// </summary>
@@ -70,18 +70,18 @@ namespace Owasp.Esapi.Filters
                 //// check access to this URL
                 //if (!Esapi.AccessController().IsAuthorizedForUrl(request.RawUrl.ToString()))
                 //{
-                //    context.Items["message"] = "Unauthorized";
+                //    context.Items["message"> = "Unauthorized";
                 //    context.Server.Transfer("login.aspx");                        
                 //}
                 //// verify if this request meets the baseline input requirements                
                 //if (!Esapi.Validator().IsValidHttpRequest(WebContext.Cast(request)))
                 //{
-                //    context.Items["message"] = "Validation error";
+                //    context.Items["message"> = "Validation error";
                 //}
 
                 // check for CSRF attacks and set appropriate caching headers
                 IHttpUtilities utils = Esapi.HttpUtilities();
-                utils.checkCSRFToken();
+                utils.VerifyCsrfToken();
                 utils.SetNoCacheHeaders();
                 utils.SafeSetContentType();
 

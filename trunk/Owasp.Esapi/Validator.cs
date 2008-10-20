@@ -1,12 +1,12 @@
-﻿/// <summary> OWASP Enterprise Security API .NET (Esapi.NET)
+﻿/// <summary> OWASP .NET Enterprise Security API (.NET ESAPI)
 /// 
 /// This file is part of the Open Web Application Security Project (OWASP)
-/// Enterprise Security API (Esapi) project. For details, please see
-/// http://www.owasp.org/Esapi.
+/// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
+/// http://www.owasp.org/index.php/.NET_ESAPI.
 /// 
 /// Copyright (c) 2008 - The OWASP Foundation
 /// 
-/// The Esapi is published by OWASP under the LGPL. You should read and accept the
+/// The .NET ESAPI is published by OWASP under the LGPL. You should read and accept the
 /// LICENSE before you use, modify, and/or redistribute this software.
 /// 
 /// </summary>
@@ -25,6 +25,7 @@ using System.Text.RegularExpressions;
 using System.Globalization;
 using System.Text;
 using System.Collections.Specialized;
+using org.owasp.validator.html;
 
 namespace Owasp.Esapi
 {
@@ -32,11 +33,11 @@ namespace Owasp.Esapi
     /// relies on the Esapi Encoder, .NET Regular Expressions, Date,
     /// and several other classes to provide basic validation functions. This library
     /// has a heavy emphasis on whitelist validation and canonicalization. All double-encoded
-    /// characters, even in multiple encoding schemes, such as [PRE]&amp;lt;[/PRE] or
-    /// [PRE]%26lt;[PRE] or even [PRE]%25%26lt;[/PRE] are disallowed.
+    /// characters, even in multiple encoding schemes, such as &amp;lt; or
+    /// %26lt; or even %25%26lt; are disallowed.
     /// 
     /// </summary>
-    /// <author>  <a href="mailto:alex.smolen@foundstone.com?subject=Esapi.NET question">Alex Smolen</a> at <a
+    /// <author>  <a href="mailto:alex.smolen@foundstone.com?subject=.NET+ESAPI question">Alex Smolen</a> at <a
     /// href="http://www.foundstone.com">Foundstone</a>
     /// </author>
     /// <since> February 20, 2008
@@ -767,6 +768,7 @@ namespace Owasp.Esapi
         /// will generate a descriptive IntrusionException. 
         /// 
         /// Uses current HTTPRequest saved in EASPI Authenticator
+        /// </summary>
         ///                
         /// <seealso cref="Owasp.Esapi.Interfaces.IValidator.AssertValidHttpRequest()">
         /// </seealso>
@@ -1076,8 +1078,8 @@ namespace Owasp.Esapi
         }
 
         /// <summary>
-        /// Returns a canonicalized and validated redirect location as a String. Invalid input will generate a descriptive ValidationException, and input that is clearly an attack
-        //// will generate a descriptive IntrusionException. 
+        /// Returns a canonicalized and validated redirect location as a String. Invalid input will generate a descriptive 
+        /// ValidationException, and input that is clearly an attack will generate a descriptive IntrusionException. 
         /// </summary>
         /// <param name="context">The validation context.</param>
         /// <param name="input">The redirect location to validate.</param>
@@ -1104,17 +1106,15 @@ namespace Owasp.Esapi
         /// </seealso>
         public bool IsValidSafeHtml(string context, string input, int maxLength, bool allowNull)
         {
-            throw new System.NotSupportedException();
-            //try
-            //{
-            //    string canonical = Esapi.Encoder().Canonicalize(input);
-            //    // FIXME: AAA this is just a simple blacklist test - will use Anti-SAMY
-            //    return !(canonical.IndexOf("<scri") > -1) && !(canonical.IndexOf("onload") > -1);
-            //}
-            //catch (EncodingException ee)
-            //{
-            //    throw new IntrusionException("Invalid input", "EncodingException during HTML validation", ee);
-            //}
+            try
+            {
+                Esapi.Validator().GetValidSafeHtml(context, input, maxLength, allowNull);
+                return true;
+            }
+            catch (EncodingException ee)
+            {
+                return false;
+            }
         }
         
         /// <summary>
@@ -1127,23 +1127,21 @@ namespace Owasp.Esapi
         /// <returns>String value with safe HTML based on input.</returns>        
         public string GetValidSafeHtml(string context, string input, int maxLength, bool allowNull)
         {
-            throw new System.NotSupportedException();
-            /**
-            AntiSamy as = new AntiSamy();
+                    
+            AntiSamy antiSamy = new AntiSamy();            
             try {
-            CleanResults test = as.scan(input);
-            // OutputFormat format = new OutputFormat(test.getCleanXMLDocumentFragment().getOwnerDocument());
-            // format.setLineWidth(65);
-            // format.setIndenting(true);
-            // format.setIndent(2);
-            // format.setEncoding(AntiSamyDOMScanner.ENCODING_ALGORITHM);
-            return(test.getCleanHTML().trim());
+                CleanResults test = antiSamy.scan(input);
+                //OutputFormat format = new OutputFormat(test.getCleanXMLDocumentFragment().getOwnerDocument());
+                // format.setLineWidth(65);
+                // format.setIndenting(true);
+                // format.setIndent(2);
+                // format.setEncoding(AntiSamyDOMScanner.ENCODING_ALGORITHM);
+                return(test.getCleanHTML().Trim());
             } catch (ScanException e) {
-            throw new ValidationException( "Invalid HTML", "Problem parsing HTML (" + context + "=" + input + ") ",e );
+                throw new ValidationException( "Invalid HTML", "Problem parsing HTML (" + context + "=" + input + ") ",e );
             } catch (PolicyException e) {
-            throw new ValidationException( "Invalid HTML", "HTML violates policy (" + context + "=" + input + ") ",e );
+                throw new ValidationException( "Invalid HTML", "HTML violates policy (" + context + "=" + input + ") ",e );
             }
-            **/
         }
 
 

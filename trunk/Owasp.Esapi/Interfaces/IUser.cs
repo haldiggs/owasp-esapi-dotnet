@@ -1,16 +1,16 @@
-﻿/// <summary> OWASP Enterprise Security API .NET (ESAPI.NET)
+﻿/// <summary> OWASP .NET Enterprise Security API (.NET ESAPI)
 /// 
 /// This file is part of the Open Web Application Security Project (OWASP)
-/// Enterprise Security API (ESAPI) project. For details, please see
-/// http://www.owasp.org/esapi.
+/// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
+/// http://www.owasp.org/index.php/.NET_ESAPI.
 /// 
 /// Copyright (c) 2008 - The OWASP Foundation
 /// 
-/// The ESAPI is published by OWASP under the LGPL. You should read and accept the
+/// The .NET ESAPI is published by OWASP under the LGPL. You should read and accept the
 /// LICENSE before you use, modify, and/or redistribute this software.
 /// 
 /// </summary>
-/// <author>  Alex Smolen <a href="http://www.foundstone.com">Foundstone[/a]
+/// <author>  Alex Smolen <a href="http://www.foundstone.com">Foundstone</a>
 /// </author>
 /// <created>  2008 </created>
 
@@ -25,7 +25,7 @@ namespace Owasp.Esapi.Interfaces
 	/// application must store for each user in order to enforce security properly. There are also many rules that govern
 	/// authentication and identity management.
 	/// [P]
-	/// [img src="doc-files/Authenticator.jpg" height="600"]
+	/// [img src="doc-files/Authenticator.jpg" height="600">
 	/// [P]
 	/// A user account can be in one of several states. When first created, a User should be disabled, not expired, and
 	/// unlocked. To start using the account, an administrator should enable the account. The account can be locked for a
@@ -252,9 +252,6 @@ namespace Owasp.Esapi.Interfaces
         /// <summary> 
         /// Tests to see if the user's session has timed out from inactivity.        
         /// </summary>
-        /// <param name="session">
-        /// The users session
-        /// </param>
         /// <returns> 
         /// true, if the users session has timed out from inactivity.
         /// </returns>

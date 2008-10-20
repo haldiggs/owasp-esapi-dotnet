@@ -1,12 +1,12 @@
-﻿/// <summary> OWASP Enterprise Security API .NET (Esapi.NET)
+﻿/// <summary> OWASP .NET Enterprise Security API (.NET ESAPI)
 /// 
 /// This file is part of the Open Web Application Security Project (OWASP)
-/// Enterprise Security API (Esapi) project. For details, please see
-/// http://www.owasp.org/Esapi.
+/// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
+/// http://www.owasp.org/index.php/.NET_ESAPI.
 /// 
 /// Copyright (c) 2008 - The OWASP Foundation
 /// 
-/// The Esapi is published by OWASP under the LGPL. You should read and accept the
+/// The .NET ESAPI is published by OWASP under the LGPL. You should read and accept the
 /// LICENSE before you use, modify, and/or redistribute this software.
 /// 
 /// </summary>
@@ -29,7 +29,7 @@ namespace Owasp.Esapi
     /// <summary> Reference implementation of the IUser interface. This implementation is serialized into a flat file in a simple format.
     /// 
     /// </summary>
-    /// <author>  <a href="mailto:alex.smolen@foundstone.com?subject=Esapi.NET question">Alex Smolen</a> at <a
+    /// <author>  <a href="mailto:alex.smolen@foundstone.com?subject=.NET+ESAPI question">Alex Smolen</a> at <a
     /// href="http://www.foundstone.com">Foundstone</a>
     /// </author>
     /// <since> February 20, 2008
@@ -688,8 +688,6 @@ namespace Owasp.Esapi
         /// <summary> 
         /// Tests to see if the user's session has exceeded the absolute time out.        
         /// </summary>
-        /// The users session.
-        /// </param>
         /// <returns> 
         /// true, if users session has exceeded the absolute time out.
         /// </returns>
