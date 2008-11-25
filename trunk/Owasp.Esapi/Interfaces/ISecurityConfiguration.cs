@@ -157,12 +157,18 @@ namespace Owasp.Esapi.Interfaces
 
         }
 
+        /// <summary>
+        /// The ESAPI resource directory where configuration and other relevant files are stored.
+        /// </summary>
         FileInfo ResourceDirectory
         {
             get;
             set;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         bool RequireSecureChannel
         {
             get;

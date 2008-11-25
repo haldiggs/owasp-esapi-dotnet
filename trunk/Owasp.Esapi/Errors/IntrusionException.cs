@@ -15,6 +15,7 @@
 /// <created>  2008 </created>
 
 using System;
+using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi.Errors
 {
@@ -60,7 +61,7 @@ namespace Owasp.Esapi.Errors
         private const long _serialVersionUID = 1L;
 
         /// <summary>The logger. </summary>
-        protected internal static readonly Logger _logger;
+        protected internal static readonly ILogger logger;
         
         /// <summary>
         ///  The message for the log
@@ -86,7 +87,7 @@ namespace Owasp.Esapi.Errors
             : base(userMessage)
         {
             this._logMessage = logMessage;
-            _logger.LogError(Owasp.Esapi.Interfaces.ILogger_Fields.SECURITY, "INTRUSION - " + logMessage);
+            logger.Error(Owasp.Esapi.Interfaces.LogEventTypes.SECURITY, "INTRUSION - " + logMessage);
         }
 
         /// <summary> Instantiates a new intrusion exception.
@@ -102,11 +103,11 @@ namespace Owasp.Esapi.Errors
             : base(userMessage, cause)
         {
             this._logMessage = logMessage;
-            _logger.LogError(Owasp.Esapi.Interfaces.ILogger_Fields.SECURITY, "INTRUSION - " + logMessage, cause);
+            logger.Error(Owasp.Esapi.Interfaces.LogEventTypes.SECURITY, "INTRUSION - " + logMessage, cause);
         }
         static IntrusionException()
         {
-            _logger = Logger.GetLogger("ESAPI", "IntrusionException");
+            logger = Esapi.Logger();
         }
     }
 }

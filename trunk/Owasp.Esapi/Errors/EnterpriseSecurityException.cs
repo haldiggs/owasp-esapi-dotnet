@@ -15,6 +15,7 @@
 /// <created>  2008 </created>
 
 using System;
+using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi.Errors
 {
@@ -65,7 +66,7 @@ namespace Owasp.Esapi.Errors
         private const long _serialVersionUID = 1L;
 
         /// <summary>The logger. </summary>
-        protected internal static readonly Logger _logger;
+        protected internal static readonly ILogger logger;
 
         /// <summary>The message for the log. </summary>
         protected internal string _logMessage = null;
@@ -109,7 +110,7 @@ namespace Owasp.Esapi.Errors
         }
         static EnterpriseSecurityException()
         {
-            _logger = Logger.GetLogger("ESAPI", "EnterpriseSecurityException");
+            logger = Esapi.Logger();
         }
     }
 }

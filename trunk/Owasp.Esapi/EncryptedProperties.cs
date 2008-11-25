@@ -52,7 +52,7 @@ namespace Owasp.Esapi
         private NameValueCollection properties = new NameValueCollection();
 
         /// <summary>The logger. </summary>
-        private static readonly Logger logger;
+        private static readonly ILogger logger;
 
         /// <summary> Instantiates a new encrypted properties.</summary>
         public EncryptedProperties()
@@ -171,11 +171,11 @@ namespace Owasp.Esapi
                 XmlSerializer xs = new XmlSerializer(typeof(EncryptedProperties));
                 EncryptedProperties props = (EncryptedProperties) xs.Deserialize(sw);
                 this.properties = props.properties;                
-                logger.LogTrace(ILogger_Fields.SECURITY, "Encrypted properties loaded successfully");
+                logger.Trace(LogEventTypes.SECURITY, "Encrypted properties loaded successfully");
             }
             catch (Exception e)
             {
-                logger.LogError(ILogger_Fields.SECURITY, "Encrypted properties could not be loaded successfully", e);
+                logger.Error(LogEventTypes.SECURITY, "Encrypted properties could not be loaded successfully", e);
             }
             finally 
             {
@@ -196,7 +196,7 @@ namespace Owasp.Esapi
                     StreamWriter sw = new StreamWriter(outStream);
                     XmlSerializer xs = new XmlSerializer(typeof(EncryptedProperties));
                     xs.Serialize(sw, this);
-                    logger.LogTrace(ILogger_Fields.SECURITY, "Encrypted properties stored successfully");
+                    logger.Trace(LogEventTypes.SECURITY, "Encrypted properties stored successfully");
                 
             }
             catch
@@ -217,7 +217,7 @@ namespace Owasp.Esapi
         {
             // FIXME: AAA verify that this still works
             FileInfo f = new FileInfo(args[0]);
-            Logger.GetLogger("EncryptedProperties", "main").LogDebug(ILogger_Fields.SECURITY, "Loading encrypted properties from " + f.FullName);
+            logger.Debug(LogEventTypes.SECURITY, "Loading encrypted properties from " + f.FullName);
             bool tmpBool;
             if (File.Exists(f.FullName))
                 tmpBool = true;
@@ -225,7 +225,7 @@ namespace Owasp.Esapi
                 tmpBool = Directory.Exists(f.FullName);
             if (!tmpBool)
                 throw new IOException("Properties file not found: " + f.FullName);
-            Logger.GetLogger("EncryptedProperties", "main").LogDebug(ILogger_Fields.SECURITY, "Encrypted properties found in " + f.FullName);
+            logger.Debug(LogEventTypes.SECURITY, "Encrypted properties found in " + f.FullName);
             EncryptedProperties ep = new EncryptedProperties();            
             FileStream inStream = new FileStream(f.FullName, FileMode.Open, FileAccess.Read);
             ep.Load(inStream);
@@ -259,7 +259,7 @@ namespace Owasp.Esapi
         }
         static EncryptedProperties()
         {
-            logger = Logger.GetLogger("ESAPI", "Encrypted Properties");
+            logger = Esapi.Logger();
         }
     }
 }

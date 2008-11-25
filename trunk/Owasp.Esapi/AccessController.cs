@@ -121,7 +121,7 @@ namespace Owasp.Esapi
         private Rule deny = new Rule();
 
         /// <summary>The logger. </summary>        
-        private static Logger logger;
+        private static ILogger logger;
         
         // FIXME: consider adding flag for logging
         // FIXME: perhaps an enumeration for context (i.e. the layer the call is made from)
@@ -353,7 +353,7 @@ namespace Owasp.Esapi
             }
             catch (EncodingException ee)
             {
-                logger.LogWarning(ILogger_Fields.SECURITY, "Failed to canonicalize input: " + path);
+                logger.Warning(LogEventTypes.SECURITY, "Failed to canonicalize input: " + path);
             }
 
             string part = canonical;
@@ -466,7 +466,7 @@ namespace Owasp.Esapi
                         rule.allow = action.ToUpper().Equals("allow".ToUpper());
                         if (map.Contains(rule.path))
                         {
-                            logger.LogWarning(ILogger_Fields.SECURITY, "Problem in access control file. Duplicate rule ignored: " + rule);
+                            logger.Warning(LogEventTypes.SECURITY, "Problem in access control file. Duplicate rule ignored: " + rule);
                         }
                         map[rule.path] = rule;
                     }
@@ -475,7 +475,7 @@ namespace Owasp.Esapi
             }
             catch (Exception e)
             {
-                logger.LogWarning(ILogger_Fields.SECURITY, "Problem in access control file", e);
+                logger.Warning(LogEventTypes.SECURITY, "Problem in access control file", e);
             }
             finally
             {
@@ -488,7 +488,7 @@ namespace Owasp.Esapi
                 }
                 catch (IOException e)
                 {
-                    logger.LogWarning(Owasp.Esapi.Interfaces.ILogger_Fields.SECURITY, "Failure closing access control file: " + f, e);
+                    logger.Warning(Owasp.Esapi.Interfaces.LogEventTypes.SECURITY, "Failure closing access control file: " + f, e);
                 }
             }
             return map;
@@ -518,7 +518,7 @@ namespace Owasp.Esapi
         static AccessController()
         {
             resourceDirectory = ((SecurityConfiguration)Esapi.SecurityConfiguration()).ResourceDirectory;
-            logger = Logger.GetLogger("ESAPI", "AccessController");
+            logger = Esapi.Logger();
         }
 
     }

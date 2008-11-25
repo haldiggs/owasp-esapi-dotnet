@@ -38,7 +38,7 @@ namespace Owasp.Esapi
     public class Executor : IExecutor
     {
  
-        private static readonly Logger logger;
+        private static readonly ILogger logger;
         
         /// <summary> Public constructor for Executor.
         /// 
@@ -79,7 +79,7 @@ namespace Owasp.Esapi
             StreamReader br = null;
             try
             {
-                logger.LogTrace(ILogger_Fields.SECURITY, "Initiating executable: " + executable + " " + parameters.ToString() + " in " + workdir);
+                logger.Trace(LogEventTypes.SECURITY, "Initiating executable: " + executable + " " + parameters.ToString() + " in " + workdir);
                 IValidator validator = Esapi.Validator();
 
                 // command must exactly match the canonical path and must actually exist on the file system
@@ -128,7 +128,7 @@ namespace Owasp.Esapi
                 processStartInfo.UseShellExecute = false;
                 Process process = Process.Start(processStartInfo);
 
-                logger.LogTrace(ILogger_Fields.SECURITY, "System command successful: " + parameters.ToString());
+                logger.Trace(LogEventTypes.SECURITY, "System command successful: " + parameters.ToString());
                 return process.StandardOutput.ReadToEnd();
             }
             catch (Exception e)
@@ -156,7 +156,7 @@ namespace Owasp.Esapi
         /// </summary>
         static Executor()
         {
-            logger = Logger.GetLogger("ESAPI", "Executor");
+            logger = Esapi.Logger();
         }
     }
 }

@@ -38,7 +38,7 @@ namespace Owasp.Esapi
     {
         private RandomNumberGenerator randomNumberGenerator = null;
 
-        private static readonly Logger logger;
+        private static readonly ILogger logger;
 
         /// <summary> Hide the constructor for the Singleton pattern.</summary>
         public Randomizer()
@@ -102,7 +102,7 @@ namespace Owasp.Esapi
                 }
                 catch (IOException e)
                 {
-                    logger.LogCritical(ILogger_Fields.SECURITY, "Problem decoding hash while creating GUID: " + hash);
+                    logger.Fatal(LogEventTypes.SECURITY, "Problem decoding hash while creating GUID: " + hash);
                 }
 
                 // convert to printable hexadecimal characters 
@@ -280,7 +280,7 @@ namespace Owasp.Esapi
         /// </summary>
         static Randomizer()
         {
-            logger = Logger.GetLogger("Esapi", "Randomizer");
+            logger = Esapi.Logger();
         }
     }
 }

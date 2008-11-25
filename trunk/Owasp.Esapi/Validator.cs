@@ -47,19 +47,20 @@ namespace Owasp.Esapi
     public class Validator : IValidator
     {
         /// <summary>The logger. </summary>
-        private static readonly Logger logger;
+        private static readonly ILogger logger;
 
         // constants
     	private static readonly int MAX_CREDIT_CARD_LENGTH = 19;
 	    private static readonly int MAX_PARAMETER_NAME_LENGTH = 100;
 	    private static readonly int MAX_PARAMETER_VALUE_LENGTH = 10000;
-
-        
+        private AntiSamy antiSamy = new AntiSamy();        
+        private Policy policy = Policy.getInstance(((SecurityConfiguration)Esapi.SecurityConfiguration()).ResourceDirectory.FullName + "\\" + "antisamy.xml");
         /// <summary>
         /// Empty constructor
         /// </summary>
         public Validator()
-        {
+        {                    
+            
         }
 
         /// <summary> Validates data received from the browser and returns a safe version. Only
@@ -1056,7 +1057,7 @@ namespace Owasp.Esapi
             }
             catch (EncodingException ee)
             {
-                logger.LogError(ILogger_Fields.SECURITY, "Could not canonicalize user input", ee);
+                logger.Error(LogEventTypes.SECURITY, "Could not canonicalize user input", ee);
             }
             return canonical;
         }
@@ -1126,16 +1127,9 @@ namespace Owasp.Esapi
         /// <param name="allowNull">Whether or not null values are considered valid.</param>        
         /// <returns>String value with safe HTML based on input.</returns>        
         public string GetValidSafeHtml(string context, string input, int maxLength, bool allowNull)
-        {
-                    
-            AntiSamy antiSamy = new AntiSamy();            
+        {            
             try {
-                CleanResults test = antiSamy.scan(input);
-                //OutputFormat format = new OutputFormat(test.getCleanXMLDocumentFragment().getOwnerDocument());
-                // format.setLineWidth(65);
-                // format.setIndenting(true);
-                // format.setIndent(2);
-                // format.setEncoding(AntiSamyDOMScanner.ENCODING_ALGORITHM);
+                CleanResults test = antiSamy.scan(input, policy);
                 return(test.getCleanHTML().Trim());
             } catch (ScanException e) {
                 throw new ValidationException( "Invalid HTML", "Problem parsing HTML (" + context + "=" + input + ") ",e );
@@ -1219,7 +1213,7 @@ namespace Owasp.Esapi
         /// </summary>
         static Validator()
         {
-            logger = Logger.GetLogger("Esapi", "Validator");
+            logger = Esapi.Logger();
         }
 
 

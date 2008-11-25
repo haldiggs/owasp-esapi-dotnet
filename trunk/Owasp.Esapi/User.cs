@@ -52,10 +52,10 @@ namespace Owasp.Esapi
             }
 
             set
-            {
+            {                
                 string old = value;
                 this.accountName = value.ToLower();
-                logger.LogCritical(ILogger_Fields.SECURITY, "Account name changed from " + old + " to " + AccountName);
+                logger.Fatal(LogEventTypes.SECURITY, "Account name changed from " + old + " to " + AccountName);
             }
 
         }
@@ -87,7 +87,7 @@ namespace Owasp.Esapi
             set
             {
                 this.expirationTime = new DateTime(value.Ticks);             
-                logger.LogCritical(ILogger_Fields.SECURITY, "Account expiration time set to " + value.ToString("r") + " for " + AccountName);
+                logger.Fatal(LogEventTypes.SECURITY, "Account expiration time set to " + value.ToString("r") + " for " + AccountName);
             }
 
         }
@@ -138,7 +138,7 @@ namespace Owasp.Esapi
             {                
                 this.roles = new ArrayList();
                 AddRoles(value);
-                logger.LogCritical(ILogger_Fields.SECURITY, "Adding roles " + value.ToString() + " to " + AccountName);
+                logger.Fatal(LogEventTypes.SECURITY, "Adding roles " + value.ToString() + " to " + AccountName);
             }
         }
 
@@ -158,7 +158,7 @@ namespace Owasp.Esapi
             set
             {
                 this.screenName = value;
-                logger.LogCritical(ILogger_Fields.SECURITY, "ScreenName changed to " + value + " for " + AccountName);
+                logger.Fatal(LogEventTypes.SECURITY, "ScreenName changed to " + value + " for " + AccountName);
             }
 
         }
@@ -247,7 +247,7 @@ namespace Owasp.Esapi
         private const long serialVersionUID = 1L;
 
         /// <summary>The logger. </summary>
-        private static readonly Logger logger;
+        private static readonly ILogger logger;
 
         /// <summary>true, only for the first HTTP request, false afterwards. </summary>
         private bool isFirstRequest = true;
@@ -407,7 +407,7 @@ namespace Owasp.Esapi
                 throw new AuthenticationException("Internal error", "Error hashing password for " + this.accountName, ee);
             }            
             expirationTime = new DateTime(DateTime.Now.Ticks + (1000L * 60 * 60 * 24 * 90)); // 90 days
-            logger.LogCritical(ILogger_Fields.SECURITY, "Account created successfully: " + accountName);
+            logger.Fatal(LogEventTypes.SECURITY, "Account created successfully: " + accountName);
         }
 
         /// <summary> 
@@ -423,7 +423,7 @@ namespace Owasp.Esapi
             if (Esapi.Validator().IsValidInput("addRole", "RoleName", roleName, MAX_ROLE_LENGTH, false))
             {
                 roles.Add(roleName);
-                logger.LogCritical(ILogger_Fields.SECURITY, "Role " + roleName + " added to " + AccountName);
+                logger.Fatal(LogEventTypes.SECURITY, "Role " + roleName + " added to " + AccountName);
             }
             else
             {
@@ -482,7 +482,7 @@ namespace Owasp.Esapi
             SetLastPasswordChangeTime(DateTime.Now);
             string newHash = Esapi.Authenticator().HashPassword(newPassword1, AccountName);
             SetHashedPassword(newHash);
-            logger.LogCritical(ILogger_Fields.SECURITY, "Password changed for user: " + AccountName);
+            logger.Fatal(LogEventTypes.SECURITY, "Password changed for user: " + AccountName);
         }
 
         /// <summary> Sets the user's password, performing a verification of the user's old password, the equality of the two new
@@ -514,7 +514,7 @@ namespace Owasp.Esapi
                 throw new AuthenticationCredentialsException("Password change failed", "Password change matches a recent password for user: " + AccountName);
             }
             SetHashedPassword(newHash);
-            logger.LogCritical(ILogger_Fields.SECURITY, "Password changed for user: " + AccountName);
+            logger.Fatal(LogEventTypes.SECURITY, "Password changed for user: " + AccountName);
         }
 
 
@@ -527,7 +527,7 @@ namespace Owasp.Esapi
         {
             // FIXME: ENHANCE what about disabling for a short time period - to address DOS attack?
             enabled = false;
-            logger.LogSpecial("Account disabled: " + AccountName, null);
+            logger.Info(LogEventTypes.SECURITY, "Account disabled: " + AccountName, null);
         }
 
         // Note: Do I need this in C# implementation?
@@ -561,7 +561,7 @@ namespace Owasp.Esapi
         public void Enable()
         {
             this.enabled = true;
-            logger.LogSpecial("Account enabled: " + AccountName, null);
+            logger.Info(LogEventTypes.SECURITY, "Account enabled: " + AccountName, null);
         }
 
         /// <summary>
@@ -724,7 +724,7 @@ namespace Owasp.Esapi
         public void Lock()
         {
             this.locked = true;
-            logger.LogCritical(ILogger_Fields.SECURITY, "Account locked: " + AccountName);
+            logger.Fatal(LogEventTypes.SECURITY, "Account locked: " + AccountName);
         }
 
         /// <summary>
@@ -779,7 +779,7 @@ namespace Owasp.Esapi
                     Esapi.Authenticator().SetCurrentUser(this);                                      
                     SetLastLoginTime(DateTime.Now);
                     SetLastHostAddress(((Authenticator)Esapi.Authenticator()).CurrentRequest.UserHostAddress);
-                    logger.LogTrace(ILogger_Fields.SECURITY, "User logged in: " + accountName);
+                    logger.Trace(LogEventTypes.SECURITY, "User logged in: " + accountName);
                 }
                 else
                 {
@@ -811,7 +811,7 @@ namespace Owasp.Esapi
                 // TODO - Kill the correct cookie
                 Esapi.HttpUtilities().KillCookie("ASPSESSIONID");
                 loggedIn = false;
-                logger.LogSuccess(ILogger_Fields.SECURITY, "Logout successful");
+                logger.Info(LogEventTypes.SECURITY, "Logout successful");
                 authenticator.SetCurrentUser(authenticator.anonymous);
             }
         }
@@ -826,7 +826,7 @@ namespace Owasp.Esapi
         public void RemoveRole(string role)
         {
             roles.Remove(role.ToLower());
-            logger.LogTrace(ILogger_Fields.SECURITY, "Role " + role + " removed from " + AccountName);
+            logger.Trace(LogEventTypes.SECURITY, "Role " + role + " removed from " + AccountName);
         }
 
         /// <summary> In this implementation, we have chosen to use a random token that is
@@ -873,7 +873,7 @@ namespace Owasp.Esapi
         public string ResetRememberToken()
         {
             rememberToken = Esapi.Randomizer().GetRandomString(20, Encoder.CHAR_ALPHANUMERICS);
-            logger.LogTrace(ILogger_Fields.SECURITY, "New remember token generated for: " + AccountName);
+            logger.Trace(LogEventTypes.SECURITY, "New remember token generated for: " + AccountName);
             return rememberToken;
         }
 
@@ -936,7 +936,7 @@ namespace Owasp.Esapi
             if (oldPasswordHashes.Count > Esapi.SecurityConfiguration().MaxOldPasswordHashes)
                 oldPasswordHashes.RemoveAt(0);
             hashedPassword = hash;
-            logger.LogCritical(ILogger_Fields.SECURITY, "New hashed password stored for " + AccountName);
+            logger.Fatal(LogEventTypes.SECURITY, "New hashed password stored for " + AccountName);
         }
 
         /// <summary> 
@@ -948,7 +948,7 @@ namespace Owasp.Esapi
         protected internal void SetLastFailedLoginTime(DateTime lastFailedLoginTime)
         {
             this.lastFailedLoginTime = lastFailedLoginTime;
-            logger.LogCritical(ILogger_Fields.SECURITY, "Set last failed login time to " + lastFailedLoginTime.ToString("r") + " for " + AccountName);
+            logger.Fatal(LogEventTypes.SECURITY, "Set last failed login time to " + lastFailedLoginTime.ToString("r") + " for " + AccountName);
         }
 
 
@@ -979,7 +979,7 @@ namespace Owasp.Esapi
         protected internal void SetLastLoginTime(DateTime lastLoginTime)
         {
             this.lastLoginTime = lastLoginTime;            
-            logger.LogCritical(ILogger_Fields.SECURITY, "Set last successful login time to " + lastLoginTime.ToString("r") + " for " + AccountName);
+            logger.Fatal(LogEventTypes.SECURITY, "Set last successful login time to " + lastLoginTime.ToString("r") + " for " + AccountName);
         }
 
         /// <summary> 
@@ -991,7 +991,7 @@ namespace Owasp.Esapi
         protected internal void SetLastPasswordChangeTime(DateTime lastPasswordChangeTime)
         {
             this.lastPasswordChangeTime = lastPasswordChangeTime;            
-            logger.LogCritical(ILogger_Fields.SECURITY, "Set last password change time to " + lastPasswordChangeTime.ToString("r") + " for " + AccountName);
+            logger.Fatal(LogEventTypes.SECURITY, "Set last password change time to " + lastPasswordChangeTime.ToString("r") + " for " + AccountName);
         }
 
         /// <summary>
@@ -1009,7 +1009,7 @@ namespace Owasp.Esapi
         public void Unlock()
         {
             this.locked = false;
-            logger.LogSpecial("Account unlocked: " + AccountName, null);
+            logger.Info(LogEventTypes.SECURITY, "Account unlocked: " + AccountName, null);
         }
 
         //FIXME:Enhance - think about having a second "transaction" password for each user
@@ -1029,10 +1029,10 @@ namespace Owasp.Esapi
             {                                
                 SetLastLoginTime(DateTime.Now);
                 failedLoginCount = 0;
-                logger.LogCritical(ILogger_Fields.SECURITY, "Password verified for " + AccountName);
+                logger.Fatal(LogEventTypes.SECURITY, "Password verified for " + AccountName);
                 return true;
             }
-            logger.LogCritical(ILogger_Fields.SECURITY, "Password verification failed for " + AccountName);                        
+            logger.Fatal(LogEventTypes.SECURITY, "Password verification failed for " + AccountName);                        
             SetLastFailedLoginTime(DateTime.Now);
             IncrementFailedLoginCount();
             if (FailedLoginCount >= Esapi.SecurityConfiguration().AllowedLoginAttempts)
@@ -1097,7 +1097,7 @@ namespace Owasp.Esapi
         /// </summary>
         static User()
         {
-            logger = Logger.GetLogger("Esapi", "User");
+            logger = Esapi.Logger();
         }
     }
 }

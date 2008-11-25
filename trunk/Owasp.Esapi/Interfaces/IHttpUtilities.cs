@@ -85,13 +85,9 @@ namespace Owasp.Esapi.Interfaces
 
 
         /// <summary> Adds the current user's CSRF token (see User.GetCSRFToken()) to the URL for purposes of preventing CSRF attacks.
-        /// This method should be used on all URLs to be put into all links and forms the application generates.        
+        /// This method should be used on all URLs to be put into all links and forms the application generates.                
         /// </summary>
-        /// <param name="href"> The URL to append the CSRF token to.
-        /// </param>
-        /// <returns> The updated href with the CSRF token parameter.
-        /// </returns>
-        string AddCsrfToken(string href);
+        void AddCsrfToken();
         
         /// <summary> Checks the CSRF token in the URL (see User.GetCSRFToken()) against the user's CSRF token and throws
         /// an exception if they don't match.
@@ -212,6 +208,24 @@ namespace Owasp.Esapi.Interfaces
         /// <param name="encrypted">The encrypted query string</param>
         /// <returns>The decrypted query string</returns>
         IDictionary DecryptQueryString(String encrypted);
+
+        /// <summary> 
+        /// Format the Source IP address, URL, URL parameters, and all form
+        /// parameters into a string suitable for the log file. Be careful not
+        /// to log sensitive information, and consider masking with the
+        /// logHTTPRequest( List parameterNamesToObfuscate ) method.     
+        /// </summary>
+        void LogHttpRequest();
+
+        /// <summary> Format the Source IP address, URL, URL parameters, and all form
+        /// parameters into a string for the log file. The list of parameters to
+        /// obfuscate should be specified in order to prevent sensitive informatiton
+        /// from being logged. If a null list is provided, then all parameters will
+        /// be logged.
+        /// </summary>
+        /// <param name="parameterNamesToObfuscate">The sensitive parameters to obfuscate in the log entry.
+        /// </param>
+        void LogHttpRequest(IList parameterNamesToObfuscate);
 
     }
 }

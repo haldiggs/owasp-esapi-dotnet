@@ -55,7 +55,7 @@ namespace Owasp.Esapi
         /// </summary>
         static Authenticator()
         {
-            logger = Logger.GetLogger("ESAPI", "Authenticator");
+            logger = Esapi.Logger();
         }
 
         /// <summary> Public constructor for the authenticator class.
@@ -73,7 +73,7 @@ namespace Owasp.Esapi
         protected internal const string USER = "ESAPIUserContextKey";
 
 		/// <summary>The logger. </summary>
-        private static readonly Logger logger;
+        protected static readonly ILogger logger;
 
         /// <summary>The anonymous user </summary>
         // FIXME: AAA is this whole anonymous user concept right?
@@ -207,7 +207,7 @@ namespace Owasp.Esapi
                 user = new User();
                 user.AccountName = accountName;
                 auth.userMap[accountName] = user;
-                logger.LogCritical(ILogger_Fields.SECURITY, "New user created: " + accountName);
+                logger.Fatal(LogEventTypes.SECURITY, "New user created: " + accountName);
             }
             string newHash = auth.HashPassword(password, accountName);
             user.SetHashedPassword(newHash);
@@ -250,7 +250,7 @@ namespace Owasp.Esapi
                 }
                 IUser user = new User(accountName, password1, password2);
                 userMap[accountName.ToLower()] = user;
-                logger.LogCritical(ILogger_Fields.SECURITY, "New user created: " + accountName);
+                logger.Fatal(LogEventTypes.SECURITY, "New user created: " + accountName);
                 SaveUsers();
                 return user;
             }
@@ -307,10 +307,10 @@ namespace Owasp.Esapi
                 }
                 catch (AuthenticationException e)
                 {
-                    logger.LogDebug(ILogger_Fields.SECURITY, "Password generator created weak password: " + newPassword + ". Regenerating.", e);
+                    logger.Debug(LogEventTypes.SECURITY, "Password generator created weak password: " + newPassword + ". Regenerating.", e);
                 }
             }
-            logger.LogCritical(ILogger_Fields.SECURITY, "Strong password generation failed after  " + limit + " attempts");
+            logger.Fatal(LogEventTypes.SECURITY, "Strong password generation failed after  " + limit + " attempts");
             return null;
         }
 
@@ -332,7 +332,7 @@ namespace Owasp.Esapi
             string newPassword = GenerateStrongPassword(oldPassword);
             if (newPassword != null)
             {
-                logger.LogCritical(ILogger_Fields.SECURITY, "Generated strong password for " + user.AccountName);
+                logger.Fatal(LogEventTypes.SECURITY, "Generated strong password for " + user.AccountName);
             }
             return newPassword;
         }
@@ -445,7 +445,7 @@ namespace Owasp.Esapi
                 userMap.Remove(accountName.ToLower());
                 // Beware - the logging engine might reload inadvertently reload the user file before the save completes, overwriting the change!
                 SaveUsers();
-                logger.LogCritical(ILogger_Fields.SECURITY, "User " + accountName + " removed");
+                logger.Fatal(LogEventTypes.SECURITY, "User " + accountName + " removed");
             }
         }
 
@@ -669,7 +669,7 @@ namespace Owasp.Esapi
         /// <summary> Loads the users from a file.
         /// 
         /// </summary>
-        protected internal void LoadUsersIfNecessary()
+        internal void LoadUsersIfNecessary()
         {
             string ResourceDirectory = ((SecurityConfiguration)Esapi.SecurityConfiguration()).ResourceDirectory.FullName;
             if (userDB == null)
@@ -690,14 +690,12 @@ namespace Owasp.Esapi
             LoadUsersImmediately();
         }
 
-
-
         public void LoadUsersImmediately()
         {
             // file was touched so reload it
             lock (this)
             {
-                logger.LogTrace(ILogger_Fields.SECURITY, "Loading users from " + userDB.FullName, null);
+                logger.Trace(LogEventTypes.SECURITY, "Loading users from " + userDB.FullName, null);
 
                 // FIXME: AAA Necessary?
                 // add the Anonymous user to the database
@@ -718,7 +716,7 @@ namespace Owasp.Esapi
                             {
                                 if (map.ContainsKey(user.AccountName))
                                 {
-                                    logger.LogCritical(ILogger_Fields.SECURITY, "Problem in user file. Skipping duplicate user: " + user, null);
+                                    logger.Fatal(LogEventTypes.SECURITY, "Problem in user file. Skipping duplicate user: " + user, null);
                                 }
                                 map[user.AccountName] = user;
                             }
@@ -726,11 +724,11 @@ namespace Owasp.Esapi
                     }
                     userMap = map;
                     this.lastModified = lastModified;
-                    logger.LogTrace(ILogger_Fields.SECURITY, "User file reloaded: " + map.Count, null);
+                    logger.Trace(LogEventTypes.SECURITY, "User file reloaded: " + map.Count, null);
                 }
                 catch (System.Exception e)
                 {
-                    logger.LogCritical(ILogger_Fields.SECURITY, "Failure loading user file: " + userDB.FullName, e);
+                    logger.Fatal(LogEventTypes.SECURITY, "Failure loading user file: " + userDB.FullName, e);
                 }
                 finally
                 {
@@ -743,7 +741,7 @@ namespace Owasp.Esapi
                     }
                     catch (IOException e)
                     {
-                        logger.LogCritical(ILogger_Fields.SECURITY, "Failure closing user file: " + userDB.FullName, e);
+                        logger.Fatal(LogEventTypes.SECURITY, "Failure closing user file: " + userDB.FullName, e);
                     }
                 }
             }
@@ -766,11 +764,11 @@ namespace Owasp.Esapi
                     writer.WriteLine();
                     SaveUsers(writer);
                     writer.Flush();
-                    logger.LogCritical(ILogger_Fields.SECURITY, "User file written to disk");
+                    logger.Fatal(LogEventTypes.SECURITY, "User file written to disk");
                 }
                 catch (IOException e)
                 {
-                    logger.LogCritical(ILogger_Fields.SECURITY, "Problem saving user file " + userDB.FullName, e);
+                    logger.Fatal(LogEventTypes.SECURITY, "Problem saving user file " + userDB.FullName, e);
                     throw new AuthenticationException("Internal Error", "Problem saving user file " + userDB.FullName, e);
                 }
                 finally
@@ -808,7 +806,7 @@ namespace Owasp.Esapi
                         new AuthenticationCredentialsException("Problem saving user", "Skipping save of user " + accountName);
                     }
                 }
-                logger.LogTrace(ILogger_Fields.SECURITY, "User file updated", null);
+                logger.Trace(LogEventTypes.SECURITY, "User file updated", null);
             }
         }
 
@@ -839,7 +837,7 @@ namespace Owasp.Esapi
             IUser user = GetCurrentUser();
             if (user != null && !user.Anonymous)
             {
-                logger.LogWarning(ILogger_Fields.SECURITY, "User requested relogin. Performing logout then authentication");
+                logger.Warning(LogEventTypes.SECURITY, "User requested relogin. Performing logout then authentication");
                 user.Logout();
             }
 

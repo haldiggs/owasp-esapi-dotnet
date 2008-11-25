@@ -15,6 +15,7 @@
 /// <created>  2008 </created>
 
 using System;
+using System.Diagnostics;
 using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi
@@ -141,7 +142,7 @@ namespace Owasp.Esapi
 		
 		private static IIntrusionDetector intrusionDetector = null;
 		
-		//    private static ILogger logger = null;
+		private static ILogger logger = null;
 		
 		private static IRandomizer randomizer = null;
 		
@@ -235,17 +236,20 @@ namespace Owasp.Esapi
 		{
 			if (Esapi.intrusionDetector == null)
 				Esapi.intrusionDetector = new IntrusionDetector();
-			return Esapi.intrusionDetector;
+			return Esapi.intrusionDetector;            
 		}
-		
-		//    /**
-		//     * @return the logger
-		//     */
-		//    public static  ILogger getLogger() {
-		//        if (Esapi.logger == null)
-		//            return Logger();
-		//        return Esapi.logger;
-		//    }
+
+        /// <summary>
+        /// Returns a logger based on the reference implementation. Supports the hierarchical logging structure by 
+        /// determining the calling class using reflection. This result can be cached in the calling class for improved 
+        /// performance.
+        /// </summary>
+        /// <returns>An implementation of the Logger class</returns>
+        public static ILogger Logger()
+        {
+            String callingClassName = new StackTrace().GetFrame(1).GetType().FullName;
+            return new Logger(callingClassName);
+        }
 		//
 		//    /**
 		//     * @param logger the logger to set

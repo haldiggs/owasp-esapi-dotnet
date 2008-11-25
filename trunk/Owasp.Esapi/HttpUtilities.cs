@@ -65,7 +65,7 @@ namespace Owasp.Esapi
 		}
 		
 		/// <summary>The logger. </summary>
-		private static readonly Logger logger;
+		private static readonly ILogger logger;
 		
         
         private CSRFGuard csrfGuard;
@@ -274,18 +274,22 @@ namespace Owasp.Esapi
         /// <summary> Adds the current user's CSRF token (see User.GetCSRFToken()) to the URL for purposes of preventing CSRF attacks.
         /// This method should be used on all URLs to be put into all links and forms the application generates.        
         /// </summary>
-        /// <param name="href"> The URL to append the CSRF token to.
-        /// </param>
         /// <returns> The updated href with the CSRF token parameter.
         /// </returns>
         /// <seealso cref="Owasp.Esapi.Interfaces.IHttpUtilities.AddCsrfToken(string)">
         /// </seealso>
-        public string AddCsrfToken(string href)
+        public void AddCsrfToken()
         {
-            IHttpContext context = ((Authenticator)Esapi.Authenticator()).Context;            
-            csrfGuard = new CSRFGuard(context.ApplicationInstance);
-            token = new Token(csrfGuard.CsrfTokenName, csrfGuard.CsrfTokenValue);
-            return null;
+            IHttpResponse response = ((Authenticator)Esapi.Authenticator()).CurrentResponse;
+            if (response.ContentType.StartsWith("text/html"))
+            {
+                // TODO:  create ConfigurationException to deal with bad configs
+                Type type = Type.GetType(App.Configuration.ResponseFilter, true);
+                ResponseFilterBase respFilter =
+                    Activator.CreateInstance(type, new object[3] { response.Filter, token.Name, token.Value })
+                    as ResponseFilterBase;
+                response.Filter = respFilter;
+            }
         }
 		
         /// <summary> Checks the CSRF token in the URL (see User.GetCSRFToken()) against the user's CSRF token and throws
@@ -295,24 +299,9 @@ namespace Owasp.Esapi
         /// </seealso>
 		public void  VerifyCsrfToken()
 		{           
-            IHttpResponse response = ((Authenticator) Esapi.Authenticator()).CurrentResponse;
-            try
-            {
-                if (response.ContentType.StartsWith("text/html"))
-                {
-                    // TODO:  create ConfigurationException to deal with bad configs
-                    Type type = Type.GetType(App.Configuration.ResponseFilter, true);
-                    ResponseFilterBase respFilter =
-                        Activator.CreateInstance(type, new object[3] { response.Filter, token.Name, token.Value })
-                        as ResponseFilterBase;                    
-                    response.Filter = respFilter;
-                }
-            }
-            catch (Exception e)
-            {
-                throw new IntrusionException("Authentication failed", "Possibly forged HTTP request without proper CSRF token detected", e);                                
-            }
-            
+           IHttpContext context = ((Authenticator)Esapi.Authenticator()).Context;
+           csrfGuard = new CSRFGuard(context.ApplicationInstance);
+           token = new Token(csrfGuard.CsrfTokenName, csrfGuard.CsrfTokenValue);            
 		}
 		
         /// <summary>
@@ -465,7 +454,7 @@ namespace Owasp.Esapi
                             }
                             throw new ValidationUploadException("Upload only simple filenames with the following extensions "  + extensions,"Invalid filename for upload");
                         }
-                        logger.LogCritical(ILogger_Fields.SECURITY, "File upload requested: " + filename);
+                        logger.Fatal(LogEventTypes.SECURITY, "File upload requested: " + filename);
                         FileInfo f = new FileInfo(finalDir.ToString() +  "\\" + filename);
                         if (f.Exists)
                         {
@@ -482,10 +471,10 @@ namespace Owasp.Esapi
                         }
                         file.SaveAs(f.FullName);
                         newFiles.Add(f);
-                        logger.LogCritical(ILogger_Fields.SECURITY, "File successfully uploaded: " + f);                        
+                        logger.Fatal(LogEventTypes.SECURITY, "File successfully uploaded: " + f);                        
                     }
                 }
-                logger.LogCritical(ILogger_Fields.SECURITY, "File successfully uploaded: ");
+                logger.Fatal(LogEventTypes.SECURITY, "File successfully uploaded: ");
                 //session.Add("progress", System.Convert.ToString(0));
             }
 
@@ -629,7 +618,7 @@ namespace Owasp.Esapi
 		/// </summary>
 		/// <seealso cref="Owasp.Esapi.Interfaces.IHttpUtilities.SetNoCacheHeaders()">
 		/// </seealso>
-		public  void  SetNoCacheHeaders()
+		public void SetNoCacheHeaders()
 		{
 			IHttpResponse response = ((Authenticator) Esapi.Authenticator()).CurrentResponse;
             if (response == null) throw new NullReferenceException("Can't set response header until current response is set, typically via login");
@@ -643,14 +632,55 @@ namespace Owasp.Esapi
 			response.AppendHeader("Pragma", "no-cache");
 			response.AppendHeader("Expires", DateTime.MinValue.ToString("r"));
 		}
-        
 
+        public void LogHttpRequest()
+        {
+            LogHttpRequest(null);
+        }
+
+        /// <summary> Formats an HTTP request into a log suitable string. This implementation logs the remote host IP address (or
+        /// hostname if available), the request method (GET/POST), the URL, and all the querystring and form parameters. All
+        /// the paramaters are presented as though they were in the URL even if they were in a form. Any parameters that
+        /// match items in the parameterNamesToObfuscate are shown as eight asterisks.
+        /// 
+        /// </summary>
+        /// <param name="parameterNamesToObfuscate">The sensitive parameters to obfuscate in the log entry.
+        /// </param>
+        /// <seealso cref="Owasp.Esapi.Interfaces.IHttpUtilities.LogHttpRequest(IList)">
+        /// </seealso>
+        public virtual void LogHttpRequest(IList parameterNamesToObfuscate)
+        {
+            IHttpRequest request = ((Authenticator)Esapi.Authenticator()).Context.Request;
+            StringBuilder parameters = new StringBuilder();
+            IEnumerator i = request.Params.Keys.GetEnumerator();
+            while (i.MoveNext())
+            {
+                string key = (string)i.Current;
+                // Note: Do we need to deal with multiple identical values here?
+                string value = request.Params[key];
+                parameters.Append(key + "=");
+                if (parameterNamesToObfuscate != null && parameterNamesToObfuscate.Contains(key))
+                {
+                    parameters.Append("********");
+                }
+                else
+                {
+                    parameters.Append(value);
+                }
+                if (i.MoveNext())
+                    parameters.Append("&");
+            }
+            string msg = request.RequestType + " " + request.Url + (parameters.Length > 0 ? "?" + parameters : "");
+            logger.Info(LogEventTypes.SECURITY, msg);
+        }
+        
+        
         /// <summary>
         /// Static constructor.
         /// </summary>
 		static HttpUtilities()
 		{
-			logger = Logger.GetLogger("Esapi", "HttpUtilities");
+			logger = Esapi.Logger();
 		}
     }
 }

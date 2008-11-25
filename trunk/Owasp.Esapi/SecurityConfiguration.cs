@@ -19,7 +19,6 @@ using System.IO;
 using Owasp.Esapi.Interfaces;
 using System.Text.RegularExpressions;
 using System.Collections;
-using log4net.Core;
 using System.Collections.Specialized;
 
 namespace Owasp.Esapi
@@ -254,28 +253,28 @@ namespace Owasp.Esapi
         /// <summary>
         /// This value determines what level will be used for logging.
         /// </summary>
-        public Level LogLevel
+        public int LogLevel
         {
             // FIXME: ENHANCE integrate log level configuration
 
             get
             {
                 string level = properties.Get(LOG_LEVEL);
-                if (level.ToUpper().Equals("TRACE".ToUpper()))
-                    return Level.Trace;
+                if (level.ToUpper().Equals("FATAL".ToUpper()))
+                    return LogLevels.FATAL;
                 if (level.ToUpper().Equals("ERROR".ToUpper()))
-                    return Level.Error;
-                if (level.ToUpper().Equals("SEVERE".ToUpper()))
-                    return Level.Severe;
+                    return LogLevels.ERROR;
                 if (level.ToUpper().Equals("WARNING".ToUpper()))
-                    return Level.Warn;
-                if (level.ToUpper().Equals("SUCCESS".ToUpper()))
-                    return Level.Info;
+                    return LogLevels.WARN;
+                if (level.ToUpper().Equals("INFO".ToUpper()))
+                    return LogLevels.INFO; 
                 if (level.ToUpper().Equals("DEBUG".ToUpper()))
-                    return Level.Debug;
-                if (level.ToUpper().Equals("NONE".ToUpper()))
-                    return Level.Off;
-                return Level.All;
+                    return LogLevels.DEBUG;
+                if (level.ToUpper().Equals("TRACE".ToUpper()))
+                    return LogLevels.TRACE;
+                if (level.ToUpper().Equals("OFF".ToUpper()))
+                    return LogLevels.OFF;
+                return LogLevels.ALL;
             }
 
         }
@@ -342,6 +341,9 @@ namespace Owasp.Esapi
 
         }
 
+        /// <summary>
+        /// If true, SSL is required for all pages
+        /// </summary>
         public bool RequireSecureChannel
         {
             get
@@ -357,7 +359,7 @@ namespace Owasp.Esapi
         private IDictionary regexMap = null;
 
         /// <summary>The logger. </summary>                
-        private static readonly Logger logger;
+        private static readonly ILogger logger;
 
         /// <summary>
         /// The key for the resources directory property.
@@ -398,9 +400,14 @@ namespace Owasp.Esapi
 
         private const string REQUIRE_SECURE_CHANNEL = "RequireSecureChannel";
 
-        // FIXME: Update to standard pattern
+        /// <summary>
+        /// The maximum length of a redirect URL
+        /// </summary>
         protected const int MAX_REDIRECT_LOCATION = 1000;
     
+        /// <summary>
+        /// The maximum length of a file name
+        /// </summary>
         protected const int MAX_FILE_NAME_LENGTH = 1000;
     
     
@@ -426,22 +433,22 @@ namespace Owasp.Esapi
             {
                 properties = (NameValueCollection)System.Configuration.ConfigurationManager.GetSection("esapi");
                 resourceDirectory = properties.Get("ResourceDirectory");
-                logger.LogSpecial("Loaded ESAPI properties from espai/authentication", null);
+                LogSpecial("Loaded ESAPI properties from espai/authentication", null);
             }
             catch (System.Exception e)
             {
-                logger.LogSpecial("Can't load ESAPI properties from espai/authentication", e);
+                LogSpecial("Can't load ESAPI properties from espai/authentication", e);
             }          
 
-            logger.LogSpecial("  ========Master Configuration========", null);
+            LogSpecial("  ========Master Configuration========", null);
             
             IEnumerator i = properties.GetEnumerator();            
             while (i.MoveNext())
             {                
                 string key = (string)i.Current;                
-                logger.LogSpecial("  |   " + key + "=" + properties[(string)key], null);
+                LogSpecial("  |   " + key + "=" + properties[(string)key], null);
             }
-            logger.LogSpecial("  ========Master Configuration========", null);            
+            LogSpecial("  ========Master Configuration========", null);            
 
             // cache regular expressions            
             regexMap = new Hashtable();
@@ -512,12 +519,28 @@ namespace Owasp.Esapi
             return regex;
         }
 
+
+        /// <summary> This special method doesn't include the current user's identity, and is only used during system initialization to
+        /// prevent loops with the Authenticator.
+        /// 
+        /// </summary>
+        /// <param name="message">The message to log.
+        /// </param>
+        /// <param name="throwable">The exception to log.
+        /// </param>
+        private void LogSpecial(string message, Exception throwable)
+        {
+            string msg = "SECURITY" + ": " + "Esapi" + "/" + "none" + " -- " + message;
+            System.Console.WriteLine(msg + "\n" + (throwable != null ? throwable.Message : ""));
+        }
+
+        
         /// <summary>
         /// Static constructor
         /// </summary>
         static SecurityConfiguration()
         {
-            logger = Logger.GetLogger("ESAPI", "SecurityConfiguration");
+            logger = Esapi.Logger();
         }
     }
 }

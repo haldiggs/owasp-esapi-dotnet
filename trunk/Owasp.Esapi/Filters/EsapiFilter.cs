@@ -31,7 +31,7 @@ namespace Owasp.Esapi.Filters
     public class EsapiFilter : IHttpModule
     {
 
-        private static readonly Logger logger = Logger.GetLogger("ESAPIFilter", "ESAPIFilter");
+        private static readonly ILogger logger = Esapi.Logger();
 
         private static readonly string[] ignore = { "password" };
 
@@ -45,24 +45,25 @@ namespace Owasp.Esapi.Filters
             try
             {
                 //// figure out who the current user is                
-                //try
-                //{
-                //    ((Authenticator) Esapi.Authenticator()).Context = WebContext.Cast(HttpContext.Current);                    
-                //    Esapi.Authenticator().Login();
-                //}
-                //catch (AuthenticationException ex)
-                //{
-                //    ((Authenticator)Esapi.Authenticator()).Logout();
-                //    // FIXME: use safeforward!
-                //    // FIXME: make configurable with config
-                //    // int position = request.Url.ToString().LastIndexOf('/') + 1;
-                //    // string page = request.Url.ToString().Substring(position, request.Url.ToString().Length - position);
-                //    // if (!page.ToLower().Equals("default.aspx"))
-                //    // {
-                //    //    response.Redirect("default.aspx");   
-                //    // }                    
-                //    // return;
-                //}
+                try
+                {
+                (                    
+                    (Authenticator) Esapi.Authenticator()).Context = WebContext.Cast(HttpContext.Current);                    
+                    Esapi.Authenticator().Login();
+                }
+                catch (AuthenticationException ex)
+                {
+                    ((Authenticator)Esapi.Authenticator()).Logout();
+                    // FIXME: use safeforward!
+                    // FIXME: make configurable with config
+                    // int position = request.Url.ToString().LastIndexOf('/') + 1;
+                    // string page = request.Url.ToString().Substring(position, request.Url.ToString().Length - position);
+                    // if (!page.ToLower().Equals("default.aspx"))
+                    // {
+                    //    response.Redirect("default.aspx");   
+                    // }                    
+                    // return;
+                }
 
                 //// log this request, obfuscating any parameter named password
                 ////logger.LogHttpRequest(new ArrayList (ignore));
@@ -70,14 +71,14 @@ namespace Owasp.Esapi.Filters
                 //// check access to this URL
                 //if (!Esapi.AccessController().IsAuthorizedForUrl(request.RawUrl.ToString()))
                 //{
-                //    context.Items["message"> = "Unauthorized";
+                //    context.Items["message"] = "Unauthorized";
                 //    context.Server.Transfer("login.aspx");                        
                 //}
-                //// verify if this request meets the baseline input requirements                
-                //if (!Esapi.Validator().IsValidHttpRequest(WebContext.Cast(request)))
-                //{
-                //    context.Items["message"> = "Validation error";
-                //}
+                // verify if this request meets the baseline input requirements                
+                if (!Esapi.Validator().IsValidHttpRequest(WebContext.Cast(request)))
+                {
+                    context.Items["message"] = "Validation error";
+                }
 
                 // check for CSRF attacks and set appropriate caching headers
                 IHttpUtilities utils = Esapi.HttpUtilities();
@@ -89,9 +90,15 @@ namespace Owasp.Esapi.Filters
             }
             catch (Exception ex)
             {
-                logger.LogSpecial("Security error in ESAPI Filter", ex);
+                logger.Info(LogEventTypes.SECURITY, "Security error in ESAPI Filter", ex);
                 response.Output.WriteLine("<H1>Security Error</H1>");
             }
+        }
+
+        private void Application_ReleaseRequestState(object sender, EventArgs objArgs)
+        {
+            IHttpUtilities utils = Esapi.HttpUtilities();
+            utils.AddCsrfToken();
         }
     
         /// <summary>
@@ -107,7 +114,8 @@ namespace Owasp.Esapi.Filters
         /// <param name="context">The HTTP application context.</param>
         public void Init(HttpApplication context)
         {
-            context.BeginRequest += new EventHandler(Application_BeginRequest);            
+            context.BeginRequest += new EventHandler(Application_BeginRequest);
+            context.ReleaseRequestState += new EventHandler(Application_ReleaseRequestState);
         }
 
         #endregion

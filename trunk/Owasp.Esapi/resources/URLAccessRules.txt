@@ -2,7 +2,13 @@
 #
 
 /                | any       | deny  | default deny
-/default.aspx    | any       | allow |
-/login.aspx		 | any       | allow |
+/nobody          | any       | deny  |
+/ESAPITest       | any       | allow |
+/ESAPITest/admin | admin     | allow |
+/AspectUpload/*  | any       | allow |
+/test/admin      | admin     | allow |
+/test/user       | user      | allow |
+/test/none       | any       | deny  |
+/test/all        | any       | allow |
 *.gif            | any       | allow |
 *.exe            | any       | deny

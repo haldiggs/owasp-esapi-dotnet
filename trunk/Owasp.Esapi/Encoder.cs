@@ -41,7 +41,7 @@ namespace Owasp.Esapi
     {
         static Encoder()
 		{
-			logger = Logger.GetLogger("ESAPI", "Encoder");
+			logger = Esapi.Logger();
 			CHAR_LETTERS = Randomizer.Union(CHAR_LOWERS, CHAR_UPPERS);
 			CHAR_ALPHANUMERICS = Randomizer.Union(CHAR_LETTERS, CHAR_DIGITS);
             
@@ -123,7 +123,7 @@ namespace Owasp.Esapi
         private static readonly char[] IMMUNE_XPATH = new char[] { ',', '.', '-', '_', ' ' };
 
         /// <summary>The logger. </summary>
-        private static readonly Logger logger;
+        private static readonly ILogger logger;
         
         private static Hashtable characterToEntityMap;
         
@@ -885,7 +885,7 @@ namespace Owasp.Esapi
                             catch (System.FormatException e)
                             {
                                 // invalid character - return null
-                                Encoder.logger.LogWarning(ILogger_Fields.SECURITY, "Invalid numeric entity encoding &" + possible + ";");
+                                Encoder.logger.Warning(LogEventTypes.SECURITY, "Invalid numeric entity encoding &" + possible + ";");
                             }
                         }
                     }

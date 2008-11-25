@@ -59,7 +59,7 @@ namespace Owasp.Esapi
         internal CspParameters asymmetricKeyPair;
 
         /// <summary>The logger. </summary>
-        private static readonly Logger logger;
+        private static readonly ILogger logger;
 
         // FIXME: AAA need global scrub of what methods need to log
 
@@ -368,7 +368,7 @@ namespace Owasp.Esapi
         }
         static Encryptor()
         {
-            logger = Logger.GetLogger("ESAPI", "Encryptor");
+            logger = Esapi.Logger();
         }
     }
 }

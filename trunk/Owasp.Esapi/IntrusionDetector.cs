@@ -40,7 +40,7 @@ namespace Owasp.Esapi
     public class IntrusionDetector : IIntrusionDetector
     {
         /// <summary>The logger. </summary>
-        private static readonly Logger logger;
+        private static readonly ILogger logger;
 
         /// <summary>
         /// Public constructor.
@@ -64,11 +64,11 @@ namespace Owasp.Esapi
         {
             if (e is EnterpriseSecurityException)
             {
-                logger.LogWarning(ILogger_Fields.SECURITY, ((EnterpriseSecurityException)e).LogMessage, e);
+                logger.Warning(LogEventTypes.SECURITY, ((EnterpriseSecurityException)e).LogMessage, e);
             }
             else
             {                
-                logger.LogWarning(ILogger_Fields.SECURITY, e.Message, e);
+                logger.Warning(LogEventTypes.SECURITY, e.Message, e);
             }
 
             // add the exception to the current user, which may trigger a detector 
@@ -108,7 +108,7 @@ namespace Owasp.Esapi
         /// </seealso>
         public virtual void AddEvent(string eventName)
         {
-            logger.LogWarning(ILogger_Fields.SECURITY, "Security event " + eventName + " received");
+            logger.Warning(LogEventTypes.SECURITY, "Security event " + eventName + " received");
 
             // add the event to the current user, which may trigger a detector 
             User user = (User) Esapi.Authenticator().GetCurrentUser();
@@ -142,7 +142,7 @@ namespace Owasp.Esapi
         {
             if (action.Equals("log"))
             {
-                logger.LogCritical(ILogger_Fields.SECURITY, "INTRUSION - " + message);
+                logger.Fatal(LogEventTypes.SECURITY, "INTRUSION - " + message);
             }
             if (action.Equals("disable"))
             {
@@ -160,7 +160,7 @@ namespace Owasp.Esapi
         /// </summary>
         static IntrusionDetector()
         {
-            logger = Logger.GetLogger("ESAPI", "IntrusionDetector");
+            logger = Esapi.Logger();
         }
     }
 }

@@ -59,6 +59,8 @@
     <Compile Include="AccessController.cs" />
     <Compile Include="AccessReferenceMap.cs" />
     <Compile Include="AntiXssEncoder.cs" />
+    <Compile Include="AspNetAuthenticator.cs" />
+    <Compile Include="AspNetUser.cs" />
     <Compile Include="Authenticator.cs" />
     <Compile Include="Encoder.cs" />
     <Compile Include="EncryptedProperties.cs" />
@@ -111,8 +113,6 @@
   <ItemGroup>
     <Content Include="resources\antisamy.xml" />
     <Content Include="resources\DataAccessRules.txt" />
-    <Content Include="resources\destination.f40f9bc2-6eae-494a-84db-2faaf3be15fc.txt" />
-    <Content Include="resources\destination.txt" />
     <Content Include="resources\FileAccessRules.txt" />
     <Content Include="resources\FunctionAccessRules.txt" />
     <Content Include="resources\multipart.txt" />
