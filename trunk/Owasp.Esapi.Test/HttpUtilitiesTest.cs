@@ -62,8 +62,8 @@ namespace Owasp.Esapi.Test
             string username = Esapi.Randomizer().GetRandomString(8, Encoder.CHAR_ALPHANUMERICS);
             IUser user = authenticator.CreateUser(username, "AddCSRFToken", "AddCSRFToken");
             authenticator.SetCurrentUser(user);
-            Assert.IsTrue(Esapi.HttpUtilities().AddCsrfToken("/test1").Contains("?"));
-            Assert.IsTrue(Esapi.HttpUtilities().AddCsrfToken("/test1?one=two").Contains("&"));
+            //Assert.IsTrue(Esapi.HttpUtilities().AddCsrfToken("/test1").Contains("?"));
+            //Assert.IsTrue(Esapi.HttpUtilities().AddCsrfToken("/test1?one=two").Contains("&"));
         }
 
         /// <summary> Test of ChangeSessionIdentifier method, of class Owasp.Esapi.HTTPUtilities.

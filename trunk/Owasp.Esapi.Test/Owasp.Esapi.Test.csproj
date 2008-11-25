@@ -82,9 +82,6 @@
     <None Include="bin\Debug\.svn\entries" />
     <None Include="bin\Debug\.svn\format" />
     <None Include="bin\Debug\Owasp.Esapi.Test.dll.config" />
-    <None Include="resources\ESAPI.properties" />
-    <None Include="resources\keystore" />
-    <None Include="resources\test.properties" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HttpInterfaces\HttpInterfaces.csproj">
@@ -113,14 +110,6 @@
     <Content Include="bin\Debug\Owasp.Esapi.pdb" />
     <Content Include="bin\Debug\Owasp.Esapi.Test.dll" />
     <Content Include="bin\Debug\Owasp.Esapi.Test.pdb" />
-    <Content Include="resources\antisamy-esapi.xml" />
-    <Content Include="resources\DataAccessRules.txt" />
-    <Content Include="resources\FileAccessRules.txt" />
-    <Content Include="resources\FunctionAccessRules.txt" />
-    <Content Include="resources\multipart.txt" />
-    <Content Include="resources\ServiceAccessRules.txt" />
-    <Content Include="resources\URLAccessRules.txt" />
-    <Content Include="resources\users.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Debug\.svn\prop-base\" />

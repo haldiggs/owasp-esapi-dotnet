@@ -19,6 +19,7 @@ using NUnit.Framework;
 using Owasp.Esapi.Errors;
 using System.IO;
 using Owasp.Esapi.Interfaces;
+using System.Text;
 
 namespace Owasp.Esapi.Test
 {
@@ -316,6 +317,7 @@ namespace Owasp.Esapi.Test
                 }
             }
         }
+        
         public bool ArraysAreEqual(byte[] a1, byte[] a2)
         {            
             if (a1.Length != a2.Length)

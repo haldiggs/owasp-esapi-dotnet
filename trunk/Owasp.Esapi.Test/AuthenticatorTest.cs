@@ -88,7 +88,7 @@ namespace Owasp.Esapi.Test
                     System.Console.Out.WriteLine(e.StackTrace);
                 }
                 Esapi.Authenticator().SetCurrentUser(u);
-                Logger.GetLogger("test", "test").LogCritical(Owasp.Esapi.Interfaces.ILogger_Fields.SECURITY, "Got current user");
+                Esapi.Logger().Fatal(Owasp.Esapi.Interfaces.LogEventTypes.SECURITY, "Got current user");
             }
         }
 

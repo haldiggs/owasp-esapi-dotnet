@@ -19,6 +19,7 @@ using NUnit.Framework;
 using Owasp.Esapi.Test.Http;
 using HttpInterfaces;
 using System.Collections;
+using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi.Test
 {
@@ -31,6 +32,8 @@ namespace Owasp.Esapi.Test
     public class LoggerTest
     {
 
+        private static readonly ILogger logger = Esapi.Logger();
+        
         /// <summary> Instantiates a new logger test.
         /// 
         /// </summary>
@@ -68,33 +71,33 @@ namespace Owasp.Esapi.Test
             MockHttpContext context = new MockHttpContext();
             ((Authenticator)Esapi.Authenticator()).Context = context;
             IHttpRequest request = context.Request;
-            Logger.GetLogger("logger", "logger").LogHttpRequest(new ArrayList(ignore));
+            Esapi.HttpUtilities().LogHttpRequest(new ArrayList(ignore));
             request.Params.Add("one", "one");
             request.Params.Add("two", "two1");
             request.Params.Add("two", "two2");
             request.Params.Add("password", "jwilliams");
-            Logger.GetLogger("logger", "logger").LogHttpRequest(new ArrayList(ignore));
+            Esapi.HttpUtilities().LogHttpRequest(new ArrayList(ignore));
         }
 
-        /// <summary> Test of LogSuccess method, of class Owasp.Esapi.Logger.</summary>
+        /// <summary> Test of Info method, of class Owasp.Esapi.Logger.</summary>
         [Test]
-        public void Test_LogSuccess()
+        public void Test_Info()
         {
-            System.Console.Out.WriteLine("LogSuccess");
-            Logger.GetLogger("app", "mod").LogSuccess(Owasp.Esapi.Interfaces.ILogger_Fields.SECURITY, "test message");
-            Logger.GetLogger("app", "mod").LogSuccess(Owasp.Esapi.Interfaces.ILogger_Fields.SECURITY, "test message", null);
-            Logger.GetLogger("app", "mod").LogSuccess(Owasp.Esapi.Interfaces.ILogger_Fields.SECURITY, "%3escript%3f test message", null);
-            Logger.GetLogger("app", "mod").LogSuccess(Owasp.Esapi.Interfaces.ILogger_Fields.SECURITY, "<script> test message", null);
+            System.Console.Out.WriteLine("Info");
+            logger.Info(LogEventTypes.SECURITY, "test message");
+            logger.Info(LogEventTypes.SECURITY, "test message", null);
+            logger.Info(LogEventTypes.SECURITY, "%3escript%3f test message", null);
+            logger.Info(LogEventTypes.SECURITY, "<script> test message", null);
         }
 
 
-        /// <summary> Test of LogTrace method, of class Owasp.Esapi.Logger.</summary>
+        /// <summary> Test of Trace method, of class Owasp.Esapi.Logger.</summary>
         [Test]
-        public void Test_LogTrace()
+        public void Test_Trace()
         {
-            System.Console.Out.WriteLine("LogTrace");
-            Logger.GetLogger("app", "mod").LogTrace(Owasp.Esapi.Interfaces.ILogger_Fields.SECURITY, "test message");
-            Logger.GetLogger("app", "mod").LogTrace(Owasp.Esapi.Interfaces.ILogger_Fields.SECURITY, "test message", null);
+            System.Console.Out.WriteLine("Trace");
+            logger.Trace(Owasp.Esapi.Interfaces.LogEventTypes.SECURITY, "test message");
+            logger.Trace(Owasp.Esapi.Interfaces.LogEventTypes.SECURITY, "test message", null);
         }
 
         /// <summary> Test of LogDebug method, of class Owasp.Esapi.Logger.</summary>
@@ -102,35 +105,35 @@ namespace Owasp.Esapi.Test
         public void Test_LogDebug()
         {
             System.Console.Out.WriteLine("logDebug");
-            Logger.GetLogger("app", "mod").LogDebug(Owasp.Esapi.Interfaces.ILogger_Fields.SECURITY, "test message");
-            Logger.GetLogger("app", "mod").LogDebug(Owasp.Esapi.Interfaces.ILogger_Fields.SECURITY, "test message", null);
+            logger.Debug(Owasp.Esapi.Interfaces.LogEventTypes.SECURITY, "test message");
+            logger.Debug(Owasp.Esapi.Interfaces.LogEventTypes.SECURITY, "test message", null);
         }
 
-        /// <summary> Test of LogError method, of class Owasp.Esapi.Logger.</summary>
+        /// <summary> Test of Error method, of class Owasp.Esapi.Logger.</summary>
         [Test]
-        public void Test_LogError()
+        public void Test_Error()
         {
-            System.Console.Out.WriteLine("logError");
-            Logger.GetLogger("app", "mod").LogError(Owasp.Esapi.Interfaces.ILogger_Fields.SECURITY, "test message");
-            Logger.GetLogger("app", "mod").LogError(Owasp.Esapi.Interfaces.ILogger_Fields.SECURITY, "test message", null);
+            System.Console.Out.WriteLine("Error");
+            logger.Error(Owasp.Esapi.Interfaces.LogEventTypes.SECURITY, "test message");
+            logger.Error(Owasp.Esapi.Interfaces.LogEventTypes.SECURITY, "test message", null);
         }
 
-        /// <summary> Test of LogWarning method, of class Owasp.Esapi.Logger.</summary>
+        /// <summary> Test of Warning method, of class Owasp.Esapi.Logger.</summary>
         [Test]
-        public void Test_LogWarning()
+        public void Test_Warning()
         {
-            System.Console.Out.WriteLine("LogWarning");
-            Logger.GetLogger("app", "mod").LogWarning(Owasp.Esapi.Interfaces.ILogger_Fields.SECURITY, "test message");
-            Logger.GetLogger("app", "mod").LogWarning(Owasp.Esapi.Interfaces.ILogger_Fields.SECURITY, "test message", null);
+            System.Console.Out.WriteLine("Warning");
+            logger.Warning(Owasp.Esapi.Interfaces.LogEventTypes.SECURITY, "test message");
+            logger.Warning(Owasp.Esapi.Interfaces.LogEventTypes.SECURITY, "test message", null);
         }
 
-        /// <summary> Test of LogCritical method, of class Owasp.Esapi.Logger.</summary>
+        /// <summary> Test of Fatal method, of class Owasp.Esapi.Logger.</summary>
         [Test]
-        public void Test_LogCritical()
+        public void Test_Fatal()
         {
-            System.Console.Out.WriteLine("LogCritical");
-            Logger.GetLogger("app", "mod").LogCritical(Owasp.Esapi.Interfaces.ILogger_Fields.SECURITY, "test message");
-            Logger.GetLogger("app", "mod").LogCritical(Owasp.Esapi.Interfaces.ILogger_Fields.SECURITY, "test message", null);
+            System.Console.Out.WriteLine("Fatal");
+            logger.Fatal(Owasp.Esapi.Interfaces.LogEventTypes.SECURITY, "test message");
+            logger.Fatal(Owasp.Esapi.Interfaces.LogEventTypes.SECURITY, "test message", null);
         }
     }
 }
