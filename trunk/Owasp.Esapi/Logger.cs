@@ -72,7 +72,6 @@ namespace Owasp.Esapi
         
         /// <summary> Log the message after optionally encoding any special characters that might inject into an HTML based log viewer.
         /// This method accepts an exception.
-        /// 
         /// </summary>
         /// <param name="type">The type of event.
         /// </param>
