@@ -195,5 +195,34 @@ namespace Owasp.Esapi.Test
                 // expected
             }
         }
+
+
+        /// <summary> Test of decrypt method, of class Owasp.Esapi.Encryptor.</summary>
+        [Test]
+        public void Test_MulitpleInstances()
+        {
+            System.Console.Out.WriteLine("multiple instances");
+            IEncryptor encryptor1 = new Encryptor();
+            IEncryptor encryptor2 = new Encryptor();
+            IEncryptor decryptor1 = new Encryptor();
+            IEncryptor decryptor2 = new Encryptor();
+            
+            try
+            {
+                string plaintext = "test123";
+                string ciphertext1 = encryptor1.Encrypt(plaintext);
+                string ciphertext2 = encryptor2.Encrypt(plaintext);
+                Assert.AreNotEqual(ciphertext1, ciphertext2);
+                string plaintext1 = decryptor1.Decrypt(ciphertext1);
+                string plaintext2 = decryptor2.Decrypt(ciphertext2);
+                Assert.AreEqual(plaintext1, plaintext2);
+            }
+            
+            catch (EncryptionException e)
+            {
+                Assert.Fail();
+            }
+        }
+        
     }
 }
