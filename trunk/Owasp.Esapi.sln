@@ -13,6 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencie
 		Dependencies\HtmlAgilityPack.dll = Dependencies\HtmlAgilityPack.dll
 		Dependencies\log4net.dll = Dependencies\log4net.dll
 		Dependencies\log4net.xml = Dependencies\log4net.xml
+		Dependencies\NGenerics.dll = Dependencies\NGenerics.dll
 		Dependencies\nunit.core.dll = Dependencies\nunit.core.dll
 		Dependencies\nunit.core.interfaces.dll = Dependencies\nunit.core.interfaces.dll
 		Dependencies\nunit.framework.dll = Dependencies\nunit.framework.dll
