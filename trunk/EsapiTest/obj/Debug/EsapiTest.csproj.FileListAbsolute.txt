@@ -1,9 +1,0 @@
-C:\Documents and Settings\Consultant\My Documents\Visual Studio 2008\Projects\Owasp\EsapiTest\obj\Debug\ResolveAssemblyReference.cache
-C:\Documents and Settings\Consultant\My Documents\Visual Studio 2008\Projects\Owasp\EsapiTest\bin\Debug\EsapiTest.dll
-C:\Documents and Settings\Consultant\My Documents\Visual Studio 2008\Projects\Owasp\EsapiTest\bin\Debug\EsapiTest.pdb
-C:\Documents and Settings\Consultant\My Documents\Visual Studio 2008\Projects\Owasp\EsapiTest\bin\Debug\Owasp.Esapi.dll
-C:\Documents and Settings\Consultant\My Documents\Visual Studio 2008\Projects\Owasp\EsapiTest\bin\Debug\log4net.dll
-C:\Documents and Settings\Consultant\My Documents\Visual Studio 2008\Projects\Owasp\EsapiTest\bin\Debug\Owasp.Esapi.pdb
-C:\Documents and Settings\Consultant\My Documents\Visual Studio 2008\Projects\Owasp\EsapiTest\obj\Debug\EsapiTest.dll
-C:\Documents and Settings\Consultant\My Documents\Visual Studio 2008\Projects\Owasp\EsapiTest\obj\Debug\EsapiTest.pdb
-C:\Documents and Settings\Consultant\My Documents\Visual Studio 2008\Projects\Owasp\EsapiTest\bin\Debug\EsapiTest.dll.config
