@@ -38,7 +38,7 @@ namespace Owasp.Esapi.Swingset
                 ex = ex.InnerException;
             }
             Esapi.Logger.Error(LogEventTypes.FUNCTIONALITY, "Unspecified top-level error occured", ex);
-            Response.Redirect("~/Error.aspx");
+            Response.Redirect("~/Error.aspx");            
         }
 
         protected void Session_End(object sender, EventArgs e)

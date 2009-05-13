@@ -68,11 +68,13 @@
     <Compile Include="Activate.aspx.designer.cs">
       <DependentUpon>Activate.aspx</DependentUpon>
     </Compile>
-    <Compile Include="App_Code\SwingsetPage.cs">
+    <Compile Include="Code\AccountMapper.cs" />
+    <Compile Include="Code\Account.cs" />
+    <Compile Include="Code\SwingsetPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="App_Code\FileUtil.cs" />
-    <Compile Include="App_Code\MailUtil.cs" />
+    <Compile Include="Code\FileUtil.cs" />
+    <Compile Include="Code\MailUtil.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -133,12 +135,12 @@
     <Compile Include="PasswordReset.aspx.designer.cs">
       <DependentUpon>PasswordReset.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Users\AccessReferenceMapPage.aspx.cs">
-      <DependentUpon>AccessReferenceMapPage.aspx</DependentUpon>
+    <Compile Include="Users\AccessReferenceMap.aspx.cs">
+      <DependentUpon>AccessReferenceMap.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Users\AccessReferenceMapPage.aspx.designer.cs">
-      <DependentUpon>AccessReferenceMapPage.aspx</DependentUpon>
+    <Compile Include="Users\AccessReferenceMap.aspx.designer.cs">
+      <DependentUpon>AccessReferenceMap.aspx</DependentUpon>
     </Compile>
     <Compile Include="Users\ChangePassword.aspx.cs">
       <DependentUpon>ChangePassword.aspx</DependentUpon>
@@ -205,7 +207,7 @@
     <Content Include="Message.aspx" />
     <Content Include="PasswordReset.aspx" />
     <Content Include="style.css" />
-    <Content Include="Users\AccessReferenceMapPage.aspx" />
+    <Content Include="Users\AccessReferenceMap.aspx" />
     <Content Include="Users\Default.aspx" />
     <Content Include="Users\Encoder.aspx" />
     <Content Include="Users\Encryptor.aspx" />
