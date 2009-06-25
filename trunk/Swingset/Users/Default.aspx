@@ -6,6 +6,7 @@
     <li><asp:HyperLink ID="hlEncryptor" runat="server"  NavigateUrl="~/Users/Encryptor.aspx">Encryptor</asp:HyperLink></li>
     <li><asp:HyperLink ID="hlIntrusionDetector" runat="server"  NavigateUrl="~/Users/IntrusionDetector.aspx">Intrusion Detector</asp:HyperLink></li>
     <li><asp:HyperLink ID="hlRandomizer" runat="server"  NavigateUrl="~/Users/Randomizer.aspx">Randomizer</asp:HyperLink></li>
+    <li><asp:HyperLink ID="hlValidator" runat="server"  NavigateUrl="~/Users/Validator.aspx">Validator</asp:HyperLink></li>
     </ul>
     <ul>
     <li><asp:HyperLink ID="hlChangePassword" runat="server"  NavigateUrl="~/Users/ChangePassword.aspx">Change Password</asp:HyperLink></li>

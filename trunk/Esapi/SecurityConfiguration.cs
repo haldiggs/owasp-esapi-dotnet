@@ -372,6 +372,7 @@ namespace Owasp.Esapi
         static readonly string INTRUSION_DETECTOR_CLASS = "IntrusionDetectorClass";
         static readonly string LOGGER_CLASS = "LoggerClass";
         static readonly string RANDOMIZER_CLASS = "RandomizerClass";
+        static readonly string VALIDATOR_CLASS = "ValidatorClass";
 
         public Type EncoderClass
         {
@@ -413,6 +414,16 @@ namespace Owasp.Esapi
             }
         }
 
+        public Type ValidatorClass
+        {
+            get
+            {
+                return Type.GetType(properties[VALIDATOR_CLASS]);
+            }
+        }
+
+
+        
         /// <summary>
         /// Static constructor
         /// </summary>

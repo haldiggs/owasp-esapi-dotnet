@@ -25,29 +25,26 @@ namespace Owasp.Esapi
     /// </summary>
     public class Esapi
     {
-        // TODO - Make these properties?
 
-        ///// <param name="accessController">the AccessController to set
-        ///// </param>
-        //public static IAccessController AccessController
-        //{
-        //    set
-        //    {
-        //        Esapi.accessController = value;
-        //    }
+        //private static IAccessController accessController = null;
 
-        //}
-        ///// <param name="authenticator">the authenticator to set
-        ///// </param>
-        //public static IAuthenticator Authenticator
-        //{
-        //    set
-        //    {
-        //        Esapi.authenticator = value;
-        //    }
+        private static IEncoder encoder = null;
 
-        //}
-        /// <param name="encoder">the encoder to set
+        private static IEncryptor encryptor = null;
+
+        //private static IExecutor executor = null;
+
+        //private static IHttpUtilities httpUtilities = null;
+
+        private static IIntrusionDetector intrusionDetector = null;
+
+        private static IRandomizer randomizer = null;
+
+        private static ISecurityConfiguration securityConfiguration = null;
+
+        private static IValidator validator = null;
+
+        /// <param name="encoder">The encoder to set
         /// </param>
         public static IEncoder Encoder
         {
@@ -171,37 +168,23 @@ namespace Owasp.Esapi
             return new Logger(className);
         }
 
-        //}
-        ///// <param name="validator">the validator to set
-        ///// </param>
-        //public static IValidator Validator
-        //{
-        //    set
-        //    {
-        //        Esapi.validator = value;
-        //    }
+        
+        public static IValidator Validator
+        {
+            set
+            {
+                validator = value;
+            }
 
-        //}
-
-        //private static IAccessController accessController = null;
-
-        //private static IAuthenticator authenticator = null;
-
-        private static IEncoder encoder = null;
-
-        private static IEncryptor encryptor = null;
-
-        //private static IExecutor executor = null;
-
-        //private static IHttpUtilities httpUtilities = null;
-
-        private static IIntrusionDetector intrusionDetector = null;
-
-        private static IRandomizer randomizer = null;
-
-        private static ISecurityConfiguration securityConfiguration = null;
-
-        ////private static IValidator validator = null;
+            get
+            {
+                if (validator == null)
+                {
+                    validator = (IValidator) Activator.CreateInstance(Esapi.SecurityConfiguration.ValidatorClass);
+                }
+                return validator;                
+            }
+        }
 
         ///// <summary> prevent instantiation of this class</summary>
         private Esapi()

@@ -12,3 +12,14 @@ input[type='text'], input[type='password']
 {
     width: 10em;
 }
+
+fieldset
+{
+	border: none;
+	padding: 1em;
+}
+
+.validation_success
+{
+	font: green;
+}
