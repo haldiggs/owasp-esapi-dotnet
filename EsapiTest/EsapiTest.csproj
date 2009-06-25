@@ -46,6 +46,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EncryptorTest.cs" />
     <Compile Include="RandomizerTest.cs" />
+    <Compile Include="ValidatorTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Esapi\Esapi.csproj">

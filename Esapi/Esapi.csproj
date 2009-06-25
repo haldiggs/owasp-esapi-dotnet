@@ -44,7 +44,9 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -85,11 +87,21 @@
     <Compile Include="Interfaces\ILogger.cs" />
     <Compile Include="Interfaces\IRandomizer.cs" />
     <Compile Include="Interfaces\ISecurityConfiguration.cs" />
+    <Compile Include="Interfaces\IValidator.cs">
+    </Compile>
     <Compile Include="IntrusionDetector.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Randomizer.cs" />
     <Compile Include="SecurityConfiguration.cs" />
+    <Compile Include="ValidationRules\CreditCardValidationRule.cs" />
+    <Compile Include="ValidationRules\DateValidationRule.cs" />
+    <Compile Include="ValidationRules\DoubleValidationRule.cs" />
+    <Compile Include="ValidationRules\IntegerValidationRule.cs" />
+    <Compile Include="Interfaces\IValidationRule.cs" />
+    <Compile Include="ValidationRules\PrintableValidationRule.cs" />
+    <Compile Include="ValidationRules\RegexValidationRule.cs" />
+    <Compile Include="Validator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -144,5 +144,9 @@ namespace Owasp.Esapi.Interfaces
             get;
         }
 
+        Type ValidatorClass
+        {
+            get;
+        }
     }
 }
