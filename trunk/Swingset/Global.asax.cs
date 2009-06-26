@@ -48,7 +48,7 @@ namespace Owasp.Esapi.Swingset
 
         protected void Application_End(object sender, EventArgs e)
         {
-
+            //Response.Headers.Add();
         }
     }
 }

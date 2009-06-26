@@ -87,9 +87,6 @@ namespace Owasp.Esapi
             return indirect;
 		}
 		
-		/*
-		
-		*/
 		/// <summary> Update the refrences.
 		/// This preserves any existing mappings for items that are still in the new
         /// list. You could regenerate new indirect references every time, but that

@@ -2,15 +2,15 @@
 /// 
 /// This file is part of the Open Web Application Security Project (OWASP)
 /// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
-/// http://www.owasp.org/index.php/.NET_ESAPI.
+/// http://www.owasp.org/index.php/Category:ESAPI.
 /// 
-/// Copyright (c) 2008 - The OWASP Foundation
+/// Copyright (c) 2009 - The OWASP Foundation
 /// 
-/// The .NET ESAPI is published by OWASP under the LGPL. You should read and accept the
+/// The .NET ESAPI is published by OWASP under the BSD. You should read and accept the
 /// LICENSE before you use, modify, and/or redistribute this software.
 /// 
 /// </summary>
-/// <author>  Alex Smolen <a href="http://www.foundstone.com">Foundstone</a>
+/// <author>  Alex Smolen
 /// </author>
 /// <created>  2008 </created>
 
@@ -34,7 +34,7 @@ namespace Owasp.Esapi.Interfaces
     /// layer of indirection doesn't provide any real additional security.
     /// 
     /// </summary>
-    /// <author>  Alex Smolen (alex.smolen@foundstone.com)
+    /// <author>  Alex Smolen (me@alexsmolen.com)
     /// </author>
     /// <since> February 20, 2008
     /// </since>
@@ -56,8 +56,8 @@ namespace Owasp.Esapi.Interfaces
         byte[] MasterSalt
         {
             get;
-
         }
+
         /// <summary> 
         /// The allowed file extensions.        
         /// </summary>
@@ -65,6 +65,7 @@ namespace Owasp.Esapi.Interfaces
         {
             get;
         }
+        
         /// <summary> 
         /// The allowed file upload size.        
         /// </summary>
@@ -118,6 +119,11 @@ namespace Owasp.Esapi.Interfaces
         /// <returns> The threshold for the event.
         /// </returns>
         Threshold GetQuota(string eventName);
+
+        Type AccessControllerClass
+        {
+            get;
+        }
 
         Type EncoderClass
         {

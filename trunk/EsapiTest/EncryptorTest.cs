@@ -13,7 +13,7 @@ namespace EsapiTest
     /// <summary> The Class EncryptorTest.
     /// 
     /// </summary>
-    /// <author>  Alex Smolen (alex.smolen@foundstone.com)
+    /// <author>  Alex Smolen (me@alexsmolen.com)
     /// </author
     [TestClass]
     public class EncryptorTest

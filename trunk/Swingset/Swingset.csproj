@@ -135,12 +135,19 @@
     <Compile Include="PasswordReset.aspx.designer.cs">
       <DependentUpon>PasswordReset.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Users\AccessReferenceMap.aspx.cs">
-      <DependentUpon>AccessReferenceMap.aspx</DependentUpon>
+    <Compile Include="Users\Examples\AccessControllerPage.aspx.cs">
+      <DependentUpon>AccessControllerPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Users\AccessReferenceMap.aspx.designer.cs">
-      <DependentUpon>AccessReferenceMap.aspx</DependentUpon>
+    <Compile Include="Users\Examples\AccessControllerPage.aspx.designer.cs">
+      <DependentUpon>AccessControllerPage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Users\Examples\AccessReferenceMapPage.aspx.cs">
+      <DependentUpon>AccessReferenceMapPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Users\Examples\AccessReferenceMapPage.aspx.designer.cs">
+      <DependentUpon>AccessReferenceMapPage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Users\ChangePassword.aspx.cs">
       <DependentUpon>ChangePassword.aspx</DependentUpon>
@@ -156,40 +163,40 @@
     <Compile Include="Users\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Users\Encoder.aspx.cs">
-      <DependentUpon>Encoder.aspx</DependentUpon>
+    <Compile Include="Users\Examples\EncoderPage.aspx.cs">
+      <DependentUpon>EncoderPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Users\Encoder.aspx.designer.cs">
-      <DependentUpon>Encoder.aspx</DependentUpon>
+    <Compile Include="Users\Examples\EncoderPage.aspx.designer.cs">
+      <DependentUpon>EncoderPage.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Users\Encryptor.aspx.cs">
-      <DependentUpon>Encryptor.aspx</DependentUpon>
+    <Compile Include="Users\Examples\EncryptorPage.aspx.cs">
+      <DependentUpon>EncryptorPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Users\Encryptor.aspx.designer.cs">
-      <DependentUpon>Encryptor.aspx</DependentUpon>
+    <Compile Include="Users\Examples\EncryptorPage.aspx.designer.cs">
+      <DependentUpon>EncryptorPage.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Users\IntrusionDetector.aspx.cs">
-      <DependentUpon>IntrusionDetector.aspx</DependentUpon>
+    <Compile Include="Users\Examples\IntrusionDetectorPage.aspx.cs">
+      <DependentUpon>IntrusionDetectorPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Users\IntrusionDetector.aspx.designer.cs">
-      <DependentUpon>IntrusionDetector.aspx</DependentUpon>
+    <Compile Include="Users\Examples\IntrusionDetectorPage.aspx.designer.cs">
+      <DependentUpon>IntrusionDetectorPage.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Users\Randomizer.aspx.cs">
-      <DependentUpon>Randomizer.aspx</DependentUpon>
+    <Compile Include="Users\Examples\RandomizerPage.aspx.cs">
+      <DependentUpon>RandomizerPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Users\Randomizer.aspx.designer.cs">
-      <DependentUpon>Randomizer.aspx</DependentUpon>
+    <Compile Include="Users\Examples\RandomizerPage.aspx.designer.cs">
+      <DependentUpon>RandomizerPage.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Users\Validator.aspx.cs">
-      <DependentUpon>Validator.aspx</DependentUpon>
+    <Compile Include="Users\Examples\ValidatorPage.aspx.cs">
+      <DependentUpon>ValidatorPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Users\Validator.aspx.designer.cs">
-      <DependentUpon>Validator.aspx</DependentUpon>
+    <Compile Include="Users\Examples\ValidatorPage.aspx.designer.cs">
+      <DependentUpon>ValidatorPage.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -214,13 +221,17 @@
     <Content Include="Message.aspx" />
     <Content Include="PasswordReset.aspx" />
     <Content Include="style.css" />
-    <Content Include="Users\AccessReferenceMap.aspx" />
+    <Content Include="Users\Examples\AccessControllerPage.aspx" />
+    <Content Include="Users\Examples\AccessReferenceMapPage.aspx" />
     <Content Include="Users\Default.aspx" />
-    <Content Include="Users\Encoder.aspx" />
-    <Content Include="Users\Encryptor.aspx" />
-    <Content Include="Users\IntrusionDetector.aspx" />
-    <Content Include="Users\Randomizer.aspx" />
-    <Content Include="Users\Validator.aspx" />
+    <Content Include="Users\Examples\EncoderPage.aspx" />
+    <Content Include="Users\Examples\EncryptorPage.aspx" />
+    <Content Include="Users\Examples\IntrusionDetectorPage.aspx" />
+    <Content Include="Users\Examples\RandomizerPage.aspx" />
+    <Content Include="Users\Examples\ValidatorPage.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Web.sitemap" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />

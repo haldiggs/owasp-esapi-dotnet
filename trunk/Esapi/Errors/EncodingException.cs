@@ -2,15 +2,15 @@
 /// 
 /// This file is part of the Open Web Application Security Project (OWASP)
 /// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
-/// http://www.owasp.org/index.php/.NET_ESAPI.
+/// http://www.owasp.org/index.php/Category:ESAPI.
 /// 
 /// Copyright (c) 2007 - The OWASP Foundation
 /// 
-/// The .NET ESAPI is published by OWASP under the LGPL. You should read and accept the
+/// The .NET ESAPI is published by OWASP under the BSD. You should read and accept the
 /// LICENSE before you use, modify, and/or redistribute this software.
 /// 
 /// </summary>
-/// <author>  Alex Smolen <a href="http://www.foundstone.com">Foundstone</a>
+/// <author>  Alex Smolen
 /// </author>
 /// <created>  2008 </created>
 
@@ -22,7 +22,7 @@ namespace Owasp.Esapi.Errors
     /// encoding or decoding data.
     /// 
     /// </summary>
-    /// <author>  Alex Smolen (alex.smolen@foundstone.com)
+    /// <author>  Alex Smolen (me@alexsmolen.com)
     /// </author>
     [Serializable]
     public class EncodingException : EnterpriseSecurityException

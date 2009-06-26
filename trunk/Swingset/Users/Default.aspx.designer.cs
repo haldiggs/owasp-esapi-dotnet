@@ -14,6 +14,15 @@ namespace Owasp.Esapi.Swingset.Users {
     public partial class Default {
         
         /// <summary>
+        /// hlAccessController control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink hlAccessController;
+        
+        /// <summary>
         /// hlAccessReferenceMap control.
         /// </summary>
         /// <remarks>

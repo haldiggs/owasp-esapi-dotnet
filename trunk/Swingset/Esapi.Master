@@ -8,6 +8,12 @@
     <title>ESAPI Swingset</title>
 </head>
 <body>
+    <div id="header">
+        .NET ESAPI SwingSet
+    </div>
+    <asp:SiteMapPath ID="smpSwingset" runat="server">
+    
+    </asp:SiteMapPath>
     <form id="EsapiForm" runat="server">    
         <asp:ContentPlaceHolder ID="EsapiContentPlaceHolder" runat="server">
         
