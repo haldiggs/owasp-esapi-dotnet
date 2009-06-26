@@ -2,15 +2,15 @@
 /// 
 /// This file is part of the Open Web Application Security Project (OWASP)
 /// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
-/// http://www.owasp.org/index.php/.NET_ESAPI.
+/// http://www.owasp.org/index.php/Category:ESAPI.
 /// 
-/// Copyright (c) 2008 - The OWASP Foundation
+/// Copyright (c) 2009 - The OWASP Foundation
 /// 
-/// The .NET ESAPI is published by OWASP under the LGPL. You should read and accept the
+/// The .NET ESAPI is published by OWASP under the BSD. You should read and accept the
 /// LICENSE before you use, modify, and/or redistribute this software.
 /// 
 /// </summary>
-/// <author>  Alex Smolen <a href="http://www.foundstone.com">Foundstone</a>
+/// <author>  Alex Smolen
 /// </author>
 /// <created>  2008 </created>
 
@@ -28,7 +28,7 @@ namespace Owasp.Esapi
     /// cryptographically strong source of entropy. The specific algorithm used is configurable in Esapi.properties.
     /// 
     /// </summary>
-    /// <author>  Alex Smolen <a href="http://www.foundstone.com">Foundstone</a>
+    /// <author>  Alex Smolen
     /// </author>
     /// <since> February 20, 2008
     /// </since>
@@ -58,8 +58,8 @@ namespace Owasp.Esapi
             }
         }
 
-        /// <summary> Returns a random boolean.</summary>
-        /// <seealso cref="Owasp.Esapi.Interfaces.IRandomizer.RandomBoolean">
+        /// <summary> Returns a random bool.</summary>
+        /// <seealso cref="Owasp.Esapi.Interfaces.IRandomizer.Randombool">
         /// </seealso>
         public bool GetRandomBoolean()
         {        

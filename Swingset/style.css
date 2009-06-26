@@ -5,10 +5,10 @@
 
 input
 {
-    width: 7em;
+    width: 7em;	
 }
 
-input[type='text'], input[type='password']
+input[type='text'], input[type='password'], input[type='submit']
 {
     width: 10em;
 }
@@ -17,6 +17,19 @@ fieldset
 {
 	border: none;
 	padding: 1em;
+}
+
+select
+{
+	width: 20em;
+}
+
+#header
+{
+	background: Blue;
+	color: White;
+	margin: 0em 0em 2em 0em;
+	padding: 1em 0em 1em 2em;
 }
 
 .validation_success

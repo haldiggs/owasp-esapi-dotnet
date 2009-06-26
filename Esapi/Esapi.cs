@@ -2,15 +2,15 @@
 /// 
 /// This file is part of the Open Web Application Security Project (OWASP)
 /// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
-/// http://www.owasp.org/index.php/.NET_ESAPI.
+/// http://www.owasp.org/index.php/Category:ESAPI.
 /// 
-/// Copyright (c) 2008 - The OWASP Foundation
+/// Copyright (c) 2009 - The OWASP Foundation
 /// 
-/// The .NET ESAPI is published by OWASP under the LGPL. You should read and accept the
+/// The .NET ESAPI is published by OWASP under the BSD. You should read and accept the
 /// LICENSE before you use, modify, and/or redistribute this software.
 /// 
 /// </summary>
-/// <author>  Alex Smolen <a href="http://www.foundstone.com">Foundstone</a>
+/// <author>  Alex Smolen
 /// </author>
 /// <created>  2008 </created>
 
@@ -26,15 +26,11 @@ namespace Owasp.Esapi
     public class Esapi
     {
 
-        //private static IAccessController accessController = null;
-
+        private static IAccessController accessController = null;        
+        
         private static IEncoder encoder = null;
 
         private static IEncryptor encryptor = null;
-
-        //private static IExecutor executor = null;
-
-        //private static IHttpUtilities httpUtilities = null;
 
         private static IIntrusionDetector intrusionDetector = null;
 
@@ -43,6 +39,26 @@ namespace Owasp.Esapi
         private static ISecurityConfiguration securityConfiguration = null;
 
         private static IValidator validator = null;
+
+        /// <param name="AccessController">The AccessController to set
+        /// </param>
+        public static IAccessController AccessController
+        {
+            set
+            {
+                accessController = value;
+            }
+
+            get
+            {
+                if (accessController == null)
+                {
+                    accessController = (IAccessController)Activator.CreateInstance(Esapi.SecurityConfiguration.AccessControllerClass);
+                }
+                return accessController;
+            }
+        }
+        
 
         /// <param name="encoder">The encoder to set
         /// </param>

@@ -2,15 +2,15 @@
 /// 
 /// This file is part of the Open Web Application Security Project (OWASP)
 /// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
-/// http://www.owasp.org/index.php/.NET_ESAPI.
+/// http://www.owasp.org/index.php/Category:ESAPI.
 /// 
-/// Copyright (c) 2008 - The OWASP Foundation
+/// Copyright (c) 2009 - The OWASP Foundation
 /// 
-/// The .NET ESAPI is published by OWASP under the LGPL. You should read and accept the
+/// The .NET ESAPI is published by OWASP under the BSD. You should read and accept the
 /// LICENSE before you use, modify, and/or redistribute this software.
 /// 
 /// </summary>
-/// <author>  Alex Smolen <a href="http://www.foundstone.com">Foundstone</a>
+/// <author>  Alex Smolen
 /// </author>
 /// <created>  2008 </created>
 
@@ -77,7 +77,7 @@ namespace Owasp.Esapi.Interfaces
     /// is intended to provide a simple functional example of an implementation.
     /// 
     /// </summary>
-    /// <author>  Alex Smolen (alex.smolen@foundstone.com)
+    /// <author>  Alex Smolen (me@alexsmolen.com)
     /// </author>
     /// <since> February 20, 2008
     /// </since>   
@@ -109,7 +109,7 @@ namespace Owasp.Esapi.Interfaces
         /// will be discarded, to avoid performing expensive processing.
         /// </summary>
         /// <returns>true, if fatal level messages will be output to the log.</returns>
-        Boolean IsFatalEnabled();
+        bool IsFatalEnabled();
 
         /// <summary>Log an error level security event if 'error' level logging is enabled.</summary>
         /// <param name="type">The type of event
@@ -135,7 +135,7 @@ namespace Owasp.Esapi.Interfaces
 	    /// will be discarded, to avoid performing expensive processing.
         /// </summary>
         /// <returns>true, if error level messages will be output to the log.</returns>
-        Boolean IsErrorEnabled();
+        bool IsErrorEnabled();
 
         /// <summary> Log a warning level security event if 'warning' level logging is enabled.</summary>
         /// <param name="type">The type of event.
@@ -161,7 +161,7 @@ namespace Owasp.Esapi.Interfaces
         /// will be discarded, to avoid performing expensive processing.
         /// </summary>
         /// <returns>true, if warning level messages will be output to the log.</returns>
-        Boolean IsWarningEnabled();
+        bool IsWarningEnabled();
 
         /// <summary> Log a warning level security event if 'info' level logging is enabled.</summary>
         /// <param name="type">The type of event.
@@ -187,7 +187,7 @@ namespace Owasp.Esapi.Interfaces
         /// will be discarded, to avoid performing expensive processing.
         /// </summary>
         /// <returns>true, if info level messages will be output to the log.</returns>
-        Boolean IsInfoEnabled();
+        bool IsInfoEnabled();
 
         /// <summary> Log a warning level security event if 'debug' level logging is enabled.</summary>
         /// <param name="type">The type of event.
@@ -213,7 +213,7 @@ namespace Owasp.Esapi.Interfaces
         /// will be discarded, to avoid performing expensive processing.
         /// </summary>
         /// <returns>true, if debug level messages will be output to the log.</returns>
-        Boolean IsDebugEnabled();
+        bool IsDebugEnabled();
 
         /// <summary> Log a warning level security event if 'trace' level logging is enabled.</summary>
         /// <param name="type">The type of event.
@@ -239,6 +239,6 @@ namespace Owasp.Esapi.Interfaces
         /// will be discarded, to avoid performing expensive processing.
         /// </summary>
         /// <returns>true, if trace level messages will be output to the log.</returns>
-        Boolean IsTraceEnabled();	
+        bool IsTraceEnabled();	
     }
 }

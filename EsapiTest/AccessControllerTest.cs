@@ -3,6 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Owasp.Esapi;
 
 namespace EsapiTest
 {
@@ -14,9 +15,7 @@ namespace EsapiTest
     {
         public AccessControllerTest()
         {
-            //
-            // TODO: Add constructor logic here
-            //
+            
         }
 
         private TestContext testContextInstance;
@@ -59,12 +58,19 @@ namespace EsapiTest
         //
         #endregion
 
-        //[TestMethod]
-        //public void TestMethod1()
-        //{
-        //    //
-        //    // TODO: Add test logic	here
-        //    //
-        //}
+        [TestMethod]
+        public void Test_AccessControllerAddRule()
+        {
+            Esapi.AccessController.AddRule("test", "test", "test");
+            Assert.IsTrue(Esapi.AccessController.IsAuthorized("test", "test", "test"));
+        }
+
+        [TestMethod]
+        public void Test_AccessControllerRemoveRule()
+        {
+            Esapi.AccessController.AddRule("test", "test", "test");
+            Esapi.AccessController.RemoveRule("test", "test", "test");
+            Assert.IsFalse(Esapi.AccessController.IsAuthorized("test", "test", "test"));
+        }
     }
 }
