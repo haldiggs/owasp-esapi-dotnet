@@ -9,5 +9,11 @@ namespace Owasp.Esapi.Swingset
     public class SwingsetPage:System.Web.UI.Page
     {
         public ILogger logger = Esapi.Logger;
+        
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+            ViewStateUserKey = Session.SessionID;
+        }
     }
 }
