@@ -1,0 +1,28 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using Owasp.Esapi.Interfaces;
+
+namespace Owasp.Esapi.ValidationRules
+{
+    class RegexValidationRule:IValidationRule
+    {
+        Regex regex;
+        
+        public RegexValidationRule(string _regex)
+        {            
+            regex = new Regex(_regex);
+        }
+
+        #region IValidationRule Members
+
+        public bool IsValid(string input)
+        {
+            return regex.IsMatch(input, 0);
+        }
+
+        #endregion
+    }
+}
