@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >        
-    <siteMapNode url ="Default.aspx" description="Default Page" title="Home">
-        <siteMapNode url="ForgotPassword.aspx" title="Forgot Password"  description="" />
-        <siteMapNode url="Login.aspx" title="Login"  description="" />
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+  <siteMapNode url="Login.aspx" title="Home"  description="" >
+        <siteMapNode url="ForgotPassword.aspx" title="Forgot Password"  description="" />        
         <siteMapNode url="Register.aspx" title="Register"  description="" />
         <siteMapNode url="/Users/Default.aspx" title="ESAPI Home">
           <siteMapNode url="/Users/ChangePassword.aspx" title="Change Password"/>
