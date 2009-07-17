@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Owasp.Esapi.Interfaces;
-using Owasp.Esapi.Errors;
 using System.Collections;
+using Owasp.Esapi.Errors;
+using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi
 {

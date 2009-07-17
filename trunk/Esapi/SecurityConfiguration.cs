@@ -1,26 +1,9 @@
-﻿/// <summary> OWASP .NET Enterprise Security API (.NET ESAPI)
-/// 
-/// This file is part of the Open Web Application Security Project (OWASP)
-/// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
-/// http://www.owasp.org/index.php/Category:ESAPI.
-/// 
-/// Copyright (c) 2009 - The OWASP Foundation
-/// 
-/// The .NET ESAPI is published by OWASP under the BSD. You should read and accept the
-/// LICENSE before you use, modify, and/or redistribute this software.
-/// 
-/// </summary>
-/// <author>  Alex Smolen
-/// </author>
-/// <created>  2008 </created>
-
-using System;
-using System.IO;
-using Owasp.Esapi.Interfaces;
-using System.Text.RegularExpressions;
+﻿using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Text;
+using System.Text.RegularExpressions;
+using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi
 {
@@ -32,11 +15,8 @@ namespace Owasp.Esapi
     /// See the app.config file in this package and copy the value over.    
     /// 
     /// </summary>
-    /// <author>  Alex Smolen (alex.smolen@founstone.com)
-    /// </author>
     /// <seealso cref="Owasp.Esapi.Interfaces.ISecurityConfiguration">
-    /// </seealso>
-    /// 
+    /// </seealso>    
     public class SecurityConfiguration : ISecurityConfiguration
     {
 
@@ -172,10 +152,6 @@ namespace Owasp.Esapi
             get
             {
                 string level = properties.Get(LOG_LEVEL);
-                if (level == null)
-                {
-                    // TODO: Do something here
-                }
                 return LogLevels.ParseLogLevel(level);
             }
         }
@@ -240,7 +216,7 @@ namespace Owasp.Esapi
         /// <summary>
         /// The key for the resources directory property.
         /// </summary>
-        public const string RESOURCE_DIRECTORY = "Owasp.Esapi.resources";
+        public const string RESOURCE_DIRECTORY = "Owasp.Esapi.Resources";
 
         private const string MASTER_PASSWORD = "MasterPassword";
 
@@ -281,7 +257,6 @@ namespace Owasp.Esapi
         /// <summary> Instantiates a new configuration.</summary>
         public SecurityConfiguration()
         {
-            // FIXME : this should be reloaded periodically
             LoadConfiguration();
         }
 
@@ -370,6 +345,7 @@ namespace Owasp.Esapi
         static readonly string ACCESS_CONTROLLER_CLASS = "AccessControllerClass";
         static readonly string ENCODER_CLASS = "EncoderClass";
         static readonly string ENCRYPTOR_CLASS = "EncyptorClass";
+        static readonly string HTTP_UTILITIES_CLASS = "HttpUtilitiesClass";
         static readonly string INTRUSION_DETECTOR_CLASS = "IntrusionDetectorClass";
         static readonly string LOGGER_CLASS = "LoggerClass";
         static readonly string RANDOMIZER_CLASS = "RandomizerClass";
@@ -396,6 +372,14 @@ namespace Owasp.Esapi
             get
             {
                 return Type.GetType(properties[ENCRYPTOR_CLASS]);
+            }
+        }
+
+        public Type HttpUtilitiesClass
+        {
+            get
+            {
+                return Type.GetType(properties[HTTP_UTILITIES_CLASS]);
             }
         }
 
@@ -430,8 +414,6 @@ namespace Owasp.Esapi
                 return Type.GetType(properties[VALIDATOR_CLASS]);
             }
         }
-
-
         
         /// <summary>
         /// Static constructor

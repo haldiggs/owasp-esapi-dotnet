@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Owasp.Esapi;
 using Owasp.Esapi.Errors;
 namespace EsapiTest

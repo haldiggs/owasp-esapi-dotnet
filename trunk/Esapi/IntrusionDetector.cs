@@ -1,24 +1,8 @@
-﻿/// <summary> OWASP .NET Enterprise Security API (.NET ESAPI)
-/// 
-/// This file is part of the Open Web Application Security Project (OWASP)
-/// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
-/// http://www.owasp.org/index.php/Category:ESAPI.
-/// 
-/// Copyright (c) 2009 - The OWASP Foundation
-/// 
-/// The .NET ESAPI is published by OWASP under the BSD. You should read and accept the
-/// LICENSE before you use, modify, and/or redistribute this software.
-/// 
-/// </summary>
-/// <author>  Alex Smolen
-/// </author>
-/// <created>  2008 </created>
-
-using System;
-using Owasp.Esapi.Errors;
-using Owasp.Esapi.Interfaces;
+﻿using System;
 using System.Collections;
 using System.Web.Security;
+using Owasp.Esapi.Errors;
+using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi
 {
@@ -27,10 +11,12 @@ namespace Owasp.Esapi
         public string key;
         public ArrayList times = new ArrayList();
         public long count = 0;
+
         public Event(string key)
         {
             this.key = key;
         }
+        
         public void Increment(int count, long interval)
         {
             DateTime now = DateTime.Now;
@@ -46,7 +32,7 @@ namespace Owasp.Esapi
                 long i = interval * 10000 * 1000;
                 if (nlong - plong < interval * 60 * 10000 * 1000)
                 {
-                    throw new IntrusionException();
+                    throw new IntrusionException("Threshold exceeded", "Exceeded threshold for " + key);
                 }
             }
         }
@@ -108,7 +94,6 @@ namespace Owasp.Esapi
         }
     }
 
-
     /// <summary> Reference implementation of the IIntrusionDetector interface. This
     /// implementation monitors EnterpriseSecurityExceptions to see if any user
     /// exceeds a configurable threshold in a configurable time period. For example,
@@ -119,10 +104,6 @@ namespace Owasp.Esapi
     /// deviations from that baseline.
     /// 
     /// </summary>
-    /// <author>  Alex Smolen (me@alexsmolen.com)
-    /// </author>
-    /// <since> February 20, 2008
-    /// </since>
     /// <seealso cref="Owasp.Esapi.Interfaces.IIntrusionDetector">
     /// </seealso>
     public class IntrusionDetector : IIntrusionDetector
@@ -130,6 +111,7 @@ namespace Owasp.Esapi
         /// <summary>The logger. </summary>
         private static readonly ILogger logger;
         private static Hashtable users = new Hashtable();
+        
         /// <summary>
         /// Public constructor.
         /// </summary>
@@ -160,7 +142,6 @@ namespace Owasp.Esapi
 
             String eventName = e.GetType().FullName;
 
-            // FIXME: AAA Rethink this - IntrusionExceptions which shouldn't get added to the IntrusionDetector
             if (e is IntrusionException)
             {
                 return;
@@ -213,10 +194,6 @@ namespace Owasp.Esapi
             }
         }
 
-
-        /*
-        * FIXME: Enhance - future actions might include SNMP traps, email, pager, etc...
-        */
         /// <summary>
         /// This method performs a security action based on an intrustion threshold.
         /// </summary>
@@ -240,8 +217,6 @@ namespace Owasp.Esapi
                 }
             }
         }
-
-
 
         /// <summary> 
         /// Adds a security event to the user.        
@@ -273,7 +248,6 @@ namespace Owasp.Esapi
             }
 
         }
-
 
         /// <summary>
         ///  Static constructor.

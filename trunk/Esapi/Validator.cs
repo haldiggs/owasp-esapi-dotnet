@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections;
 using Owasp.Esapi.Interfaces;
-using System.Collections;
-using Microsoft.Security.Application;
 using Owasp.Esapi.ValidationRules;
 
 namespace Owasp.Esapi
@@ -16,6 +11,7 @@ namespace Owasp.Esapi
         public static readonly string DOUBLE = "Double";
         public static readonly string INTEGER = "Integer";
         public static readonly string PRINTABLE = "Printable";
+        
         public Validator()
         {
             AddRule(CREDIT_CARD, new CreditCardValidationRule());

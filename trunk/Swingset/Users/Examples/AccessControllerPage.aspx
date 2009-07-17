@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AccessControllerPage.aspx.cs" Inherits="Owasp.Esapi.Swingset.Users.Examples.AccessControllerPage" MasterPageFile="~/Esapi.Master" %>
-<asp:Content ID="AccessControllerContent" ContentPlaceHolderID="EsapiContentPlaceHolder" runat="server">    
+<asp:Content ID="AccessControllerContent" ContentPlaceHolderID="SwingsetContentPlaceHolder" runat="server">    
     <fieldset>
     Resources:
     <div>

@@ -1,39 +1,17 @@
-﻿/// <summary> OWASP .NET Enterprise Security API (.NET ESAPI)
-/// 
-/// This file is part of the Open Web Application Security Project (OWASP)
-/// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
-/// http://www.owasp.org/index.php/Category:ESAPI.
-/// 
-/// Copyright (c) 2009 - The OWASP Foundation
-/// 
-/// The .NET ESAPI is published by OWASP under the BSD. You should read and accept the
-/// LICENSE before you use, modify, and/or redistribute this software.
-/// 
-/// </summary>
-/// <author>  Alex Smolen
-/// </author>
-/// <created>  2008 </created>
-
-using System;
-using Owasp.Esapi.Interfaces;
-using System.Security.Cryptography;
+﻿using System;
 using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 using Owasp.Esapi.Errors;
+using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi
 {
 
     /// <summary> Reference implementation of the IEncryptor interface. This implementation
-    /// layers on the JCE provided cryptographic package. Algorithms used are
-    /// configurable in the ESAPI.properties file.
-    /// 
-    /// 
+    /// layers on the .NET provided cryptographic package. 
+    /// Algorithms used are configurable in the ESAPI.properties file.
     /// </summary>
-    /// <author> Alex Smolen (me@alexsmolen.com)
-    /// </author>
-    /// <since> February 20, 2008
-    /// </since>
     /// <seealso cref="Owasp.Esapi.Interfaces.IEncryptor">
     /// </seealso>
     public class Encryptor:IEncryptor
@@ -48,7 +26,7 @@ namespace Owasp.Esapi
         {
             get
             {                
-                return System.DateTime.Now.Ticks;
+                return DateTime.Now.Ticks;
             }
 
         }
@@ -57,21 +35,18 @@ namespace Owasp.Esapi
         /// The symmetric key
         /// </summary>
         private byte[] secretKey;
-
-
+        
         /// <summary>The asymmetric key pair </summary>
         internal CspParameters asymmetricKeyPair;
 
         /// <summary>The logger. </summary>
         private static readonly ILogger logger;
 
-        // FIXME: AAA need global scrub of what methods need to log
-
         internal string encryptAlgorithm = Esapi.SecurityConfiguration.EncryptionAlgorithm;
-        internal string signatureAlgorithm = "DSA";// TODO Add Esapi.SecurityConfiguration.SignatureAlgorithm;
+        internal string signatureAlgorithm = Esapi.SecurityConfiguration.DigitalSignatureAlgorithm;
         internal string hashAlgorithm = Esapi.SecurityConfiguration.HashAlgorithm;
         internal string randomAlgorithm = Esapi.SecurityConfiguration.RandomAlgorithm;
-        internal string encoding = "UTF-8"; //TODO Add Esapi.SecurityConfiguration.Encoding;
+        internal string encoding = Esapi.SecurityConfiguration.CharacterEncoding;
         
         /// <summary>
         /// Public constructor.
@@ -79,25 +54,18 @@ namespace Owasp.Esapi
         public Encryptor()
         {
             string pass = Esapi.SecurityConfiguration.MasterPassword;
-            byte[] salt = Esapi.SecurityConfiguration.MasterSalt;            
+            byte[] salt = Esapi.SecurityConfiguration.MasterSalt;
 
-            encryptAlgorithm = Esapi.SecurityConfiguration.EncryptionAlgorithm;            
-            signatureAlgorithm = Esapi.SecurityConfiguration.DigitalSignatureAlgorithm;
-            randomAlgorithm = Esapi.SecurityConfiguration.RandomAlgorithm;
-            hashAlgorithm = Esapi.SecurityConfiguration.HashAlgorithm;
-            encoding = Esapi.SecurityConfiguration.CharacterEncoding;
             try
             {
-                
-
                 // Set up encryption and decryption                
                 SymmetricAlgorithm symmetricAlgorithm = SymmetricAlgorithm.Create(encryptAlgorithm);
                 Rfc2898DeriveBytes rfc2898 = new Rfc2898DeriveBytes(pass, salt);
                 secretKey = rfc2898.GetBytes(symmetricAlgorithm.KeySize / 8);
-                
-                
-                // 13 is the code for DSA
+                                
+                // TODO: Hardcoded value 13 is the code for DSA
                 asymmetricKeyPair = new CspParameters(13);
+                
                 // The asymmetric key will be stored in the key container using the name ESAPI.
                 asymmetricKeyPair.KeyContainerName = "ESAPI";
                 
@@ -125,7 +93,6 @@ namespace Owasp.Esapi
             try
             {
                 // Create a new instance of the hash crypto service provider.
-                // FIXME: Read the value from the SecurityConfiguration.
                 HashAlgorithm hasher = HashAlgorithm.Create(hashAlgorithm);
 
                 // Convert the data to hash to an array of Bytes.
@@ -163,8 +130,7 @@ namespace Owasp.Esapi
         public string Encrypt(string plaintext)
         {
             
-            // Note - Cipher is not threadsafe so we create one locally
-            try
+             try
             {                
 
                 // Create a new key and initialization vector.
@@ -179,8 +145,7 @@ namespace Owasp.Esapi
                 byte[] iv = symmetricAlgorithm.IV;
                 
                 ICryptoTransform encryptor = symmetricAlgorithm.CreateEncryptor(secretKey, iv);
-                // Define a new CryptoStream object to hold the encrypted bytes
-                // and encrypt the data.
+                // Define a new CryptoStream object to hold the encrypted bytes and encrypt the data.
                 MemoryStream msEncrypt = new MemoryStream();
                 CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write);
                 try
@@ -248,7 +213,6 @@ namespace Owasp.Esapi
                 CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read);
                 try
                 {
-                
                     // Read the data out of the crypto stream.
                     byte[] plaintextBytes = new byte[onlyCiphertextLength];
                     int decryptedBytes = csDecrypt.Read(plaintextBytes, 0, onlyCiphertextLength);
@@ -270,8 +234,7 @@ namespace Owasp.Esapi
             }
         }
 
-        /// <summary> Create a digital signature for the provided data and return it in a
-        /// string.
+        /// <summary> Create a digital signature for the provided data and return it in a string.
         /// </summary>
         /// <param name="data">The data to sign.
         /// </param>
@@ -318,7 +281,6 @@ namespace Owasp.Esapi
                 Encoding textConverter = Encoding.GetEncoding(encoding);
                 byte[] signatureBytes = Esapi.Encoder.DecodeFromBase64(signature);
                 byte[] dataBytes = textConverter.GetBytes(data);
-                
                 return dsaCsp.VerifyData(dataBytes, signatureBytes);                
             }
             catch (System.Exception e)
@@ -381,9 +343,6 @@ namespace Owasp.Esapi
             return sealedValue;
         }
 
-
-
-
         /// <summary> Verifies a seal (created with the seal method) and throws an exception
         /// describing any of the various problems that could exist with a seal, such
         /// as an invalid seal format, expired timestamp, or data mismatch.
@@ -414,7 +373,6 @@ namespace Owasp.Esapi
             Buffer.BlockCopy(b, 0, c, a.Length, b.Length);
             return c;
         }
-
         
         static Encryptor()
         {

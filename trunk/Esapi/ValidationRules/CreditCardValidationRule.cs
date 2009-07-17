@@ -1,18 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using Owasp.Esapi.Errors;
 using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi.ValidationRules
 {
     class CreditCardValidationRule:IValidationRule
     {
+     
         #region IValidationRule Members
 
         public bool IsValid(string input)
         {
+            if (input == null) return false;
 
             // perform Luhn algorithm checking
             StringBuilder digitsOnly = new StringBuilder();
@@ -26,7 +25,7 @@ namespace Owasp.Esapi.ValidationRules
                 }
             }
 
-            if (digitsOnly.Length > 18)
+            if (digitsOnly.Length > 18 || digitsOnly.Length < 15)
             {
                 return false;
             }

@@ -169,6 +169,13 @@
     <Compile Include="Users\Examples\EncryptorPage.aspx.designer.cs">
       <DependentUpon>EncryptorPage.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Users\Examples\HttpUtilitiesPage.aspx.cs">
+      <DependentUpon>HttpUtilitiesPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Users\Examples\HttpUtilitiesPage.aspx.designer.cs">
+      <DependentUpon>HttpUtilitiesPage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Users\Examples\IntrusionDetectorPage.aspx.cs">
       <DependentUpon>IntrusionDetectorPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -223,6 +230,8 @@
     <Content Include="Users\Examples\ValidatorPage.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="owasp-logo.gif" />
+    <Content Include="Users\Examples\HttpUtilitiesPage.aspx" />
     <Content Include="Web.sitemap" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

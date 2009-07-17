@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Owasp.Esapi;
 using Owasp.Esapi.Interfaces;
@@ -69,7 +66,7 @@ namespace EsapiTest
 		    Assert.IsTrue(validator.IsValid(Validator.CREDIT_CARD, "1234 9876 0000 0008"));
 		    Assert.IsTrue(validator.IsValid(Validator.CREDIT_CARD, "1234987600000008"));
             Assert.IsFalse(validator.IsValid(Validator.CREDIT_CARD, "Garbage"));
-		    Assert.IsFalse(validator.IsValid(Validator.CREDIT_CARD, "12349876000000081"));
+		    Assert.IsFalse(validator.IsValid(Validator.CREDIT_CARD, "12349876000000082"));
 		    Assert.IsFalse(validator.IsValid(Validator.CREDIT_CARD, "4417 1234 5678 9112"));
         }
 
@@ -144,7 +141,6 @@ namespace EsapiTest
             Assert.IsFalse(validator.IsValid(Validator.DATE, "June 32, 1967"));
             Assert.IsFalse(validator.IsValid(Validator.DATE, "June 32 1967"));
             Assert.IsFalse(validator.IsValid(Validator.DATE, "June 32 abcd"));
-
         }
 
         

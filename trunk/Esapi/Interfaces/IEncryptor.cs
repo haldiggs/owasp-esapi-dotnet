@@ -1,44 +1,19 @@
-﻿/// <summary> OWASP .NET Enterprise Security API (.NET ESAPI)
-/// 
-/// This file is part of the Open Web Application Security Project (OWASP)
-/// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
-/// http://www.owasp.org/index.php/Category:ESAPI.
-/// 
-/// Copyright (c) 2009 - The OWASP Foundation
-/// 
-/// The .NET ESAPI is published by OWASP under the BSD. You should read and accept the
-/// LICENSE before you use, modify, and/or redistribute this software.
-/// 
-/// </summary>
-/// <author>  Alex Smolen
-/// </author>
-/// <created>  2008 </created>
-
-using System;
-
+﻿
 namespace Owasp.Esapi.Interfaces
 {
 
     /// <summary> The IEncryptor interface provides a set of methods for performing common
-    /// encryption, random number, and hashing operations. Implementations should
-    /// rely on a strong cryptographic implementation, such as JCE or BouncyCastle.
-    /// Implementors should take care to ensure that they initialize their
-    /// implementation with a strong "master key", and that they protect this secret
-    /// as much as possible.
-    /// [P]
-    /// [img src="doc-files/Encryptor.jpg" height="600">
-    /// [P]
+    /// encryption, random number, and hashing operations. Implementors should take care
+    /// to ensure that they initialize their implementation with a strong "master key", and 
+    /// that they protect this secret as much as possible.
+    /// <img src="doc-files/Encryptor.jpg" height="600"/>
+    /// 
     /// Possible future enhancements (depending on feedback) might include:
     /// <ul>
-    /// <li>encryptFile</li>
+    /// <li>EncryptFile</li>
     /// </ul>
     /// 
-    /// </summary>
-    /// <author>  Alex Smolen (me@alexsmolen.com)
-    /// </author>
-    /// <since> February 20, 2008
-    /// </since>
-    
+    /// </summary>   
     public interface IEncryptor
     {
         /// <summary> Gets a timestamp representing the current date and time to be used by
@@ -57,8 +32,7 @@ namespace Owasp.Esapi.Interfaces
         /// in some extra data with the plaintext. Some good choices for a salt might
         /// be an account name or some other string that is known to the application
         /// but not to an attacker.  See <a href="http://www.matasano.com/log/958/enough-with-the-rainbow-tables-what-you-need-to-know-about-secure-password-schemes/">this article</a> for 
-	    /// more information about hashing as it pertains to password schemes.
-        /// 
+	    /// more information about hashing as it pertains to password schemes.        
         /// </summary>
         /// <param name="plaintext">The plaintext.
         /// </param>
@@ -116,8 +90,6 @@ namespace Owasp.Esapi.Interfaces
         /// <returns> The seal value.
         /// </returns>
         string Seal(string data, long timestamp);
-
-
         
 	    /// <summary>
 	    /// Unseals data (created with the seal method) and throws an exception

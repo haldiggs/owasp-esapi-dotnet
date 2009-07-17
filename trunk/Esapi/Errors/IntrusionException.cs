@@ -1,20 +1,4 @@
-﻿/// <summary> OWASP .NET Enterprise Security API (.NET ESAPI)
-/// 
-/// This file is part of the Open Web Application Security Project (OWASP)
-/// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
-/// http://www.owasp.org/index.php/Category:ESAPI.
-/// 
-/// Copyright (c) 2009 - The OWASP Foundation
-/// 
-/// The .NET ESAPI is published by OWASP under the BSD. You should read and accept the
-/// LICENSE before you use, modify, and/or redistribute this software.
-/// 
-/// </summary>
-/// <author>  Alex Smolen
-/// </author>
-/// <created>  2008 </created>
-
-using System;
+﻿using System;
 using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi.Errors
@@ -22,16 +6,10 @@ namespace Owasp.Esapi.Errors
 
     /// <summary> An IntrusionException should be thrown anytime an error condition arises that is likely to be the result of an attack
     /// in progress. IntrusionExceptions are handled specially by the IntrusionDetector, which is equipped to respond by
-    /// either specially logging the event, logging out the current user, or invalidating the current user's account.
-    /// [P]
-    /// Unlike other exceptions in the ESAPI, the IntrusionException is a RuntimeException so that it can be thrown from
-    /// anywhere and will not require a lot of special exception handling.
-    /// 
+    /// either specially logging the event, logging out the current user, or invalidating the current user's account.    
     /// </summary>
-    /// <author>  Alex Smolen (me@alexsmolen.com)
-    /// </author>
     [Serializable]
-    public class IntrusionException : SystemException
+    public class IntrusionException : System.Exception
     {
         /// <summary>
         /// The message for the user
@@ -56,9 +34,6 @@ namespace Owasp.Esapi.Errors
             }
 
         }
-
-        /// <summary>The Constant serialVersionUID. </summary>
-        private const long _serialVersionUID = 1L;
 
         /// <summary>The logger. </summary>
         protected internal static readonly ILogger logger;
@@ -105,6 +80,7 @@ namespace Owasp.Esapi.Errors
             this._logMessage = logMessage;
             logger.Error(Owasp.Esapi.LogEventTypes.SECURITY, "INTRUSION - " + logMessage, cause);
         }
+        
         static IntrusionException()
         {
             logger = Esapi.Logger;

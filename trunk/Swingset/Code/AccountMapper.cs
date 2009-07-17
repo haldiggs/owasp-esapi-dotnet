@@ -1,15 +1,6 @@
 ﻿using System;
 using System.Data;
-using System.Configuration;
-using System.Linq;
 using System.Web;
-using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Xml.Linq;
-using System.Collections;
 namespace Owasp.Esapi.Swingset
 {
     public class AccountMapper
@@ -25,6 +16,7 @@ namespace Owasp.Esapi.Swingset
             arm.AddDirectReference(account1);
             arm.AddDirectReference(account2);
             arm.AddDirectReference(account3);
+            HttpContext.Current.Session["AccountMapper"] = this;
         }
         public DataTable GetAccountReferences()
         {
@@ -39,11 +31,11 @@ namespace Owasp.Esapi.Swingset
             column.DataType = Type.GetType("System.String");
             column.ColumnName = "name";
             table.Columns.Add(column);
-            foreach (string reference in arm.GetIndirectReferences())
+            foreach (Account account in arm.GetDirectReferences())
             {
                DataRow row = table.NewRow();
-               row["reference"] = reference;
-               row["name"] = ((Account) arm.GetDirectReference(reference)).Name;
+               row["reference"] = arm.GetIndirectReference(account);
+               row["name"] = account.Name;
                table.Rows.Add(row);
             }
             return table;

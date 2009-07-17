@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EncryptorPage.aspx.cs" Inherits="Owasp.Esapi.Swingset.Users.Examples.EncryptorPage" MasterPageFile="~/Esapi.Master" %>
-<asp:Content ID="EncryptorContent" ContentPlaceHolderID="EsapiContentPlaceHolder" runat="server">
+<asp:Content ID="EncryptorContent" ContentPlaceHolderID="SwingsetContentPlaceHolder" runat="server">
     
     Plaintext:
     <div><asp:TextBox ID="txtPlaintext" runat="server"></asp:TextBox>   

@@ -1,30 +1,11 @@
-﻿/// <summary> OWASP .NET Enterprise Security API (.NET ESAPI)
-/// 
-/// This file is part of the Open Web Application Security Project (OWASP)
-/// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
-/// http://www.owasp.org/index.php/Category:ESAPI.
-/// 
-/// Copyright (c) 2009 - The OWASP Foundation
-/// 
-/// The .NET ESAPI is published by OWASP under the BSD. You should read and accept the
-/// LICENSE before you use, modify, and/or redistribute this software.
-/// 
-/// </summary>
-/// <author>  Alex Smolen
-/// </author>
-/// <created>  2008 </created>
-
-using System.Collections;
-using System;
+﻿using System;
 
 namespace Owasp.Esapi.Interfaces
 {               
     /// <summary> The ILogger interface defines a set of methods that can be used to log
     /// security events. Implementors should use a well established logging library
     /// as it is quite difficult to create a high-performance logger.
-    /// [P]
-    /// [img src="doc-files/Logger.jpg" height="600">
-    /// [P]
+    /// <img src="doc-files/Logger.jpg" height="600"/>
     /// 
     ///  The logging levels defined by this interface (in descending order) are:
     /// <ul>
@@ -33,7 +14,7 @@ namespace Owasp.Esapi.Interfaces
     /// <li>warning</li>
     /// <li>info</li>
     /// <li>debug</li>
-    /// <li>trace (lowest value)</li>
+    /// <li>all</li>
     /// </ul>
     /// 
     /// This Logger allows callers to determine which logging levels are enabled, and to submit events 
@@ -69,18 +50,14 @@ namespace Owasp.Esapi.Interfaces
     /// </ol>
     /// 
     /// In the default implementation, this interface is implemented by Logger. 
-    /// JavaLogger uses the log4net package as the basis for its logging 
+    /// Logger uses the log4net package as the basis for its logging 
     /// implementation. This default implementation implements requirements #1 thru #5 above.
     /// 
     /// Customization: It is expected that most organizations will implement their own custom Logger class in 
     /// order to integrate ESAPI logging with their logging infrastructure. The ESAPI Reference Implementation 
     /// is intended to provide a simple functional example of an implementation.
     /// 
-    /// </summary>
-    /// <author>  Alex Smolen (me@alexsmolen.com)
-    /// </author>
-    /// <since> February 20, 2008
-    /// </since>   
+    /// </summary>  
     public interface ILogger
     {            
         int Level { get; set;}
@@ -214,31 +191,5 @@ namespace Owasp.Esapi.Interfaces
         /// </summary>
         /// <returns>true, if debug level messages will be output to the log.</returns>
         bool IsDebugEnabled();
-
-        /// <summary> Log a warning level security event if 'trace' level logging is enabled.</summary>
-        /// <param name="type">The type of event.
-        /// </param>
-        /// <param name="message">The message to log.
-        /// </param>
-		void Trace(int type, string message);
-
-        /// <summary>
-        /// Log a warning level security event if 'trace' level logging is enabled 
-        /// and also record the stack trace associated with the event.
-        /// </summary>
-        /// <param name="type">The type of event.
-        /// </param>
-        /// <param name="message">The message to log.
-        /// </param>
-        /// <param name="throwable">The exception to log.
-        /// </param>
-		void Trace(int type, string message, Exception throwable);
-
-        /// <summary>
-        /// Allows the caller to determine if messages logged at this level
-        /// will be discarded, to avoid performing expensive processing.
-        /// </summary>
-        /// <returns>true, if trace level messages will be output to the log.</returns>
-        bool IsTraceEnabled();	
     }
 }

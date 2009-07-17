@@ -1,21 +1,4 @@
-﻿/// <summary> OWASP .NET Enterprise Security API (.NET ESAPI)
-/// 
-/// This file is part of the Open Web Application Security Project (OWASP)
-/// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
-/// http://www.owasp.org/index.php/Category:ESAPI.
-/// 
-/// Copyright (c) 2009 - The OWASP Foundation
-/// 
-/// The .NET ESAPI is published by OWASP under the BSD. You should read and accept the
-/// LICENSE before you use, modify, and/or redistribute this software.
-/// 
-/// </summary>
-/// <author>  Alex Smolen
-/// </author>
-/// <created>  2008 </created>
-
-using System;
-using System.Diagnostics;
+﻿using System;
 using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi
@@ -25,12 +8,13 @@ namespace Owasp.Esapi
     /// </summary>
     public class Esapi
     {
-
         private static IAccessController accessController = null;        
         
         private static IEncoder encoder = null;
 
         private static IEncryptor encryptor = null;
+        
+        private static IHttpUtilities httpUtilities = null;
 
         private static IIntrusionDetector intrusionDetector = null;
 
@@ -78,7 +62,7 @@ namespace Owasp.Esapi
                 return encoder;                
             }
         }
-        ///// <param name="encryptor">the encryptor to set
+        /// <param name="encryptor">the encryptor to set
         /// </param>
         public static IEncryptor Encryptor
         {
@@ -95,26 +79,24 @@ namespace Owasp.Esapi
                 return encryptor;                
             }
         }
-        ///// <param name="executor">the executor to set
-        ///// </param>
-        //public static IExecutor Executor
-        //{
-        //    set
-        //    {
-        //        Esapi.executor = value;
-        //    }
 
-        //}
-        ///// <param name="httpUtilities">the httpUtilities to set
-        ///// </param>
-        //public static IHttpUtilities HttpUtilities
-        //{
-        //    set
-        //    {
-        //        Esapi.httpUtilities = value;
-        //    }
-
-        //}
+        /// <param name="encryptor">the httpUtilities to set
+        /// </param>
+        public static IHttpUtilities HttpUtilities
+        {
+            set
+            {
+                httpUtilities = value;
+            }
+            get
+            {
+                if (httpUtilities == null)
+                {
+                    httpUtilities = (IHttpUtilities)Activator.CreateInstance(Esapi.SecurityConfiguration.HttpUtilitiesClass);
+                }
+                return httpUtilities;
+            }
+        }
 
         /// <param name="intrusionDetector">the intrusionDetector to set
         /// </param>
@@ -152,6 +134,25 @@ namespace Owasp.Esapi
             }
         }
 
+        /// <param name="validator">the validator to set
+        /// </param>
+        public static IValidator Validator
+        {
+            set
+            {
+                validator = value;
+            }
+
+            get
+            {
+                if (validator == null)
+                {
+                    validator = (IValidator)Activator.CreateInstance(Esapi.SecurityConfiguration.ValidatorClass);
+                }
+                return validator;
+            }
+        }
+
         /// <param name="securityConfiguration">the securityConfiguration to set
         /// </param>
         public static ISecurityConfiguration SecurityConfiguration
@@ -183,26 +184,8 @@ namespace Owasp.Esapi
         {
             return new Logger(className);
         }
-
-        
-        public static IValidator Validator
-        {
-            set
-            {
-                validator = value;
-            }
-
-            get
-            {
-                if (validator == null)
-                {
-                    validator = (IValidator) Activator.CreateInstance(Esapi.SecurityConfiguration.ValidatorClass);
-                }
-                return validator;                
-            }
-        }
-
-        ///// <summary> prevent instantiation of this class</summary>
+       
+        /// <summary> prevent instantiation of this class</summary>
         private Esapi()
         {
         }        

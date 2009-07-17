@@ -1,26 +1,8 @@
-﻿/// <summary> OWASP .NET Enterprise Security API (.NET ESAPI)
-/// 
-/// This file is part of the Open Web Application Security Project (OWASP)
-/// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
-/// http://www.owasp.org/index.php/Category:ESAPI.
-/// 
-/// Copyright (c) 2009 - The OWASP Foundation
-/// 
-/// The .NET ESAPI is published by OWASP under the BSD. You should read and accept the
-/// LICENSE before you use, modify, and/or redistribute this software.
-/// 
-/// </summary>
-/// <author>  Alex Smolen
-/// </author>
-/// <created>  2008 </created>
-
-using System;
-using Owasp.Esapi.Interfaces;
-using System.Text;
-using System.IO;
+﻿using System;
 using System.Security.Cryptography;
-using System.Net;
+using System.Text;
 using Owasp.Esapi.Errors;
+using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi
 {
@@ -28,10 +10,6 @@ namespace Owasp.Esapi
     /// cryptographically strong source of entropy. The specific algorithm used is configurable in Esapi.properties.
     /// 
     /// </summary>
-    /// <author>  Alex Smolen
-    /// </author>
-    /// <since> February 20, 2008
-    /// </since>
     /// <seealso cref="Owasp.Esapi.Interfaces.IRandomizer">
     /// </seealso>
     public class Randomizer : IRandomizer
@@ -47,13 +25,12 @@ namespace Owasp.Esapi
             string algorithm = Esapi.SecurityConfiguration.RandomAlgorithm;
             try
             {
-                //Todo: Right now algorithm is ignored
-                randomNumberGenerator = RNGCryptoServiceProvider.Create();
+                //FIXME: Right now algorithm is ignored
+                randomNumberGenerator = RandomNumberGenerator.Create(algorithm);
             }
             catch (Exception e)
             {
-                // Can't throw an exception from the constructor, but this will get
-                // it logged and tracked
+                // Can't throw an exception from the constructor, but this will get it logged and tracked
                 new EncryptionException("Error creating randomizer", "Can't find random algorithm " + algorithm, e);
             }
         }
@@ -155,11 +132,10 @@ namespace Owasp.Esapi
         /// </seealso>
         public double GetRandomDouble(double min, double max)
         {
-            // TODO: This method only gives you 32 bits of entropy (based of random int). Could figure
-            // out the math to give you a full double's worth of entropy. Sorry!
+            // This method only gives you 32 bits of entropy (based of random int).
             double factor = max - min;
             double random = (double) GetRandomInteger(0, Int32.MaxValue) / (double) Int32.MaxValue;
-            return random * factor + min;            
+            return random * factor + min;
         }
 
         /// <summary>

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi.ValidationRules
@@ -24,5 +20,6 @@ namespace Owasp.Esapi.ValidationRules
         }
 
         #endregion
+
     }
 }

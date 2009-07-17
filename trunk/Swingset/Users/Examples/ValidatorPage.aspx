@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ValidatorPage.aspx.cs" Inherits="Owasp.Esapi.Swingset.Users.Examples.ValidatorPage" MasterPageFile="~/Esapi.Master" %>
-<asp:Content ID="ValidatorContent" ContentPlaceHolderID="EsapiContentPlaceHolder" runat="server">
+<asp:Content ID="ValidatorContent" ContentPlaceHolderID="SwingsetContentPlaceHolder" runat="server">
     <fieldset>
     Credit Card:
     <div>

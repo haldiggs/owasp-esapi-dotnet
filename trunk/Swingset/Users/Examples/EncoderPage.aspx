@@ -1,7 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EncoderPage.aspx.cs" Inherits="Owasp.Esapi.Swingset.Users.Examples.EncoderPage" MasterPageFile="~/Esapi.Master" ValidateRequest="false" %>
 <%@ Import Namespace="Owasp.Esapi" %>
 <%-- ValidateRequest is off, but usually should rarely be --%>
-<asp:Content ID="EncoderContent" ContentPlaceHolderID="EsapiContentPlaceHolder" runat="server">
+<asp:Content ID="EncoderContent" ContentPlaceHolderID="SwingsetContentPlaceHolder" runat="server">
 Text to encode:
 <div>
 <asp:TextBox ID="txtToEncode" runat="server"></asp:TextBox>
