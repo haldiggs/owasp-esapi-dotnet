@@ -9,15 +9,17 @@
 </head>
 <body>
     <div id="header">
-        .NET ESAPI SwingSet
+        .NET ESAPI SwingSet        
     </div>
-    <asp:SiteMapPath ID="smpSwingset" runat="server">
+    <div class="main">
+        <asp:SiteMapPath ID="smpSwingset" CssClass="breadcrumb" runat="server">
     
-    </asp:SiteMapPath>
-    <form id="EsapiForm" runat="server">    
-        <asp:ContentPlaceHolder ID="EsapiContentPlaceHolder" runat="server">
+        </asp:SiteMapPath>
+        <form id="EsapiForm" runat="server">    
+            <asp:ContentPlaceHolder ID="SwingsetContentPlaceHolder" runat="server">
         
-        </asp:ContentPlaceHolder>
-    </form>
+            </asp:ContentPlaceHolder>
+        </form>
+    </div>
 </body>
 </html>

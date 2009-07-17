@@ -1,44 +1,19 @@
-﻿/// <summary> OWASP .NET Enterprise Security API (.NET ESAPI)
-/// 
-/// This file is part of the Open Web Application Security Project (OWASP)
-/// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
-/// http://www.owasp.org/index.php/Category:ESAPI.
-/// 
-/// Copyright (c) 2009 - The OWASP Foundation
-/// 
-/// The .NET ESAPI is published by OWASP under the BSD. You should read and accept the
-/// LICENSE before you use, modify, and/or redistribute this software.
-/// 
-/// </summary>
-/// <author>  Alex Smolen
-/// </author>
-/// <created>  2008 </created>
-
-using System;
-using System.IO;
+﻿using System;
 using System.Collections;
 
 namespace Owasp.Esapi.Interfaces
 {
     /// <summary> The ISecurityConfiguration interface stores all configuration information
     /// that directs the behavior of the ESAPI implementation.
-    /// [P]
-    /// [img src="doc-files/SecurityConfiguration.jpg" height="600">
-    /// [P]
+    /// <img src="doc-files/SecurityConfiguration.jpg" height="600"/>
     /// Protection of this configuration information is critical to the secure
     /// operation of the application using the ESAPI. You should use operating system
     /// access controls to limit access to wherever the configuration information is
     /// stored. Please note that adding another layer of encryption does not make the
     /// attackers job much more difficult. Somewhere there must be a master "secret"
     /// that is stored unencrypted on the application platform. Creating another
-    /// layer of indirection doesn't provide any real additional security.
-    /// 
+    /// layer of indirection doesn't provide any real additional security.    
     /// </summary>
-    /// <author>  Alex Smolen (me@alexsmolen.com)
-    /// </author>
-    /// <since> February 20, 2008
-    /// </since>
-
     public interface ISecurityConfiguration
     {
         /// <summary> 
@@ -110,6 +85,15 @@ namespace Owasp.Esapi.Interfaces
             get;
         }
 
+        /// <summary>
+        /// The log level to use for logging.
+        /// </summary>
+        int LogLevel
+        {
+            get;
+        }
+
+
         /// <summary> 
         /// The intrusion detection quota for a particular events.
         /// </summary>
@@ -131,6 +115,11 @@ namespace Owasp.Esapi.Interfaces
         }
 
         Type EncryptorClass
+        {
+            get;
+        }
+
+        Type HttpUtilitiesClass
         {
             get;
         }

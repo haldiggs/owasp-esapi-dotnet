@@ -1,10 +1,6 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Owasp.Esapi.Interfaces;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Owasp.Esapi;
+using Owasp.Esapi.Interfaces;
 
 namespace EsapiTest
 {
@@ -69,16 +65,6 @@ namespace EsapiTest
             logger.Info(LogEventTypes.SECURITY, "test message", null);
             logger.Info(LogEventTypes.SECURITY, "%3escript%3f test message", null);
             logger.Info(LogEventTypes.SECURITY, "<script> test message", null);
-        }
-
-
-        /// <summary> Test of Trace method, of class Owasp.Esapi.Logger.</summary>
-        [TestMethod]
-        public void Test_Trace()
-        {
-            System.Console.Out.WriteLine("Trace");
-            logger.Trace(LogEventTypes.SECURITY, "test message");
-            logger.Trace(LogEventTypes.SECURITY, "test message", null);
         }
 
         /// <summary> Test of LogDebug method, of class Owasp.Esapi.Logger.</summary>

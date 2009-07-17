@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="PasswordReset.aspx.cs" Inherits="Owasp.Esapi.Swingset.PasswordReset" MasterPageFile="~/Esapi.Master" %>
-<asp:Content ID="PasswordResetContent" ContentPlaceHolderID="EsapiContentPlaceHolder" runat="server">     
+<asp:Content ID="PasswordResetContent" ContentPlaceHolderID="SwingsetContentPlaceHolder" runat="server">
     Please answer the secret question and create a new password.
     Secret Question
     <div>

@@ -1,21 +1,4 @@
-﻿/// <summary> OWASP .NET Enterprise Security API (.NET ESAPI)
-/// 
-/// This file is part of the Open Web Application Security Project (OWASP)
-/// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
-/// http://www.owasp.org/index.php/Category:ESAPI.
-/// 
-/// Copyright (c) 2009 - The OWASP Foundation
-/// 
-/// The .NET ESAPI is published by OWASP under the BSD. You should read and accept the
-/// LICENSE before you use, modify, and/or redistribute this software.
-/// 
-/// </summary>
-/// <author>  Alex Smolen
-/// </author>
-/// <created>  2008 </created>
-
-using System;
-
+﻿using System;
 
 namespace Owasp.Esapi.Interfaces
 {
@@ -24,14 +7,8 @@ namespace Owasp.Esapi.Interfaces
     /// use a strong cryptographic implementation, such as the JCE or BouncyCastle.
     /// Weak sources of randomness can undermine a wide variety of security
     /// mechanisms.
-    /// [P]
-    /// [img src="doc-files/Randomizer.jpg" height="600">
-    /// [P]
-    /// </summary>
-    /// <author>  Alex Smolen (me@alexsmolen.com)
-    /// </author>
-    /// <since> February 20, 2008
-    /// </since>
+    /// <img src="doc-files/Randomizer.jpg" height="600" />
+    /// </summary>    
     public interface IRandomizer
     {
         /// <summary> Returns a random bool.</summary>

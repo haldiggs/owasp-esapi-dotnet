@@ -59,6 +59,8 @@
   <ItemGroup>
     <Compile Include="AccessController.cs" />
     <Compile Include="AccessReferenceMap.cs" />
+    <Compile Include="Codecs\Codec.cs" />
+    <Compile Include="Codecs\PushbackString.cs" />
     <Compile Include="Encoder.cs" />
     <Compile Include="Encryptor.cs" />
     <Compile Include="Errors\AccessControlException.cs" />
@@ -69,10 +71,12 @@
     <Compile Include="Errors\IntrusionException.cs" />
     <Compile Include="Errors\ValidationException.cs" />
     <Compile Include="Esapi.cs" />
+    <Compile Include="HttpUtilities.cs" />
     <Compile Include="Interfaces\IAccessReferenceMap.cs" />
     <Compile Include="Interfaces\IAccessController.cs" />
     <Compile Include="Interfaces\IEncoder.cs" />
     <Compile Include="Interfaces\IEncryptor.cs" />
+    <Compile Include="Interfaces\IHttpUtilities.cs" />
     <Compile Include="Interfaces\IIntrusionDetector.cs" />
     <Compile Include="Interfaces\ILogger.cs" />
     <Compile Include="Interfaces\IRandomizer.cs" />

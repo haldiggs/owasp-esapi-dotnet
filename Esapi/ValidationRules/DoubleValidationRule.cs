@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi.ValidationRules
 {
     class DoubleValidationRule:IValidationRule
     {        
+
         #region IValidationRule Members
 
         public bool IsValid(string input)
@@ -20,11 +18,8 @@ namespace Owasp.Esapi.ValidationRules
             catch (FormatException)
             {
                 return false;
-            }
-
-            
+            }            
         }
-
         
         #endregion
     }

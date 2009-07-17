@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="RandomizerPage.aspx.cs" Inherits="Owasp.Esapi.Swingset.Users.Examples.RandomizerPage" MasterPageFile="~/Esapi.Master"%>
-<asp:Content ID="RandomizerContent" ContentPlaceHolderID="EsapiContentPlaceHolder" runat="server">
+<asp:Content ID="RandomizerContent" ContentPlaceHolderID="SwingsetContentPlaceHolder" runat="server">
     <div><asp:Button ID="btnGenerate" runat="server" Text="Generate" 
             onclick="btnGenerate_Click" /></div>    
     bool:

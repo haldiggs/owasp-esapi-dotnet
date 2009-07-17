@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.Web.Security;
-using Owasp.Esapi.Errors;
-using Owasp.Esapi.Interfaces;
+using System.Web.UI.WebControls;
 
 namespace Owasp.Esapi.Swingset
 {
@@ -21,6 +15,13 @@ namespace Owasp.Esapi.Swingset
             if (User.IsInRole("admin"))
             {
                 Response.Redirect("Administrators/Default.aspx");
+            }
+            
+            SiteMapPath smpSwingset;
+            smpSwingset = (SiteMapPath) Master.FindControl("smpSwingset");
+            if (smpSwingset != null)
+            {
+                smpSwingset.Visible = false;
             }            
         }
 

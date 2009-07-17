@@ -1,26 +1,8 @@
-﻿/// <summary> OWASP .NET Enterprise Security API (.NET ESAPI)
-/// 
-/// This file is part of the Open Web Application Security Project (OWASP)
-/// .NET Enterprise Security API (.NET ESAPI) project. For details, please see
-/// http://www.owasp.org/index.php/Category:ESAPI.
-/// 
-/// Copyright (c) 2009 - The OWASP Foundation
-/// 
-/// The .NET ESAPI is published by OWASP under the BSD. You should read and accept the
-/// LICENSE before you use, modify, and/or redistribute this software.
-/// 
-/// </summary>
-/// <author>  Alex Smolen
-/// </author>
-/// <created>  2008 </created>
-
-using System;
-using System.Collections;
-using Owasp.Esapi.Interfaces;
-using System.Text;
+﻿using System;
 using System.Diagnostics;
-using log4net;
 using System.Web.Security;
+using log4net;
+using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi
 {
@@ -35,7 +17,6 @@ namespace Owasp.Esapi
         public static readonly int WARN = 600;
         public static readonly int INFO = 400;
         public static readonly int DEBUG = 200;
-        public static readonly int TRACE = 100;
         public static readonly int ALL = Int32.MinValue;
         public static int ParseLogLevel(string level)
         {
@@ -49,8 +30,6 @@ namespace Owasp.Esapi
                 return LogLevels.INFO;
             if (level.ToUpper().Equals("DEBUG", StringComparison.InvariantCultureIgnoreCase))
                 return LogLevels.DEBUG;
-            if (level.ToUpper().Equals("TRACE", StringComparison.InvariantCultureIgnoreCase))
-                return LogLevels.TRACE;
             if (level.ToUpper().Equals("OFF", StringComparison.InvariantCultureIgnoreCase))
                 return LogLevels.OFF;
             return LogLevels.ALL;
@@ -83,11 +62,7 @@ namespace Owasp.Esapi
     /// <summary> Reference implementation of the ILogger interface. This implementation uses the log4NET logging package, and marks each
     /// log message with the currently logged in user and the word "SECURITY" for security related events.
     /// 
-    /// </summary>
-    /// <author>  Alex Smolen (me@alexsmolen.com)
-    /// </author>
-    /// <since> Febraury 20, 2008
-    /// </since>
+    /// </summary>   
     /// <seealso cref="Owasp.Esapi.Interfaces.ILogger">
     /// </seealso>
     public class Logger : ILogger
@@ -111,7 +86,35 @@ namespace Owasp.Esapi
         public Logger(string className)
         {
             this.logger = log4net.LogManager.GetLogger(className);
-            //log4net.LogManager.GetRepository().Threshold = (SecurityConfiguration) Esapi.SecurityConfiguration()).LogLevel;
+            int logLevel = Esapi.SecurityConfiguration.LogLevel;
+            if (logLevel == LogLevels.FATAL) {
+                log4net.LogManager.GetRepository().Threshold = log4net.Core.Level.Fatal;
+            }
+            else if (logLevel == LogLevels.ERROR)
+            {
+                log4net.LogManager.GetRepository().Threshold = log4net.Core.Level.Error;
+            }
+            else if (logLevel == LogLevels.WARN)
+            {
+                log4net.LogManager.GetRepository().Threshold = log4net.Core.Level.Warn;
+            }
+            else if (logLevel == LogLevels.INFO)
+            {
+                log4net.LogManager.GetRepository().Threshold = log4net.Core.Level.Info;
+            }
+            else if (logLevel == LogLevels.DEBUG)
+            {
+                log4net.LogManager.GetRepository().Threshold = log4net.Core.Level.Debug;
+            }
+            else if (logLevel == LogLevels.OFF)
+            {
+                log4net.LogManager.GetRepository().Threshold = log4net.Core.Level.Off;
+            }
+            else
+            {
+                log4net.LogManager.GetRepository().Threshold = log4net.Core.Level.All;
+            }
+
         }
         
         /// <summaryThe constructor, which is hidden (private) and accessed through Esapi class.       
@@ -161,8 +164,6 @@ namespace Owasp.Esapi
                     fqn = fqn.Substring(index + 1);
                 StackTrace st = new StackTrace(throwable, true);
                 
-                // Note: Should we have exceptions with null stack traces?
-
                 StackFrame[] frames = st.GetFrames();
                 if (frames != null)
                 {
@@ -193,14 +194,11 @@ namespace Owasp.Esapi
         {
             get
             {
-                // TODO: Fix to return inner logger level
-                return 0;
-                //return logger.Logger;
+                return level;                
             }
             set
             {
-                // TODO: Fix to set inner logger level
-                //level = value;
+                level = value;
             }
         }
 
@@ -309,30 +307,6 @@ namespace Owasp.Esapi
 
         public bool IsDebugEnabled()
         {
-            return logger.IsDebugEnabled;
-        }
-
-        public void Trace(int type, string message)
-        {
-            // TODO: Add new log level
-            if (logger.IsDebugEnabled)
-            {
-                logger.Debug(GetLogMessage(type, message, null));
-            }
-        }
-
-        public void Trace(int type, string message, Exception throwable)
-        {
-             // TODO: Add new log level
-            if (logger.IsDebugEnabled)
-            {
-                logger.Debug(GetLogMessage(type, message, throwable));
-            }
-        }
-
-        public bool IsTraceEnabled()
-        {
-             // TODO: Add new log level
             return logger.IsDebugEnabled;
         }
 

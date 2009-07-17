@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Owasp.Esapi.Errors;
 using Owasp.Esapi;
+using Owasp.Esapi.Errors;
 using Owasp.Esapi.Interfaces;
 
 namespace EsapiTest
@@ -13,8 +10,6 @@ namespace EsapiTest
     /// <summary> The Class EncryptorTest.
     /// 
     /// </summary>
-    /// <author>  Alex Smolen (me@alexsmolen.com)
-    /// </author
     [TestClass]
     public class EncryptorTest
     {

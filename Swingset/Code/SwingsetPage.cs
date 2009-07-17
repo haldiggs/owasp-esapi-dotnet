@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi.Swingset
@@ -13,7 +10,8 @@ namespace Owasp.Esapi.Swingset
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            ViewStateUserKey = Session.SessionID;
+            Esapi.HttpUtilities.AddCsrfToken();
+            Esapi.HttpUtilities.AddNoCacheHeaders();
         }
     }
 }
