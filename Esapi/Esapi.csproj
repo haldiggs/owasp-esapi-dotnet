@@ -21,6 +21,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Owasp.Esapi.XML</DocumentationFile>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -59,8 +61,15 @@
   <ItemGroup>
     <Compile Include="AccessController.cs" />
     <Compile Include="AccessReferenceMap.cs" />
-    <Compile Include="Codecs\Codec.cs" />
-    <Compile Include="Codecs\PushbackString.cs" />
+    <Compile Include="Codecs\Base64Codec.cs" />
+    <Compile Include="Codecs\HtmlAttributeCodec.cs" />
+    <Compile Include="Codecs\HtmlCodec.cs" />
+    <Compile Include="Interfaces\ICodec.cs" />
+    <Compile Include="Codecs\JavaScriptCodec.cs" />
+    <Compile Include="Codecs\UrlCodec.cs" />
+    <Compile Include="Codecs\VbScriptCodec.cs" />
+    <Compile Include="Codecs\XmlAttributeCodec.cs" />
+    <Compile Include="Codecs\XmlCodec.cs" />
     <Compile Include="Encoder.cs" />
     <Compile Include="Encryptor.cs" />
     <Compile Include="Errors\AccessControlException.cs" />
