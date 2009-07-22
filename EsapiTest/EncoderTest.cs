@@ -89,16 +89,16 @@ namespace EsapiTest
         {
             System.Console.Out.WriteLine("EncodeForHtml");
             IEncoder encoder = Esapi.Encoder;
-            Assert.AreEqual("", encoder.EncodeForHtml(null));
+            Assert.AreEqual("", encoder.Encode(Owasp.Esapi.Encoder.HTML, null));
             // test invalid characters are replaced with spaces
-            Assert.AreEqual("a&#0;b&#4;c&#128;d&#150;e&#159;f&#9;g", encoder.EncodeForHtml("a" + (char)0 + "b" + (char)4 + "c" + (char)128 + "d" + (char)150 + "e" + (char)159 + "f" + (char)9 + "g"));        
-            Assert.AreEqual("&#60;script&#62;", encoder.EncodeForHtml("<script>"));
-            Assert.AreEqual("&#38;lt&#59;script&#38;gt&#59;", encoder.EncodeForHtml("&lt;script&gt;"));
-            Assert.AreEqual("&#33;&#64;&#36;&#37;&#40;&#41;&#61;&#43;&#123;&#125;&#91;&#93;", encoder.EncodeForHtml("!@$%()=+{}[]"));
-            // Assert.AreEqual("&#x21;&#x40;&#x24;&#x25;&#x28;&#x29;&#x3d;&#x2b;&#x7b;&#x7d;&#x5b;&#x5d;", encoder.EncodeForHtml(encoder.Canonicalize("&#33;&#64;&#36;&#37;&#40;&#41;&#61;&#43;&#123;&#125;&#91;&#93;") ) );
-            Assert.AreEqual(",.-_ ", encoder.EncodeForHtml(",.-_ "));
-            Assert.AreEqual("dir&#38;", encoder.EncodeForHtml("dir&"));
-            Assert.AreEqual("one&#38;two", encoder.EncodeForHtml("one&two"));
+            Assert.AreEqual("a&#0;b&#4;c&#128;d&#150;e&#159;f&#9;g", encoder.Encode(Owasp.Esapi.Encoder.HTML, "a" + (char)0 + "b" + (char)4 + "c" + (char)128 + "d" + (char)150 + "e" + (char)159 + "f" + (char)9 + "g"));        
+            Assert.AreEqual("&#60;script&#62;", encoder.Encode(Owasp.Esapi.Encoder.HTML, "<script>"));
+            Assert.AreEqual("&#38;lt&#59;script&#38;gt&#59;", encoder.Encode(Owasp.Esapi.Encoder.HTML, "&lt;script&gt;"));
+            Assert.AreEqual("&#33;&#64;&#36;&#37;&#40;&#41;&#61;&#43;&#123;&#125;&#91;&#93;", encoder.Encode(Owasp.Esapi.Encoder.HTML, "!@$%()=+{}[]"));
+            // Assert.AreEqual("&#x21;&#x40;&#x24;&#x25;&#x28;&#x29;&#x3d;&#x2b;&#x7b;&#x7d;&#x5b;&#x5d;", encoder.Encode(Owasp.Esapi.Encoder.HTML, encoder.Canonicalize("&#33;&#64;&#36;&#37;&#40;&#41;&#61;&#43;&#123;&#125;&#91;&#93;") ) );
+            Assert.AreEqual(",.-_ ", encoder.Encode(Owasp.Esapi.Encoder.HTML, ",.-_ "));
+            Assert.AreEqual("dir&#38;", encoder.Encode(Owasp.Esapi.Encoder.HTML, "dir&"));
+            Assert.AreEqual("one&#38;two", encoder.Encode(Owasp.Esapi.Encoder.HTML, "one&two"));
             Assert.AreEqual("" + (char)12345 + (char)65533 + (char)1244, "" + (char)12345 + (char)65533 + (char)1244 );
         }
 
@@ -108,10 +108,10 @@ namespace EsapiTest
         {
             System.Console.Out.WriteLine("EncodeForHtmlAttribute");
             IEncoder encoder = Esapi.Encoder;
-            Assert.AreEqual("", encoder.EncodeForHtmlAttribute(null));
-            Assert.AreEqual("&#60;script&#62;", encoder.EncodeForHtmlAttribute("<script>"));
-            Assert.AreEqual(",.-_", encoder.EncodeForHtmlAttribute(",.-_"));
-            Assert.AreEqual("&#32;&#33;&#64;&#36;&#37;&#40;&#41;&#61;&#43;&#123;&#125;&#91;&#93;", encoder.EncodeForHtmlAttribute(" !@$%()=+{}[]"));
+            Assert.AreEqual("", encoder.Encode(Owasp.Esapi.Encoder.HTML_ATTRIBUTE, null));
+            Assert.AreEqual("&#60;script&#62;", encoder.Encode(Owasp.Esapi.Encoder.HTML_ATTRIBUTE, "<script>"));
+            Assert.AreEqual(",.-_", encoder.Encode(Owasp.Esapi.Encoder.HTML_ATTRIBUTE, ",.-_"));
+            Assert.AreEqual("&#32;&#33;&#64;&#36;&#37;&#40;&#41;&#61;&#43;&#123;&#125;&#91;&#93;", encoder.Encode(Owasp.Esapi.Encoder.HTML_ATTRIBUTE, " !@$%()=+{}[]"));
         }
 
         /// <summary> Test of EncodeForJavaScript method, of class Owasp.Esapi.Encoder.</summary>
@@ -120,10 +120,10 @@ namespace EsapiTest
         {
             System.Console.Out.WriteLine("EncodeForJavaScript");
             IEncoder encoder = Esapi.Encoder;
-            Assert.AreEqual("''", encoder.EncodeForJavascript(null));
-            Assert.AreEqual("'\\x3cscript\\x3e'", encoder.EncodeForJavascript("<script>"));
-            Assert.AreEqual("',.-_ '", encoder.EncodeForJavascript(",.-_ "));
-            Assert.AreEqual("'\\x21\\x40\\x24\\x25\\x28\\x29\\x3d\\x2b\\x7b\\x7d\\x5b\\x5d'", encoder.EncodeForJavascript("!@$%()=+{}[]"));
+            Assert.AreEqual("''", encoder.Encode(Owasp.Esapi.Encoder.JAVASCRIPT, null));
+            Assert.AreEqual("'\\x3cscript\\x3e'", encoder.Encode(Owasp.Esapi.Encoder.JAVASCRIPT, "<script>"));
+            Assert.AreEqual("',.-_ '", encoder.Encode(Owasp.Esapi.Encoder.JAVASCRIPT, ",.-_ "));
+            Assert.AreEqual("'\\x21\\x40\\x24\\x25\\x28\\x29\\x3d\\x2b\\x7b\\x7d\\x5b\\x5d'", encoder.Encode(Owasp.Esapi.Encoder.JAVASCRIPT, "!@$%()=+{}[]"));
         }
 
         /// <summary> Test of EncodeForVisualBasicScript method, of class
@@ -134,46 +134,12 @@ namespace EsapiTest
         {
             System.Console.Out.WriteLine("EncodeForVbScript");
             IEncoder encoder = Esapi.Encoder;
-            Assert.AreEqual("\"\"", encoder.EncodeForVbScript(null));
-            Assert.AreEqual("chrw(60)&\"script\"&chrw(62)", encoder.EncodeForVbScript("<script>"));
-            Assert.AreEqual("\"x \"&chrw(33)&chrw(64)&chrw(36)&chrw(37)&chrw(40)&chrw(41)&chrw(61)&chrw(43)&chrw(123)&chrw(125)&chrw(91)&chrw(93)", encoder.EncodeForVbScript("x !@$%()=+{}[]"));
-            Assert.AreEqual("\"alert\"&chrw(40)&chrw(39)&\"ESAPI test\"&chrw(33)&chrw(39)&chrw(41)", encoder.EncodeForVbScript("alert('ESAPI test!')"));
-            Assert.AreEqual("\"jeff.williams\"&chrw(64)&\"aspectsecurity.com\"", encoder.EncodeForVbScript("jeff.williams@aspectsecurity.com"));
-            Assert.AreEqual("\"test \"&chrw(60)&chrw(62)&\" test\"", encoder.EncodeForVbScript("test <> test"));
-        }
-
-        /// <summary> Test of EncodeForXPath method, of class Owasp.Esapi.Encoder.</summary>
-        [TestMethod]
-        public void Test_EncodeForXPath()
-        {
-            System.Console.Out.WriteLine("EncodeForXPath");
-            IEncoder encoder = Esapi.Encoder;            
-        }
-
-        /// <summary> Test of EncodeForSQL method, of class Owasp.Esapi.Encoder.</summary>
-        [TestMethod]
-        public void Test_EncodeForSQL()
-        {
-            System.Console.Out.WriteLine("EncodeForSQL");
-            IEncoder encoder = Esapi.Encoder;            
-        }
-
-
-        /// <summary> Test of EncodeForLDAP method, of class Owasp.Esapi.Encoder.</summary>
-        [TestMethod]
-        public void Test_EncodeForLDAP()
-        {
-            System.Console.Out.WriteLine("EncodeForLDAP");
-            IEncoder encoder = Esapi.Encoder;
-            
-        }
-
-        /// <summary> Test of EncodeForDN method, of class Owasp.Esapi.Encoder.</summary>
-        [TestMethod]
-        public void Test_EncodeForDN()
-        {
-            System.Console.Out.WriteLine("EncodeForDN");
-            IEncoder encoder = Esapi.Encoder;
+            Assert.AreEqual("\"\"", encoder.Encode(Owasp.Esapi.Encoder.VBSCRIPT, null));
+            Assert.AreEqual("chrw(60)&\"script\"&chrw(62)", encoder.Encode(Owasp.Esapi.Encoder.VBSCRIPT, "<script>"));
+            Assert.AreEqual("\"x \"&chrw(33)&chrw(64)&chrw(36)&chrw(37)&chrw(40)&chrw(41)&chrw(61)&chrw(43)&chrw(123)&chrw(125)&chrw(91)&chrw(93)", encoder.Encode(Owasp.Esapi.Encoder.VBSCRIPT, "x !@$%()=+{}[]"));
+            Assert.AreEqual("\"alert\"&chrw(40)&chrw(39)&\"ESAPI test\"&chrw(33)&chrw(39)&chrw(41)", encoder.Encode(Owasp.Esapi.Encoder.VBSCRIPT, "alert('ESAPI test!')"));
+            Assert.AreEqual("\"jeff.williams\"&chrw(64)&\"aspectsecurity.com\"", encoder.Encode(Owasp.Esapi.Encoder.VBSCRIPT, "jeff.williams@aspectsecurity.com"));
+            Assert.AreEqual("\"test \"&chrw(60)&chrw(62)&\" test\"", encoder.Encode(Owasp.Esapi.Encoder.VBSCRIPT, "test <> test"));
         }
 
 
@@ -183,11 +149,11 @@ namespace EsapiTest
         {
             System.Console.Out.WriteLine("EncodeForXML");
             IEncoder encoder = Esapi.Encoder;
-            Assert.AreEqual("", encoder.EncodeForXml(null));
-            Assert.AreEqual(" ", encoder.EncodeForXml(" "));
-            Assert.AreEqual("&#60;script&#62;", encoder.EncodeForXml("<script>"));
-            Assert.AreEqual(",.-_", encoder.EncodeForXml(",.-_"));
-            Assert.AreEqual("&#33;&#64;&#36;&#37;&#40;&#41;&#61;&#43;&#123;&#125;&#91;&#93;", encoder.EncodeForXml("!@$%()=+{}[]"));
+            Assert.AreEqual("", encoder.Encode(Owasp.Esapi.Encoder.XML, null));
+            Assert.AreEqual(" ", encoder.Encode(Owasp.Esapi.Encoder.XML, " "));
+            Assert.AreEqual("&#60;script&#62;", encoder.Encode(Owasp.Esapi.Encoder.XML, "<script>"));
+            Assert.AreEqual(",.-_", encoder.Encode(Owasp.Esapi.Encoder.XML, ",.-_"));
+            Assert.AreEqual("&#33;&#64;&#36;&#37;&#40;&#41;&#61;&#43;&#123;&#125;&#91;&#93;", encoder.Encode(Owasp.Esapi.Encoder.XML, "!@$%()=+{}[]"));
         }
         
         /// <summary> Test of EncodeForXMLAttribute method, of class Owasp.Esapi.Encoder.</summary>
@@ -196,11 +162,11 @@ namespace EsapiTest
         {
             System.Console.Out.WriteLine("EncodeForXMLAttribute");
             IEncoder encoder = Esapi.Encoder;
-            Assert.AreEqual("", encoder.EncodeForXmlAttribute(null));
-            Assert.AreEqual("&#32;", encoder.EncodeForXmlAttribute(" "));
-            Assert.AreEqual("&#60;script&#62;", encoder.EncodeForXmlAttribute("<script>"));
-            Assert.AreEqual(",.-_", encoder.EncodeForXmlAttribute(",.-_"));
-            Assert.AreEqual("&#32;&#33;&#64;&#36;&#37;&#40;&#41;&#61;&#43;&#123;&#125;&#91;&#93;", encoder.EncodeForXmlAttribute(" !@$%()=+{}[]"));
+            Assert.AreEqual("", encoder.Encode(Owasp.Esapi.Encoder.XML_ATTRIBUTE, null));
+            Assert.AreEqual("&#32;", encoder.Encode(Owasp.Esapi.Encoder.XML_ATTRIBUTE, " "));
+            Assert.AreEqual("&#60;script&#62;", encoder.Encode(Owasp.Esapi.Encoder.XML_ATTRIBUTE, "<script>"));
+            Assert.AreEqual(",.-_", encoder.Encode(Owasp.Esapi.Encoder.XML_ATTRIBUTE, ",.-_"));
+            Assert.AreEqual("&#32;&#33;&#64;&#36;&#37;&#40;&#41;&#61;&#43;&#123;&#125;&#91;&#93;", encoder.Encode(Owasp.Esapi.Encoder.XML_ATTRIBUTE, " !@$%()=+{}[]"));
         }
 
         /// <summary> Test of EncodeForURL method, of class Owasp.Esapi.Encoder.</summary>
@@ -209,8 +175,8 @@ namespace EsapiTest
         {
             System.Console.Out.WriteLine("EncodeForURL");
             IEncoder encoder = Esapi.Encoder;
-            Assert.AreEqual("", encoder.EncodeForUrl(null));
-            Assert.AreEqual("%3cscript%3e", encoder.EncodeForUrl("<script>"));
+            Assert.AreEqual("", encoder.Encode(Owasp.Esapi.Encoder.URL, null));
+            Assert.AreEqual("%3cscript%3e", encoder.Encode(Owasp.Esapi.Encoder.URL, "<script>"));
         }
 
         /// <summary> Test of DecodeFromURL method, of class Owasp.Esapi.Encoder.</summary>
@@ -222,8 +188,8 @@ namespace EsapiTest
             try
             {
                 // Assert.AreEqual("", encoder.DecodeFromUrl(null));
-                Assert.AreEqual("<script>", encoder.DecodeFromUrl("%3Cscript%3E"));
-                Assert.AreEqual("     ", encoder.DecodeFromUrl("+++++"));
+                Assert.AreEqual("<script>", encoder.Decode(Owasp.Esapi.Encoder.URL, "%3Cscript%3E"));
+                Assert.AreEqual("     ", encoder.Decode(Owasp.Esapi.Encoder.URL, "+++++"));
             }
             catch (Exception)
             {
@@ -241,72 +207,16 @@ namespace EsapiTest
             {
                 for (int i = 0; i < 100; i++)
                 {
-                    System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
-                    byte[] r = encoding.GetBytes(Esapi.Randomizer.GetRandomString(20, Owasp.Esapi.Encoder.CHAR_SPECIALS));
-                    string encoded = encoder.EncodeForBase64(r);
-                    byte[] decoded = encoder.DecodeFromBase64(encoded);
-                    Assert.IsTrue(ArraysAreEqual(r, decoded));
+                    string random = Esapi.Randomizer.GetRandomString(20, Owasp.Esapi.Encoder.CHAR_SPECIALS);
+                    string encoded = encoder.Encode(Owasp.Esapi.Encoder.BASE_64, random);
+                    string decoded = encoder.Decode(Owasp.Esapi.Encoder.BASE_64, encoded);
+                    Assert.AreEqual(random, decoded);
                 }
             }
             catch (IOException)
             {
                 Assert.Fail();
             }
-        }
-
-        /// <summary> Test of DecodeFromBase64 method, of class Owasp.Esapi.Encoder.</summary>
-        [TestMethod]
-        public void Test_DecodeFromBase64()
-        {
-            System.Console.Out.WriteLine("DecodeFromBase64");
-            IEncoder encoder = Esapi.Encoder;
-            for (int i = 0; i < 100; i++)
-            {
-                try
-                {
-                    ASCIIEncoding encoding = new ASCIIEncoding();
-                    byte[] r = encoding.GetBytes(Esapi.Randomizer.GetRandomString(20, Owasp.Esapi.Encoder.CHAR_SPECIALS));
-                    string encoded = encoder.EncodeForBase64(r);
-                    byte[] decoded = encoder.DecodeFromBase64(encoded);
-
-                    Assert.IsTrue(ArraysAreEqual(r, decoded));
-                }
-                catch (IOException)
-                {
-                    Assert.Fail();
-                }
-            }
-            for (int i = 0; i < 100; i++)
-            {
-                try
-                {
-                    ASCIIEncoding encoding = new ASCIIEncoding();
-                    byte[] r = encoding.GetBytes(Esapi.Randomizer.GetRandomString(20, Owasp.Esapi.Encoder.CHAR_SPECIALS));
-                    string encoded = Esapi.Randomizer.GetRandomString(1, Owasp.Esapi.Encoder.CHAR_ALPHANUMERICS) + encoder.EncodeForBase64(r);
-                    byte[] decoded = encoder.DecodeFromBase64(encoded);
-                    Assert.IsFalse(Array.Equals(r, decoded));
-                }
-                catch (FormatException)
-                {
-                    // expected
-                }
-            }
-        }
-
-        private bool ArraysAreEqual(byte[] a1, byte[] a2)
-        {
-            if (a1.Length != a2.Length)
-            {
-                return false;
-            }
-            for (int index = 0; index < a1.Length; index++)
-            {
-                if (a1[index] != a2[index])
-                {
-                    return false;
-                }
-            }
-            return true;
         }
     }
 }
