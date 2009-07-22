@@ -141,7 +141,7 @@ namespace Owasp.Esapi
 
         public string Decode(string codecName, string input)
         {
-            return GetCodec(codecName).Encode(input);
+            return GetCodec(codecName).Decode(input);
         }
 
         public ICodec GetCodec(string codecName)
