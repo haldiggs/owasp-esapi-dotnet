@@ -148,7 +148,7 @@ namespace Owasp.Esapi
             // HTML encode log message if it will be viewed in a web browser
             if (((SecurityConfiguration)Esapi.SecurityConfiguration).LogEncodingRequired)
             {
-                clean = Esapi.Encoder.EncodeForHtml(message);
+                clean = Esapi.Encoder.Encode(Encoder.HTML, message);
                 if (!message.Equals(clean))
                 {
                     clean += " (Encoded)";

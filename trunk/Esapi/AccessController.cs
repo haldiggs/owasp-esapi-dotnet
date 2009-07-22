@@ -1,13 +1,15 @@
 ﻿using System.Collections;
 using System.Web.Security;
 using Owasp.Esapi.Interfaces;
+using Owasp.Esapi.Errors;
 
 namespace Owasp.Esapi
 {
-    /// <summary> Reference implementation of the IAccessController interface.
-    /// </summary>
-    /// <seealso cref="Owasp.Esapi.Interfaces.IAccessController">
-    /// </seealso>
+    /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessController"/>
+    /// <remarks>
+    /// This is the reference implementation of the IAccessController interface. It simply
+    /// stores the access control rules in nested Hashtables.
+    /// </remarks>
     public class AccessController : IAccessController
     {
         private Hashtable resourceToSubjectsMap = new Hashtable();
@@ -16,13 +18,13 @@ namespace Owasp.Esapi
         private static readonly ILogger logger;
         
         /// <summary> 
-        /// AccessController constructor.        
+        /// Default constructor.        
         /// </summary>        
         public AccessController()
         {
 
         }
-
+        
         /// <summary>
         /// Static constructor.
         /// </summary>
@@ -31,18 +33,21 @@ namespace Owasp.Esapi
             logger = Esapi.Logger;
         }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessController.IsAuthorized(object, object)"/>
         public bool IsAuthorized(object action, object resource)
         {
             string userName = Membership.GetUser().UserName;
             return IsAuthorized(userName, action, resource);
         }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessController.IsAuthorized(object, object, object)"/>
         public bool IsAuthorized(object subject, object action, object resource)
         {
             Hashtable subjects = (Hashtable)resourceToSubjectsMap[resource];
             return (subjects != null && subjects[subject] != null && ((ArrayList)subjects[subject]).Contains(action));
         }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessController.AddRule(object, object, object)"/>
         public void AddRule(object subject, object action, object resource)
         {
             if (resourceToSubjectsMap[resource] == null)
@@ -60,11 +65,13 @@ namespace Owasp.Esapi
                 actions.Add(action);
             }
             else
-            {
-                logger.Warning(LogEventTypes.FUNCTIONALITY, "Attempt to add an access control rule that already exists.");
+            {                
+                string message = "Attempt to add an access control rule that already exists.";
+                throw new EnterpriseSecurityException(message, message);
             }
         }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessController.RemoveRule(object, object, object)"/>
         public void RemoveRule(object subject, object action, object resource)
         {
             if (resourceToSubjectsMap[resource] != null)
@@ -85,7 +92,8 @@ namespace Owasp.Esapi
                     return;
                 }
             }
-            logger.Warning(LogEventTypes.FUNCTIONALITY, "Attempt to remove an access control rule that does not exist.");
+            string message = "Attempt to remove an access control rule that does not exist.";
+            throw new EnterpriseSecurityException(message, message);
         }
     }
 }

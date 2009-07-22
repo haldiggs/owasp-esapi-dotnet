@@ -23,8 +23,17 @@ namespace Owasp.Esapi
         /// <summary> Public constructor for encoder</summary>
         public Encoder()
         {
-            
+            AddCodec(HTML, new HtmlCodec());
+            AddCodec(HTML_ATTRIBUTE, new HtmlAttributeCodec());
+            AddCodec(XML, new XmlCodec());
+            AddCodec(XML_ATTRIBUTE, new XmlAttributeCodec());
+            AddCodec(JAVASCRIPT, new JavaScriptCodec());
+            AddCodec(VBSCRIPT, new VbScriptCodec());
+            AddCodec(BASE_64, new Base64Codec());
+            AddCodec(URL, new UrlCodec());
         }
+
+        private Hashtable codecs = new Hashtable();
 
         /// <summary>The Constant CHAR_ALPHANUMERICS. </summary>        
         public static readonly char[] CHAR_ALPHANUMERICS = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
@@ -44,33 +53,43 @@ namespace Owasp.Esapi
         public static readonly char[] CHAR_PASSWORD = new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '2', '3', '4', '5', '6', '7', '8', '9', '.', '!', '@', '$', '*', '=', '?' };
         
         /// <summary>The Constant CHAR_SPECIALS. </summary>        
-        public static readonly char[] CHAR_SPECIALS = new char[] { '.', '-', '_', '!', '@', '$', '^', '*', '=', '~', '|', '+', '?' };       
+        public static readonly char[] CHAR_SPECIALS = new char[] { '.', '-', '_', '!', '@', '$', '^', '*', '=', '~', '|', '+', '?' };
+
+        public static readonly string BASE_64 = "Base64";
+
+        public static readonly string HTML = "HTML";
+
+        public static readonly string HTML_ATTRIBUTE = "HTML_ATTRIBUTE";
+
+        public static readonly string XML = "XML";
+
+        public static readonly string XML_ATTRIBUTE = "XML_ATTRIBUTE";
+
+        public static readonly string URL = "URL";
+
+        public static readonly string JAVASCRIPT = "JavaScript";
+
+        public static readonly string VBSCRIPT = "VBScript";
 
         /// <summary>The logger. </summary>
         private static readonly ILogger logger;
 
-        private IList codecs = new ArrayList();
-
-        public string Canonicalize(string input)
-        {            
-            return Canonicalize(input, true);
-        }
-
-        public string Canonicalize(string input, bool strict)
+        public string Canonicalize(ICollection codecNames, string input, bool strict)
         {
             if ( input == null ) {
                 return null;
             }
             String working = input;
-            Codec codecFound = null;
+            ICodec codecFound = null;
             int mixedCount = 1;
             int foundCount = 0;
             bool clean = false;
             while( !clean ) {
                 clean = true;
                 // try each codec and keep track of which ones work             
-                foreach (Codec codec in codecs) {
+                foreach (string codecName in codecNames) {
                     String old = working;
+                    ICodec codec = (ICodec) codecs[codecNames];
                     working = codec.Decode( working );
                     if ( !old.Equals( working ) ) {
                         if ( codecFound != null && codecFound != codec ) {
@@ -108,79 +127,38 @@ namespace Owasp.Esapi
             return working; 
         }
 
-        public virtual string Normalize(string input)
+        public string Normalize(string input)
         {
-            throw new NotImplementedException();
+            return input.Normalize();
         }
 
-        public string EncodeForHtml(string input)
-        {            
-            return AntiXss.HtmlEncode(input);
-        }
+        #region IEncoder Members
 
-        public string EncodeForHtmlAttribute(string input)
+        public string Encode(string codecName, string input)
         {
-            return AntiXss.HtmlAttributeEncode(input);
+            return GetCodec(codecName).Encode(input);
         }
 
-        public string EncodeForJavascript(string input)
+        public string Decode(string codecName, string input)
         {
-            return AntiXss.JavaScriptEncode(input);
+            return GetCodec(codecName).Encode(input);
         }
 
-        public string EncodeForVbScript(string input)
+        public ICodec GetCodec(string codecName)
         {
-            return AntiXss.VisualBasicScriptEncode(input);
+            return (ICodec)codecs[codecName];
         }
 
-        public string EncodeForSql(string input)
+        public void AddCodec(string codecName, ICodec codec)
         {
-            throw new NotImplementedException();
+            codecs.Add(codecName, codec);
         }
 
-        public string EncodeForLdap(string input)
+        public void RemoveCodec(string codecName)
         {
-            throw new NotImplementedException();
+            codecs.Remove(codecName);
         }
 
-        public string EncodeForDn(string input)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string EncodeForXPath(string input)
-        {
-            throw new NotImplementedException();
-        }
-       
-        public string EncodeForXml(string input)
-        {
-            return AntiXss.XmlEncode(input);
-        }
-
-        public string EncodeForXmlAttribute(string input)
-        {
-            return AntiXss.XmlAttributeEncode(input);
-        }
-
-        public string EncodeForUrl(string input)
-        {
-            return AntiXss.UrlEncode(input);            
-        }
-
-        public String DecodeFromUrl(string input)
-        {
-            return HttpUtility.UrlDecode(input);                
-        }
-
-        public string EncodeForBase64(byte[] input)
-        {            
-            return Convert.ToBase64String(input);
-        }
-
-        public byte[] DecodeFromBase64(string input)
-        {            
-            return Convert.FromBase64String(input);
-        }                
+        #endregion
     }
 }

@@ -252,8 +252,8 @@ namespace Owasp.Esapi
                 Encoding textConverter = Encoding.GetEncoding(encoding);
                 byte[] dataBytes = textConverter.GetBytes(data);
                 byte[] signatureBytes = dsaCsp.SignData(dataBytes);
-                bool valid = dsaCsp.VerifyData(dataBytes, signatureBytes);
-                return Esapi.Encoder.EncodeForBase64(signatureBytes);
+                bool valid = dsaCsp.VerifyData(dataBytes, signatureBytes);                
+                return Convert.ToBase64String(signatureBytes);
             }
             catch (Exception e)
             {
@@ -279,7 +279,7 @@ namespace Owasp.Esapi
             {
                 DSACryptoServiceProvider dsaCsp = new DSACryptoServiceProvider(asymmetricKeyPair);
                 Encoding textConverter = Encoding.GetEncoding(encoding);
-                byte[] signatureBytes = Esapi.Encoder.DecodeFromBase64(signature);
+                byte[] signatureBytes = Convert.FromBase64String(signature);
                 byte[] dataBytes = textConverter.GetBytes(data);
                 return dsaCsp.VerifyData(dataBytes, signatureBytes);                
             }
