@@ -14,6 +14,10 @@ namespace Owasp.Esapi.Swingset
         {
             string userName = EsapiCreateUserWizard.UserName;
             logger.Info(LogEventTypes.SECURITY, String.Format("User {0} was created.", userName));
+            if (!Roles.RoleExists("user"))
+            {
+                Roles.CreateRole("user");
+            }
             Roles.AddUserToRole(userName, "user");
             logger.Info(LogEventTypes.SECURITY, String.Format("User {0} added to 'user' role.", userName));
             MembershipUser user = Membership.GetUser(userName);
