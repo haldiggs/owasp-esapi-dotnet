@@ -10,7 +10,6 @@ namespace Owasp.Esapi
     {
         public string key;
         public ArrayList times = new ArrayList();
-        public long count = 0;
 
         public Event(string key)
         {
@@ -38,7 +37,10 @@ namespace Owasp.Esapi
         }
     }
 
-
+    /// <summary>
+    /// The Threshold class is used to represent the amount of events that can be allowed, and in
+    /// what timeframe they are allowed.
+    /// </summary>
     public class Threshold
     {
         /// <summary>

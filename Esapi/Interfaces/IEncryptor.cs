@@ -6,19 +6,12 @@ namespace Owasp.Esapi.Interfaces
     /// encryption, random number, and hashing operations. Implementors should take care
     /// to ensure that they initialize their implementation with a strong "master key", and 
     /// that they protect this secret as much as possible.
-    /// <img src="doc-files/Encryptor.jpg" height="600"/>
-    /// 
-    /// Possible future enhancements (depending on feedback) might include:
-    /// <ul>
-    /// <li>EncryptFile</li>
-    /// </ul>
-    /// 
     /// </summary>   
     public interface IEncryptor
     {
-        /// <summary> Gets a timestamp representing the current date and time to be used by
+        /// <summary> 
+        /// Gets a timestamp representing the current date and time to be used by
         /// other functions in the library.
-        /// 
         /// </summary>
         /// <returns> The timestamp in long format.
         /// </returns>
@@ -27,7 +20,8 @@ namespace Owasp.Esapi.Interfaces
             get;
         }
 
-        /// <summary> Returns a string representation of the hash of the provided plaintext and
+        /// <summary> 
+        /// Returns a string representation of the hash of the provided plaintext and
         /// salt. The salt helps to protect against a rainbow table attack by mixing
         /// in some extra data with the plaintext. Some good choices for a salt might
         /// be an account name or some other string that is known to the application
@@ -37,7 +31,6 @@ namespace Owasp.Esapi.Interfaces
         /// <param name="plaintext">The plaintext.
         /// </param>
         /// <param name="salt">The salt.
-        /// 
         /// </param>
         /// <returns>The salted and hashed value.
         /// </returns>
@@ -96,6 +89,12 @@ namespace Owasp.Esapi.Interfaces
         /// describing any of the various problems that could exist with a seal, such
         /// as an invalid seal format, expired timestamp, or decryption error.
 	    /// </summary>
+        /// <param name="seal">
+        /// The data to unseal.
+        /// </param>
+        /// <returns>
+        /// The data if the seal was valid.
+        /// </returns>
         string Unseal(string seal);
 
         /// <summary> Verifies a seal (created with the seal method) and throws an exception
@@ -104,8 +103,7 @@ namespace Owasp.Esapi.Interfaces
         /// </summary>
         /// <param name="seal">The seal.
         /// </param>
-        /// <param name="data">The data that was sealed.
-        /// </param>
+        /// <returns>True, if the seal was valid. False, otherwise.</returns>
         bool VerifySeal(string seal);
     }
 }

@@ -9,17 +9,10 @@ using Owasp.Esapi.Interfaces;
 namespace Owasp.Esapi
 {
 
-    /// <summary> Reference implementation of the IEncoder interface. This implementation takes
-    /// a whitelist approach, encoding everything not specifically identified in a
-    /// list of "immune" characters.
+    /// <summary> Reference implementation of the IEncoder interface.
     /// </summary>
     public class Encoder: IEncoder
     {
-        static Encoder()
-		{
-			logger = Esapi.Logger;
-		}
-
         /// <summary> Public constructor for encoder</summary>
         public Encoder()
         {
@@ -55,25 +48,50 @@ namespace Owasp.Esapi
         /// <summary>The Constant CHAR_SPECIALS. </summary>        
         public static readonly char[] CHAR_SPECIALS = new char[] { '.', '-', '_', '!', '@', '$', '^', '*', '=', '~', '|', '+', '?' };
 
+        /// <summary>
+        /// The Base64 codec name.
+        /// </summary>
         public static readonly string BASE_64 = "Base64";
 
+        /// <summary>
+        /// The HTML codec name.
+        /// </summary>
         public static readonly string HTML = "HTML";
 
+        /// <summary>
+        /// The HTML attribute codec name.
+        /// </summary>
         public static readonly string HTML_ATTRIBUTE = "HTML_ATTRIBUTE";
 
+        /// <summary>
+        /// The XML codec name.
+        /// </summary>
         public static readonly string XML = "XML";
 
+        /// <summary>
+        /// The XML attribute codec name.
+        /// </summary>
         public static readonly string XML_ATTRIBUTE = "XML_ATTRIBUTE";
 
+        /// <summary>
+        /// The URL codec name.
+        /// </summary>
         public static readonly string URL = "URL";
 
+        /// <summary>
+        /// The JavaScript codec name.
+        /// </summary>
         public static readonly string JAVASCRIPT = "JavaScript";
 
+        /// <summary>
+        /// The VBScript codec name.
+        /// </summary>
         public static readonly string VBSCRIPT = "VBScript";
 
         /// <summary>The logger. </summary>
-        private static readonly ILogger logger;
+        private static readonly ILogger logger = Esapi.Logger;
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncoder.Canonicalize(ICollection, string, bool)" />
         public string Canonicalize(ICollection codecNames, string input, bool strict)
         {
             if ( input == null ) {
@@ -89,7 +107,7 @@ namespace Owasp.Esapi
                 // try each codec and keep track of which ones work             
                 foreach (string codecName in codecNames) {
                     String old = working;
-                    ICodec codec = (ICodec) codecs[codecNames];
+                    ICodec codec = (ICodec) codecs[codecName];
                     working = codec.Decode( working );
                     if ( !old.Equals( working ) ) {
                         if ( codecFound != null && codecFound != codec ) {
@@ -127,38 +145,41 @@ namespace Owasp.Esapi
             return working; 
         }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncoder.Normalize(string)" />
         public string Normalize(string input)
         {
             return input.Normalize();
         }
 
-        #region IEncoder Members
-
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncoder.Encode(string, string)" />
         public string Encode(string codecName, string input)
         {
             return GetCodec(codecName).Encode(input);
         }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncoder.Decode(string, string)" />
         public string Decode(string codecName, string input)
         {
             return GetCodec(codecName).Decode(input);
         }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncoder.GetCodec(string)" />
         public ICodec GetCodec(string codecName)
         {
             return (ICodec)codecs[codecName];
         }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncoder.AddCodec(string, ICodec)" />
         public void AddCodec(string codecName, ICodec codec)
         {
             codecs.Add(codecName, codec);
         }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncoder.RemoveCodec(string)" />
         public void RemoveCodec(string codecName)
         {
             codecs.Remove(codecName);
         }
 
-        #endregion
     }
 }

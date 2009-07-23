@@ -15,7 +15,7 @@ namespace Owasp.Esapi
         private Hashtable resourceToSubjectsMap = new Hashtable();
 
         /// <summary>The logger.</summary>
-        private static readonly ILogger logger;
+        private static readonly ILogger logger = Esapi.Logger;
         
         /// <summary> 
         /// Default constructor.        
@@ -23,14 +23,6 @@ namespace Owasp.Esapi
         public AccessController()
         {
 
-        }
-        
-        /// <summary>
-        /// Static constructor.
-        /// </summary>
-        static AccessController()
-        {
-            logger = Esapi.Logger;
         }
 
         /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessController.IsAuthorized(object, object)"/>

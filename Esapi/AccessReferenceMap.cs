@@ -110,13 +110,7 @@ namespace Owasp.Esapi
         /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessReferenceMap.GetDirectReference(string)"/>
 		public object GetDirectReference(string indirectReference)
 		{
-			
-			IEnumerator i = dtoi.GetEnumerator();			
-			while (i.MoveNext())
-			{				
-				DictionaryEntry e = (DictionaryEntry) i.Current;
-			}
-			if (itod.ContainsKey(indirectReference))
+		    if (itod.ContainsKey(indirectReference))
 			{			
 				return itod[indirectReference];
 			}

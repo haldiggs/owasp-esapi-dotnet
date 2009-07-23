@@ -104,41 +104,65 @@ namespace Owasp.Esapi.Interfaces
         /// </returns>
         Threshold GetQuota(string eventName);
 
+        /// <summary>
+        /// The AccessController class.
+        /// </summary>
         Type AccessControllerClass
         {
             get;
         }
 
+        /// <summary>
+        /// The Encoder class.
+        /// </summary>
         Type EncoderClass
         {
             get;
         }
 
+        /// <summary>
+        /// The Encryptor class.
+        /// </summary>
         Type EncryptorClass
         {
             get;
         }
 
+        /// <summary>
+        /// The HTTP Utilties class.
+        /// </summary>
         Type HttpUtilitiesClass
         {
             get;
         }
 
+        /// <summary>
+        /// The IntrusionDetector class.
+        /// </summary>
         Type IntrusionDetectorClass
         {
             get;
         }
 
+        /// <summary>
+        /// The Logger class.
+        /// </summary>
         Type LoggerClass
         {
             get;
         }
 
+        /// <summary>
+        /// The Randomzier class.
+        /// </summary>
         Type RandomizerClass
         {
             get;
         }
 
+        /// <summary>
+        /// The Validator class.
+        /// </summary>
         Type ValidatorClass
         {
             get;

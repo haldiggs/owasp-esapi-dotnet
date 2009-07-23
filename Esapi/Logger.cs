@@ -11,14 +11,42 @@ namespace Owasp.Esapi
     /// </summary>
     public class LogLevels
     {
+        /// <summary>
+        /// Logging is disabled.
+        /// </summary>
         public static readonly int OFF = Int32.MaxValue;
+        
+        /// <summary>
+        /// Only fatal log messages are recorded.
+        /// </summary>
         public static readonly int FATAL = 1000;
+        
+        /// <summary>
+        /// Only error-level log messages are recorded.
+        /// </summary>
         public static readonly int ERROR = 800;
+        
+        /// <summary>
+        /// Only warning-level log messages are recorded.
+        /// </summary>
         public static readonly int WARN = 600;
+        
+        /// <summary>
+        /// Only informational log messages are recorded.
+        /// </summary>
         public static readonly int INFO = 400;
+        
+        /// <summary>
+        ///  Only debug log messages are recoreded.
+        /// </summary>
         public static readonly int DEBUG = 200;
+        
+        /// <summary>
+        /// All log messages are recorded.
+        /// </summary>
         public static readonly int ALL = Int32.MinValue;
-        public static int ParseLogLevel(string level)
+        
+        internal static int ParseLogLevel(string level)
         {
             if (level.ToUpper().Equals("FATAL", StringComparison.InvariantCultureIgnoreCase))
                 return LogLevels.FATAL;
@@ -36,13 +64,32 @@ namespace Owasp.Esapi
         }
     }
     
+    /// <summary>
+    /// This class contains the keys for the different event types that can be passed to the logger.
+    /// </summary>
     public class LogEventTypes
     {
+        /// <summary>
+        /// Used for security events.
+        /// </summary>
         public static readonly int SECURITY = 0;
+        
+        /// <summary>
+        /// Used for usability events.
+        /// </summary>
         public static readonly int USABILITY = 1;
+        
+        /// <summary>
+        /// Used for performance events.
+        /// </summary>
         public static readonly int PERFORMANCE = 2;
+        
+        /// <summary>
+        /// Used for functionality events.
+        /// </summary>
         public static readonly int FUNCTIONALITY = 3;
-        public static string GetType(int type)
+        
+        internal static string GetType(int type)
         {
             switch (type)
             {
@@ -59,12 +106,11 @@ namespace Owasp.Esapi
         }
     }
 
-    /// <summary> Reference implementation of the ILogger interface. This implementation uses the log4NET logging package, and marks each
-    /// log message with the currently logged in user and the word "SECURITY" for security related events.
-    /// 
-    /// </summary>   
-    /// <seealso cref="Owasp.Esapi.Interfaces.ILogger">
-    /// </seealso>
+    /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger"/>
+    /// <remarks>
+    /// Reference implementation of the ILogger interface. This implementation uses the log4NET logging package, 
+    /// and marks each log message with the currently logged in user and the word "SECURITY" for security related events.
+    /// </remarks>
     public class Logger : ILogger
     {
         /// <summary>The Log4Net logger.</summary>
@@ -81,32 +127,33 @@ namespace Owasp.Esapi
             log4net.Config.XmlConfigurator.Configure();
         }
 
-        /// <summaryThe constructor, which is hidden (private) and accessed through Esapi class.       
+        /// <summary>
+        /// The constructor, which is hidden (private) and accessed through Esapi class.       
         /// </summary>
         public Logger(string className)
         {
             this.logger = log4net.LogManager.GetLogger(className);
-            int logLevel = Esapi.SecurityConfiguration.LogLevel;
-            if (logLevel == LogLevels.FATAL) {
+            Level = Esapi.SecurityConfiguration.LogLevel;
+            if (Level == LogLevels.FATAL) {
                 log4net.LogManager.GetRepository().Threshold = log4net.Core.Level.Fatal;
             }
-            else if (logLevel == LogLevels.ERROR)
+            else if (Level == LogLevels.ERROR)
             {
                 log4net.LogManager.GetRepository().Threshold = log4net.Core.Level.Error;
             }
-            else if (logLevel == LogLevels.WARN)
+            else if (Level == LogLevels.WARN)
             {
                 log4net.LogManager.GetRepository().Threshold = log4net.Core.Level.Warn;
             }
-            else if (logLevel == LogLevels.INFO)
+            else if (Level == LogLevels.INFO)
             {
                 log4net.LogManager.GetRepository().Threshold = log4net.Core.Level.Info;
             }
-            else if (logLevel == LogLevels.DEBUG)
+            else if (Level == LogLevels.DEBUG)
             {
                 log4net.LogManager.GetRepository().Threshold = log4net.Core.Level.Debug;
             }
-            else if (logLevel == LogLevels.OFF)
+            else if (Level == LogLevels.OFF)
             {
                 log4net.LogManager.GetRepository().Threshold = log4net.Core.Level.Off;
             }
@@ -117,7 +164,8 @@ namespace Owasp.Esapi
 
         }
         
-        /// <summaryThe constructor, which is hidden (private) and accessed through Esapi class.       
+        /// <summary>
+        /// The constructor, which is hidden (private) and accessed through Esapi class.       
         /// </summary>
         /// <param name="applicationName">The application name.
         /// </param>
@@ -129,8 +177,8 @@ namespace Owasp.Esapi
             this.moduleName = moduleName;            
         }
         
-        /// <summary> Log the message after optionally encoding any special characters that might inject into an HTML based log viewer.
-        /// This method accepts an exception.
+        /// <summary> Log the message after optionally encoding any special characters that might inject into an HTML 
+        /// based log viewer. This method accepts an exception.
         /// </summary>
         /// <param name="type">The type of event.
         /// </param>
@@ -189,7 +237,8 @@ namespace Owasp.Esapi
         #region ILogger Members
 
         private int level;
-        
+
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.Level"/>
         public int Level
         {
             get
@@ -203,6 +252,7 @@ namespace Owasp.Esapi
         }
 
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.Fatal(int, string)"/>
         public void Fatal(int type, string message)
         {
 
@@ -212,19 +262,22 @@ namespace Owasp.Esapi
             }
         }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.Fatal(int, string, Exception)"/>
         public void Fatal(int type, string message, Exception exception)
         {
             if (logger.IsFatalEnabled)
             {
                 logger.Fatal(GetLogMessage(type, message, exception));
             }
-        }
+       }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.IsFatalEnabled()"/>
         public bool IsFatalEnabled()
         {
             return (logger.IsFatalEnabled);
         }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.Error(int, string)"/>
         public void Error(int type, string message)
         {
             if (logger.IsErrorEnabled)
@@ -232,7 +285,8 @@ namespace Owasp.Esapi
                 logger.Error(GetLogMessage(type, message, null));
             }
         }
-
+        
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.Error(int, string, Exception)"/>
         public void Error(int type, string message, Exception throwable)
         {
             if (logger.IsErrorEnabled)
@@ -241,11 +295,13 @@ namespace Owasp.Esapi
             }          
         }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.IsErrorEnabled()"/>
         public bool IsErrorEnabled()
         {
             return (logger.IsErrorEnabled);
         }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.Warning(int, string)"/>
         public void Warning(int type, string message)
         {
             if (logger.IsWarnEnabled)
@@ -254,6 +310,7 @@ namespace Owasp.Esapi
             }
         }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.Warning(int, string, Exception)"/>
         public void Warning(int type, string message, Exception throwable)
         {
             if (logger.IsWarnEnabled)
@@ -262,11 +319,13 @@ namespace Owasp.Esapi
             }
         }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.IsWarningEnabled()"/>
         public bool IsWarningEnabled()
         {
             return (logger.IsWarnEnabled);
         }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.Info(int, string)"/>
         public void Info(int type, string message)
         {
             if (logger.IsInfoEnabled)
@@ -275,6 +334,7 @@ namespace Owasp.Esapi
             }
         }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.Info(int, string, Exception)"/>
         public void Info(int type, string message, Exception throwable)
         {
             if (logger.IsInfoEnabled)
@@ -284,11 +344,13 @@ namespace Owasp.Esapi
             
         }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.IsInfoEnabled()"/>
         public bool IsInfoEnabled()
         {
             return logger.IsInfoEnabled;
         }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.Debug(int, string)"/>
         public void Debug(int type, string message)
         {
             if (logger.IsDebugEnabled)
@@ -297,6 +359,7 @@ namespace Owasp.Esapi
             }
         }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.Debug(int, string, Exception)"/>
         public void Debug(int type, string message, Exception throwable)
         {
             if (logger.IsDebugEnabled)
@@ -305,10 +368,12 @@ namespace Owasp.Esapi
             }
         }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.IsDebugEnabled()"/>
         public bool IsDebugEnabled()
         {
             return logger.IsDebugEnabled;
         }
+
 
         #endregion
     }

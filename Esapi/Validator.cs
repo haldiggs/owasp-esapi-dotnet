@@ -50,25 +50,25 @@ namespace Owasp.Esapi
         
         private Hashtable rules = new Hashtable();
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IValidator.AddRule(string, IValidationRule)" />
         public void AddRule(string name, IValidationRule rule)
         {
             rules.Add(name, rule);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IValidator.GetRule(string)" />
         public IValidationRule GetRule(string name)
         {
             return (IValidationRule) rules[name];
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IValidator.RemoveRule(string)" />
         public void RemoveRule(string name)
         {
             rules.Remove(name);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IValidator.IsValid(string, string)" />
         public bool IsValid(string ruleName, string input)
         {
             return GetRule(ruleName).IsValid(input);

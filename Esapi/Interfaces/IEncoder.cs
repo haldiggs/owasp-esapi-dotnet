@@ -16,12 +16,19 @@ namespace Owasp.Esapi.Interfaces
     /// </summary>    
     public interface IEncoder
     {
-        /// <summary> This method performs canonicalization on data received to ensure that it
-        /// has been reduced to its most basic form before validation. For example,
-        /// URL-encoded data received from ordinary "application/x-www-url-encoded"
-        /// forms so that it may be validated properly.
-        // </summary>
+        /// <summary>
+        /// This method performs canonicalization on data received to ensure that it
+        /// has been reduced to its most basic form before validation. Canonicalization is the 
+        /// process of decoding something to its simplest form. The application can supply a list of
+        /// codecs and the data will be decoded by each codec cosecutively, until it has reaced it's
+        /// canonical form.
+        ///  </summary>
+        /// <param name="codecNames">
+        /// The names of the codecs to use for canonicalization. These codecs will be used in order.
+        /// </param>
         /// <param name="input">Unvalidated input.
+        /// </param>
+        /// <param name="strict">If this is true, then double encodings will cause an exception.
         /// </param>
         /// <returns> The canonicalized string.
         /// </returns>
@@ -37,14 +44,40 @@ namespace Owasp.Esapi.Interfaces
         /// </returns>
         string Normalize(string input);
 
+        /// <summary>
+        /// This method encodes the input according to the given codec name.
+        /// </summary>
+        /// <param name="codecName">The codec to use to encode the input.</param>
+        /// <param name="input">The input to encode.</param>
+        /// <returns>The encoded input.</returns>
         string Encode(string codecName, string input);
 
+        /// <summary>
+        /// This method decodes the input according to the given codec name.
+        /// </summary>
+        /// <param name="codecName">The codec to use to decode the input.</param>
+        /// <param name="input">The input to decode.</param>
+        /// <returns>The decoded input.</returns>
         string Decode(string codecName, string input);
 
+        /// <summary>
+        /// This method returns the codec associated with the given codec name.
+        /// </summary>
+        /// <param name="codecName">The codec name to return.</param>
+        /// <returns>The codec associated with the codec name.</returns>
         ICodec GetCodec(string codecName);
 
-        void AddCodec(string codecName, ICodec encoder);
+        /// <summary>
+        /// This method adds the given codec with the given codec name to the Encoder.
+        /// </summary>
+        /// <param name="codecName">The name of the codec to add.</param>
+        /// <param name="codec">The codec to add.</param>
+        void AddCodec(string codecName, ICodec codec);
 
+        /// <summary>
+        /// This method removes the codec with the given codec name.
+        /// </summary>
+        /// <param name="codecName">The name of the codec to remove.</param>
         void RemoveCodec(string codecName);
     }
 }
