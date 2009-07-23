@@ -6,12 +6,10 @@ using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi
 {
-    /// <summary> Reference implemenation of the IRandomizer interface. This implementation builds on the JCE provider to provide a
+    /// <inheritdoc cref="Owasp.Esapi.Interfaces.IRandomizer" />
+    /// <remarks> Reference implemenation of the IRandomizer interface. This implementation builds on the MSCAPI provider to provide a
     /// cryptographically strong source of entropy. The specific algorithm used is configurable in Esapi.properties.
-    /// 
-    /// </summary>
-    /// <seealso cref="Owasp.Esapi.Interfaces.IRandomizer">
-    /// </seealso>
+    /// </remarks>
     public class Randomizer : IRandomizer
     {
         private RandomNumberGenerator randomNumberGenerator = null;
@@ -19,25 +17,23 @@ namespace Owasp.Esapi
         private static readonly ILogger logger;
         private static char[] CHARS_HEX = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 
-        /// <summary> Hide the constructor for the Singleton pattern.</summary>
+        /// <summary>
+        /// Instantiates the class, with the apropriate algorithm.
+        /// </summary>
         public Randomizer()
         {
             string algorithm = Esapi.SecurityConfiguration.RandomAlgorithm;
             try
             {
-                //FIXME: Right now algorithm is ignored
                 randomNumberGenerator = RandomNumberGenerator.Create(algorithm);
             }
             catch (Exception e)
             {
-                // Can't throw an exception from the constructor, but this will get it logged and tracked
                 new EncryptionException("Error creating randomizer", "Can't find random algorithm " + algorithm, e);
             }
         }
 
-        /// <summary> Returns a random bool.</summary>
-        /// <seealso cref="Owasp.Esapi.Interfaces.IRandomizer.Randombool">
-        /// </seealso>
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IRandomizer.GetRandomBoolean()" />
         public bool GetRandomBoolean()
         {        
             byte[] randomByte = new byte[1];
@@ -45,9 +41,8 @@ namespace Owasp.Esapi
             return (randomByte[0] >= 128);
             
         }
-        /// <summary> Generates a random GUID.</summary>
-        /// <seealso cref="Owasp.Esapi.Interfaces.IRandomizer.RandomGUID">
-        /// </seealso>
+        
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IRandomizer.GetRandomGUID()" />
         public Guid GetRandomGUID()
         {
             StringBuilder sb = new StringBuilder();
@@ -64,19 +59,7 @@ namespace Owasp.Esapi
 
         }
 
-        /// <summary> 
-        /// Gets a random string.
-        /// </summary>
-        /// <param name="length">
-        /// The desired length.
-        /// </param>
-        /// <param name="characterSet">
-        /// The desired character set.
-        /// </param>
-        /// <returns> The random string.
-        /// </returns>
-        /// <seealso cref="Owasp.Esapi.Interfaces.IRandomizer.GetRandomString(int, char[])">
-        /// </seealso>
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IRandomizer.GetRandomString(int, char[])" />
         public string GetRandomString(int length, char[] characterSet)
         {
             StringBuilder sb = new StringBuilder();
@@ -89,22 +72,8 @@ namespace Owasp.Esapi
             string nonce = sb.ToString();
             return nonce;
         }
-
-
-        /// <summary> 
-        /// Gets a random integer.        
-        /// </summary>
-        /// <param name="min">
-        /// The minimum value.
-        /// </param>
-        /// <param name="max">
-        /// The maximum value.        
-        /// </param>
-        /// <returns> 
-        /// The random integer
-        /// </returns>
-        /// <seealso cref="Owasp.Esapi.Interfaces.IRandomizer.GetRandomInteger(int, int)">
-        /// </seealso>
+        
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IRandomizer.GetRandomInteger(int, int)" />
         public int GetRandomInteger(int min, int max)
         {           
             double range = (double) max - min;
@@ -115,21 +84,8 @@ namespace Owasp.Esapi
             int randomNumber = Convert.ToInt32(Math.Round(range * divisor) + min);
             return randomNumber;
         }
-        
-        /// <summary> 
-        /// Gets a random double
-        /// </summary>
-        /// <param name="min">
-        /// The minimum value.
-        /// </param>
-        /// <param name="max">
-        /// The maximum value.        
-        /// </param>
-        /// <returns>
-        /// The random double
-        /// </returns>
-        /// <seealso cref="Owasp.Esapi.Interfaces.IRandomizer.GetRandomDouble(double, double)">
-        /// </seealso>
+
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IRandomizer.GetRandomDouble(double, double)" />
         public double GetRandomDouble(double min, double max)
         {
             // This method only gives you 32 bits of entropy (based of random int).
@@ -138,26 +94,12 @@ namespace Owasp.Esapi
             return random * factor + min;
         }
 
-        /// <summary>
-        /// Returns an unguessable filename.
-        /// </summary>
-        /// <param name="extension">The extension for the filename</param>
-        /// <returns>The unguessable filename</returns>
-        /// <seealso cref="Owasp.Esapi.Interfaces.IRandomizer.GetRandomFilename(string)">
-        /// </seealso>
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IRandomizer.GetRandomFilename(string)" />
         public string GetRandomFilename(string extension)
         {
             return this.GetRandomString(12, Encoder.CHAR_ALPHANUMERICS) + "." + extension;
         }
 
-        /// <summary> Union two character arrays.
-        /// </summary>
-        /// <param name="c1">The first character array.
-        /// </param>
-        /// <param name="c2">The second character array.
-        /// </param>
-        /// <returns> The union of the two charater arrays.
-        /// </returns>
         static char[] Union(char[] c1, char[] c2)
         {
             StringBuilder sb = new StringBuilder();
@@ -186,15 +128,6 @@ namespace Owasp.Esapi
             return c3;
         }
 
-        /// <summary> Determines if a string buffer contains a char
-        /// 
-        /// </summary>
-        /// <param name="sb">The string buffer.
-        /// </param>
-        /// <param name="c">The char.
-        /// </param>
-        /// <returns> true, if found.
-        /// </returns>
         static bool Contains(StringBuilder sb, char c)
         {            
             for (int i = 0; i < sb.Length; i++)

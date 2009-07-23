@@ -207,9 +207,6 @@ namespace Owasp.Esapi
         /// <summary>The properties. </summary>    
         private NameValueCollection properties = new NameValueCollection();
 
-        /// <summary>Regular expression cache </summary>
-        private IDictionary regexMap = null;
-
         /// <summary>The logger. </summary>                
         private static readonly ILogger logger;
 
@@ -273,33 +270,9 @@ namespace Owasp.Esapi
                 string key = (string)i.Current;
                 Console.WriteLine("  |   " + key + "=" + properties[(string)key]);
             }
-            
-            // cache regular expressions            
-            regexMap = new Hashtable();
-
-            IEnumerator regexIterator = ValidationPatternNames;            
-            while (regexIterator.MoveNext())
-            {
-                string name = (string)regexIterator.Current;
-                Regex regex = GetValidationPattern(name);
-                if (name != null && regex != null)
-                {
-                    regexMap[name] = regex;
-                }
-            }
         }
 
-        // FIXME: ENHANCE should read these quotas into a map and cache them
-        /// <summary> 
-        /// The intrusion detection quota for a particular events.
-        /// </summary>
-        /// <param name="eventName">
-        /// The quote for a particular event name.
-        /// </param>
-        /// <returns> The threshold for the event.
-        /// </returns>
-        /// <seealso cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.GetQuota(string)">
-        /// </seealso>
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.GetQuota(string)" />
         public Threshold GetQuota(string eventName)
         {
             int count = 0;
@@ -328,20 +301,6 @@ namespace Owasp.Esapi
             return q;
         }
 
-        /// <summary>
-        /// Gets the validation pattern for a particular type of validation.
-        /// </summary>
-        /// <param name="key">The type of data to validate.</param>
-        /// <returns>The regular expression to validate the data against.</returns>
-        public Regex GetValidationPattern(string key)
-        {
-            string validatorValue = properties.Get("Validator." + key);
-            if (validatorValue == null)
-                return null;
-            Regex regex = new Regex(validatorValue);
-            return regex;
-        }
-
         static readonly string ACCESS_CONTROLLER_CLASS = "AccessControllerClass";
         static readonly string ENCODER_CLASS = "EncoderClass";
         static readonly string ENCRYPTOR_CLASS = "EncyptorClass";
@@ -351,6 +310,7 @@ namespace Owasp.Esapi
         static readonly string RANDOMIZER_CLASS = "RandomizerClass";
         static readonly string VALIDATOR_CLASS = "ValidatorClass";
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.AccessControllerClass" />
         public Type AccessControllerClass
         {
             get
@@ -359,6 +319,7 @@ namespace Owasp.Esapi
             }
         }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.EncoderClass" />
         public Type EncoderClass
         {
             get
@@ -367,6 +328,7 @@ namespace Owasp.Esapi
             }
         }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.EncryptorClass" />
         public Type EncryptorClass
         {
             get
@@ -375,6 +337,7 @@ namespace Owasp.Esapi
             }
         }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.HttpUtilitiesClass" />
         public Type HttpUtilitiesClass
         {
             get
@@ -383,6 +346,7 @@ namespace Owasp.Esapi
             }
         }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.IntrusionDetectorClass" />
         public Type IntrusionDetectorClass
         {
             get
@@ -391,6 +355,7 @@ namespace Owasp.Esapi
             }
         }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.LoggerClass" />
         public Type LoggerClass
         {
             get
@@ -399,6 +364,7 @@ namespace Owasp.Esapi
             }
         }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.RandomizerClass" />
         public Type RandomizerClass
         {
             get
@@ -407,6 +373,7 @@ namespace Owasp.Esapi
             }
         }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.ValidatorClass" />
         public Type ValidatorClass
         {
             get

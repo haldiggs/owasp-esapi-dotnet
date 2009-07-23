@@ -19,7 +19,7 @@ namespace Owasp.Esapi.Interfaces
         /// name key, which is used to identify a particular ValidationRule object.
         /// </summary>
         /// <param name="rule">The rule name key to use for validation.</param>
-        /// <param name="input">The input to validate.</par
+        /// <param name="input">The input to validate.</param>
         /// <returns>True, if the data is valid. False, otherwise.</returns>
         bool IsValid(string rule, string input);
 

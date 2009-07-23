@@ -23,7 +23,7 @@ namespace Owasp.Esapi.Swingset.Users.Examples
                     Esapi.HttpUtilities.VerifyCsrfToken();
                     lblCsrf.Text = "The CSRF token check succeeded";
                 }
-                catch (IntrusionException ie)
+                catch (IntrusionException)
                 {
                     lblCsrf.Text = "The CSRF token check failed";
                 }

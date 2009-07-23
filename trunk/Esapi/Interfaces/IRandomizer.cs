@@ -51,7 +51,6 @@ namespace Owasp.Esapi.Interfaces
         /// <returns>The unguessable filename</returns>
         string GetRandomFilename(string extension);
 
-
         /// <summary> 
         /// Gets a random double.
         /// 

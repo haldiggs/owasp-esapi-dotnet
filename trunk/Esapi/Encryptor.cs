@@ -18,7 +18,6 @@ namespace Owasp.Esapi
     {
         /// <summary> Gets a timestamp representing the current date and time to be used by
         /// other functions in the library.
-        /// 
         /// </summary>
         /// <returns> The timestamp in long format.
         /// </returns>
@@ -40,14 +39,13 @@ namespace Owasp.Esapi
         internal CspParameters asymmetricKeyPair;
 
         /// <summary>The logger. </summary>
-        private static readonly ILogger logger;
+        private static readonly ILogger logger = Esapi.Logger;
 
         internal string encryptAlgorithm = Esapi.SecurityConfiguration.EncryptionAlgorithm;
         internal string signatureAlgorithm = Esapi.SecurityConfiguration.DigitalSignatureAlgorithm;
         internal string hashAlgorithm = Esapi.SecurityConfiguration.HashAlgorithm;
-        internal string randomAlgorithm = Esapi.SecurityConfiguration.RandomAlgorithm;
         internal string encoding = Esapi.SecurityConfiguration.CharacterEncoding;
-        
+       
         /// <summary>
         /// Public constructor.
         /// </summary>
@@ -67,9 +65,7 @@ namespace Owasp.Esapi
                 asymmetricKeyPair = new CspParameters(13);
                 
                 // The asymmetric key will be stored in the key container using the name ESAPI.
-                asymmetricKeyPair.KeyContainerName = "ESAPI";
-                
-                RandomNumberGenerator randomNumberGenerator = RNGCryptoServiceProvider.Create(randomAlgorithm);                
+                asymmetricKeyPair.KeyContainerName = "ESAPI";             
             }
             catch (Exception e)
             {                
@@ -77,17 +73,7 @@ namespace Owasp.Esapi
             }
         }
 
-        /// <summary> Hashes the data using the specified algorithm and the SHA1CryptoServiceProvider class. This method
-        /// first adds the salt, then the data, and then rehashes 1024 times to help strengthen weak passwords.
-        /// </summary>
-        /// <param name="plaintext">The plaintext.
-        /// </param>
-        /// <param name="salt">The salt.        
-        /// </param>
-        /// <returns>The salted and hashed value.
-        /// </returns>
-        /// <seealso cref="Owasp.Esapi.Interfaces.IEncryptor.Hash(string, string)">
-        /// </seealso>
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncryptor.Hash(string, string)" />
         public string Hash(string plaintext, string salt)
         {            
             try
@@ -119,20 +105,11 @@ namespace Owasp.Esapi
             }
         }
 
-        /// <summary> Encrypts the provided plaintext and returns a ciphertext string.        
-        /// </summary>
-        /// <param name="plaintext">The unencrypted value (plaintext).
-        /// </param>
-        /// <returns> The encrypted value (ciphertext).
-        /// </returns>
-        /// <seealso cref="Owasp.Esapi.Interfaces.IEncryptor.Encrypt(string)">
-        /// </seealso>
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncryptor.Encrypt(string)" />
         public string Encrypt(string plaintext)
-        {
-            
+        {            
              try
             {                
-
                 // Create a new key and initialization vector.
                 // If a key is not provided, a key of appropriate length is
                 // automatically generated. You can retrieve its value through the Key
@@ -176,16 +153,7 @@ namespace Owasp.Esapi
            
         }
 
-        /// <summary> Decrypts the provided ciphertext string (encrypted with the encrypt
-        /// method) and returns a plaintext string.
-        /// 
-        /// </summary>
-        /// <param name="ciphertext">The encrypted value (ciphertext).
-        /// </param>
-        /// <returns> The unencrypted value (plaintext).
-        /// </returns>
-        /// <seealso cref="Owasp.Esapi.Interfaces.IEncryptor.Decrypt(string)">
-        /// </seealso>
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncryptor.Decrypt(string)" />
         public string Decrypt(string ciphertext)
         {
             // Note - Cipher is not threadsafe so we create one locally
@@ -228,51 +196,26 @@ namespace Owasp.Esapi
                     csDecrypt.Close();
                 }
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {                
                 throw new EncryptionException("Decryption failed", "Decryption problem: " + e.Message, e);
             }
         }
 
-        /// <summary> Create a digital signature for the provided data and return it in a string.
-        /// </summary>
-        /// <param name="data">The data to sign.
-        /// </param>
-        /// <returns> The signature.
-        /// </returns>
-        /// <seealso cref="Owasp.Esapi.Interfaces.IEncryptor.Sign(string)">
-        /// </seealso>
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncryptor.Sign(string)" />
         public string Sign(string data)
-        {          
-            try
-            {
-                // Since this is the only asymmetric algorithm with signing capabilities, its hardcoded.
-                // The more general APIs just aren't friendly.
-                DSACryptoServiceProvider dsaCsp = new DSACryptoServiceProvider(asymmetricKeyPair);
-                Encoding textConverter = Encoding.GetEncoding(encoding);
-                byte[] dataBytes = textConverter.GetBytes(data);
-                byte[] signatureBytes = dsaCsp.SignData(dataBytes);
-                bool valid = dsaCsp.VerifyData(dataBytes, signatureBytes);                
-                return Convert.ToBase64String(signatureBytes);
-            }
-            catch (Exception e)
-            {
-                throw new EncryptionException("Signature failure", "Can't find signature algorithm " + signatureAlgorithm, e);
-            }
+        {
+            // Since this is the only asymmetric algorithm with signing capabilities, its hardcoded.
+            // The more general APIs just aren't friendly.
+            DSACryptoServiceProvider dsaCsp = new DSACryptoServiceProvider(asymmetricKeyPair);
+            Encoding textConverter = Encoding.GetEncoding(encoding);
+            byte[] dataBytes = textConverter.GetBytes(data);
+            byte[] signatureBytes = dsaCsp.SignData(dataBytes);
+            return Convert.ToBase64String(signatureBytes);
         }
 
 
-        /// <summary> Verifies a digital signature (created with the sign method) and returns
-        /// the bool result.
-        /// </summary>
-        /// <param name="signature">The signature to verify.
-        /// </param>
-        /// <param name="data">The data to verify the signature against.
-        /// </param>
-        /// <returns> true, if successful
-        /// </returns>
-        /// <seealso cref="Owasp.Esapi.Interfaces.IEncryptor.VerifySignature(string, string)">
-        /// </seealso>
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncryptor.VerifySignature(string, string)" />
         public bool VerifySignature(string signature, string data)
         {
             try
@@ -281,11 +224,10 @@ namespace Owasp.Esapi
                 Encoding textConverter = Encoding.GetEncoding(encoding);
                 byte[] signatureBytes = Convert.FromBase64String(signature);
                 byte[] dataBytes = textConverter.GetBytes(data);
-                return dsaCsp.VerifyData(dataBytes, signatureBytes);                
+                return dsaCsp.VerifyData(dataBytes, signatureBytes);
             }
-            catch (System.Exception e)
-            {                
-                new EncryptionException("Invalid signature", "Problem verifying signature: " + e.Message, e);
+            catch (Exception)
+            {
                 return false;
             }
         }
@@ -312,6 +254,7 @@ namespace Owasp.Esapi
             }
         }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncryptor.Unseal(string)" />
         public String Unseal(String seal)
         {
             String plaintext = null;
@@ -343,16 +286,7 @@ namespace Owasp.Esapi
             return sealedValue;
         }
 
-        /// <summary> Verifies a seal (created with the seal method) and throws an exception
-        /// describing any of the various problems that could exist with a seal, such
-        /// as an invalid seal format, expired timestamp, or data mismatch.
-        /// </summary>
-        /// <param name="seal">The seal.
-        /// </param>
-        /// <param name="data">The data that was sealed.
-        /// </param>
-        /// <seealso cref="Owasp.Esapi.Interfaces.IEncryptor.VerifySeal(string, string)">
-        /// </seealso>
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncryptor.VerifySeal(string)"/>
         public bool VerifySeal(string seal)
         {
             try
@@ -360,23 +294,18 @@ namespace Owasp.Esapi
                 Unseal(seal);
                 return true;
             }
-            catch (Exception)
+            catch (EncryptionException)
             {
                 return false;
             }
         }
 
-        private byte[] Combine(byte[] a, byte[] b)
+        private static byte[] Combine(byte[] a, byte[] b)
         {
             byte[] c = new byte[a.Length + b.Length];
             Buffer.BlockCopy(a, 0, c, 0, a.Length);
             Buffer.BlockCopy(b, 0, c, a.Length, b.Length);
             return c;
-        }
-        
-        static Encryptor()
-        {
-            logger = Esapi.Logger;
         }
     }
 }

@@ -8,24 +8,25 @@ namespace Owasp.Esapi
     /// </summary>
     public class Esapi
     {
-        private static IAccessController accessController = null;        
+        private static IAccessController accessController;        
         
-        private static IEncoder encoder = null;
+        private static IEncoder encoder;
 
-        private static IEncryptor encryptor = null;
+        private static IEncryptor encryptor;
         
-        private static IHttpUtilities httpUtilities = null;
+        private static IHttpUtilities httpUtilities;
 
-        private static IIntrusionDetector intrusionDetector = null;
+        private static IIntrusionDetector intrusionDetector;
 
-        private static IRandomizer randomizer = null;
+        private static IRandomizer randomizer;
 
-        private static ISecurityConfiguration securityConfiguration = null;
+        private static ISecurityConfiguration securityConfiguration;
 
-        private static IValidator validator = null;
+        private static IValidator validator;
 
-        /// <param name="AccessController">The AccessController to set
-        /// </param>
+        /// <summary>
+        /// The IAccessController implementation.
+        /// </summary>
         public static IAccessController AccessController
         {
             set
@@ -42,10 +43,11 @@ namespace Owasp.Esapi
                 return accessController;
             }
         }
-        
 
-        /// <param name="encoder">The encoder to set
-        /// </param>
+
+        /// <summary>
+        /// The IEncoder implementation.
+        /// </summary>
         public static IEncoder Encoder
         {
             set
@@ -62,8 +64,10 @@ namespace Owasp.Esapi
                 return encoder;                
             }
         }
-        /// <param name="encryptor">the encryptor to set
-        /// </param>
+        
+        /// <summary>
+        /// The IEncryptor implementation.
+        /// </summary>
         public static IEncryptor Encryptor
         {
             set
@@ -80,8 +84,9 @@ namespace Owasp.Esapi
             }
         }
 
-        /// <param name="encryptor">the httpUtilities to set
-        /// </param>
+        /// <summary>
+        /// The IHttpUtilties implementation.
+        /// </summary>
         public static IHttpUtilities HttpUtilities
         {
             set
@@ -98,8 +103,9 @@ namespace Owasp.Esapi
             }
         }
 
-        /// <param name="intrusionDetector">the intrusionDetector to set
-        /// </param>
+        /// <summary>
+        /// The IIntrusionDetector implementation.
+        /// </summary>
         public static IIntrusionDetector IntrusionDetector
         {
             set
@@ -116,8 +122,9 @@ namespace Owasp.Esapi
             }
         }
 
-        /// <param name="randomizer">the randomizer to set
-        /// </param>
+        /// <summary>
+        /// The IRandomizer implementation.
+        /// </summary>
         public static IRandomizer Randomizer
         {
             set
@@ -134,8 +141,9 @@ namespace Owasp.Esapi
             }
         }
 
-        /// <param name="validator">the validator to set
-        /// </param>
+        /// <summary>
+        /// The IValidator implementation.
+        /// </summary>
         public static IValidator Validator
         {
             set
@@ -153,8 +161,9 @@ namespace Owasp.Esapi
             }
         }
 
-        /// <param name="securityConfiguration">the securityConfiguration to set
-        /// </param>
+        /// <summary>
+        /// The ISecurityConfiguration implementation.
+        /// </summary>
         public static ISecurityConfiguration SecurityConfiguration
         {
             set
@@ -171,6 +180,9 @@ namespace Owasp.Esapi
             }
         }
 
+        /// <summary>
+        /// The ILogger implementation.
+        /// </summary>
         public static ILogger Logger
         {
             get
@@ -180,12 +192,17 @@ namespace Owasp.Esapi
         }
 
 
+        /// <summary>
+        /// Gets a specific logger for a different class name.
+        /// </summary>
+        /// <param name="className">The class name to get the logger for.</param>
+        /// <returns>The logger associated with the class name.</returns>
         public static ILogger GetLogger(string className)
         {
             return new Logger(className);
         }
        
-        /// <summary> prevent instantiation of this class</summary>
+        /// <summary>Prevent instantiation of this class.</summary>
         private Esapi()
         {
         }        
