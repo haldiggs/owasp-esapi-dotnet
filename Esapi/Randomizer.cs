@@ -14,7 +14,8 @@ namespace Owasp.Esapi
     {
         private RandomNumberGenerator randomNumberGenerator = null;
 
-        private static readonly ILogger logger;
+        private static readonly ILogger logger = Esapi.Logger;
+
         private static char[] CHARS_HEX = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 
         /// <summary>
@@ -29,7 +30,7 @@ namespace Owasp.Esapi
             }
             catch (Exception e)
             {
-                new EncryptionException("Error creating randomizer", "Can't find random algorithm " + algorithm, e);
+                throw new EncryptionException("Error creating randomizer", "Can't find random algorithm " + algorithm, e);
             }
         }
 
@@ -100,34 +101,6 @@ namespace Owasp.Esapi
             return this.GetRandomString(12, Encoder.CHAR_ALPHANUMERICS) + "." + extension;
         }
 
-        static char[] Union(char[] c1, char[] c2)
-        {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < c1.Length; i++)
-            {
-                if (!Contains(sb, c1[i]))
-                    sb.Append(c1[i]);
-            }
-            for (int i = 0; i < c2.Length; i++)
-            {
-                if (!Contains(sb, c2[i]))
-                    sb.Append(c2[i]);
-            }
-            char[] c3 = new char[sb.Length];
-            int i2;
-            int j;
-            i2 = 0;
-            j = 0;
-            while (i2 < sb.Length)
-            {
-                c3[j] = sb[i2];
-                i2++;
-                j++;
-            }
-            Array.Sort(c3);
-            return c3;
-        }
-
         static bool Contains(StringBuilder sb, char c)
         {            
             for (int i = 0; i < sb.Length; i++)
@@ -136,14 +109,6 @@ namespace Owasp.Esapi
                     return true;
             }
             return false;
-        }
-        
-        /// <summary>
-        /// Static constuctor
-        /// </summary>
-        static Randomizer()
-        {
-            logger = Esapi.Logger;
         }
     }
 }

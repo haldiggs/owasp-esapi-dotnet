@@ -93,6 +93,14 @@ namespace Owasp.Esapi.Interfaces
             get;
         }
 
+        /// <summary>
+        /// Whether or not HTML encoding is required in the log file.
+        /// </summary>
+        bool LogEncodingRequired
+        {
+            get;
+        }
+
 
         /// <summary> 
         /// The intrusion detection quota for a particular events.

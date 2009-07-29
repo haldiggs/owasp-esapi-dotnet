@@ -114,13 +114,13 @@ namespace Owasp.Esapi
     public class Logger : ILogger
     {
         /// <summary>The Log4Net logger.</summary>
-        private ILog logger = null;
+        private ILog logger;
 
         /// <summary>The application name.</summary>
-        private string applicationName = null;
+        private string applicationName;
 
         /// <summary>The module name.</summary>
-        private string moduleName = null;
+        private string moduleName;
 
         static Logger()
         {
@@ -194,7 +194,7 @@ namespace Owasp.Esapi
             String clean = message.Replace('\n', '_').Replace('\r', '_');
             
             // HTML encode log message if it will be viewed in a web browser
-            if (((SecurityConfiguration)Esapi.SecurityConfiguration).LogEncodingRequired)
+            if (Esapi.SecurityConfiguration.LogEncodingRequired)
             {
                 clean = Esapi.Encoder.Encode(Encoder.HTML, message);
                 if (!message.Equals(clean))

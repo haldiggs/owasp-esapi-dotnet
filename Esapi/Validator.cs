@@ -4,11 +4,12 @@ using Owasp.Esapi.ValidationRules;
 
 namespace Owasp.Esapi
 {
-    /// <summary>
+    /// <inheritdoc cref="Owasp.Esapi.Interfaces.IValidator" />
+    /// <remarks>
     /// The default implementation of the <see href="Owasp.Esapi.Interfaces.IValidator"/> interface. This implementation
     /// keeps the validation rules in a Hashtable. It also adds the default set of validation rules defined in the reference 
     /// implementation.
-    /// </summary>
+    /// </remarks>
     public class Validator:IValidator
     {
         /// <summary>

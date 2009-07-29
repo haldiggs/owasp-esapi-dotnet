@@ -7,24 +7,19 @@ using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi
 {
-    /// <summary> The SecurityConfiguration manages all the settings used by the ESAPI in a single place. Initializing the
+
+    /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration"/>
+    /// <remarks>The SecurityConfiguration manages all the settings used by the ESAPI in a single place. Initializing the
     /// Configuration is critically important to getting the ESAPI working properly.
     /// 
     /// You must have the relevant configuration in your config file (app.config, web.config).
     /// 
-    /// See the app.config file in this package and copy the value over.    
-    /// 
-    /// </summary>
-    /// <seealso cref="Owasp.Esapi.Interfaces.ISecurityConfiguration">
-    /// </seealso>    
+    /// See the app.config file in the EsapiTest project and copy the values over.  
+    /// </remarks>
     public class SecurityConfiguration : ISecurityConfiguration
     {
 
-        /// <summary> 
-        /// The master password.
-        /// </summary>
-        /// <seealso cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.MasterPassword">
-        /// </seealso>
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.MasterPassword"/>
         public string MasterPassword
         {
             get
@@ -33,11 +28,7 @@ namespace Owasp.Esapi
             }
         }
 
-        /// <summary> 
-        /// The master salt.        
-        /// </summary>
-        /// <seealso cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.MasterSalt">
-        /// </seealso>
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.MasterSalt"/>
         public byte[] MasterSalt
         {
             get
@@ -47,11 +38,7 @@ namespace Owasp.Esapi
 
         }
 
-        /// <summary> 
-        /// The allowed file extensions.        
-        /// </summary>
-        /// <seealso cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.AllowedFileExtensions">
-        /// </seealso>
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.AllowedFileExtensions"/>
         public IList AllowedFileExtensions
         {
             get
@@ -62,12 +49,8 @@ namespace Owasp.Esapi
             }
 
         }
-        
-        /// <summary> 
-        /// The allowed file upload size.        
-        /// </summary>
-        /// <seealso cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.AllowedFileUploadSize">
-        /// </seealso>
+       
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.AllowedFileUploadSize"/>
         public int AllowedFileUploadSize
         {
             get
@@ -78,11 +61,7 @@ namespace Owasp.Esapi
 
         }
 
-        /// <summary> 
-        /// The encryption algorithm.        
-        /// </summary>
-        /// <seealso cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.EncryptionAlgorithm">
-        /// </seealso>
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.EncryptionAlgorithm"/>
         public string EncryptionAlgorithm
         {
             get
@@ -91,11 +70,8 @@ namespace Owasp.Esapi
             }
 
         }
-        /// <summary> 
-        /// The hasing algorithm.        
-        /// </summary>
-        /// <seealso cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.HashAlgorithm">
-        /// </seealso>
+
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.HashAlgorithm"/>
         public string HashAlgorithm
         {
             get
@@ -104,11 +80,8 @@ namespace Owasp.Esapi
             }
 
         }
-        /// <summary> 
-        /// The character encoding.        
-        /// </summary>
-        /// <seealso cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.CharacterEncoding">
-        /// </seealso>
+
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.CharacterEncoding"/>
         public string CharacterEncoding
         {
             get
@@ -117,11 +90,8 @@ namespace Owasp.Esapi
             }
 
         }
-        /// <summary> 
-        /// The digital signature algorithm.        
-        /// </summary>
-        /// <seealso cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.DigitalSignatureAlgorithm">
-        /// </seealso>
+
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.DigitalSignatureAlgorithm"/>
         public string DigitalSignatureAlgorithm
         {
             get
@@ -130,11 +100,8 @@ namespace Owasp.Esapi
             }
 
         }
-        /// <summary> 
-        /// The random number generation algorithm.
-        /// </summary>
-        /// <seealso cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.RandomAlgorithm">
-        /// </seealso>
+
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.RandomAlgorithm"/>
         public string RandomAlgorithm
         {
             get
@@ -144,9 +111,7 @@ namespace Owasp.Esapi
 
         }
 
-        /// <summary>
-        /// This value determines what level will be used for logging.
-        /// </summary>
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.LogLevel"/>
         public int LogLevel
         {
             get
@@ -156,42 +121,7 @@ namespace Owasp.Esapi
             }
         }
 
-        /// <summary>
-        /// This value is the response content type that will be used.
-        /// </summary>        
-        public string ResponseContentType
-        {
-            get
-            {
-                string def = "text/html; charset=UTF-8";
-                return properties[RESPONSE_CONTENT_TYPE] == null ? def : properties[RESPONSE_CONTENT_TYPE];
-            }
-        }
-
-        /// <summary>
-        /// The names of validation patterns loaded.
-        /// </summary>
-        public IEnumerator ValidationPatternNames
-        {
-            get
-            {
-                ArrayList list = new ArrayList();
-                IEnumerator i = properties.GetEnumerator();                             
-                while (i.MoveNext())
-                {                    
-                    string name = (string)i.Current;
-                    if (name.StartsWith("Validator."))
-                    {
-                        list.Add(name.Substring(name.IndexOf('.') + 1));
-                    }
-                }
-                return list.GetEnumerator();
-            }
-        }
-
-        /// <summary>
-        /// If true, values in the log should be encoded.
-        /// </summary>
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.LogEncodingRequired"/>
         public bool LogEncodingRequired
         {
             get
@@ -208,7 +138,7 @@ namespace Owasp.Esapi
         private NameValueCollection properties = new NameValueCollection();
 
         /// <summary>The logger. </summary>                
-        private static readonly ILogger logger;
+        private static readonly ILogger logger = Esapi.Logger;
 
         /// <summary>
         /// The key for the resources directory property.
@@ -246,10 +176,6 @@ namespace Owasp.Esapi
         /// The maximum length of a file name
         /// </summary>
         protected const int MAX_FILE_NAME_LENGTH = 1000;
-                
-        /// <summary> The directory for resources.
-        /// </summary>        
-        private static string resourceDirectory;
 
         /// <summary> Instantiates a new configuration.</summary>
         public SecurityConfiguration()
@@ -260,10 +186,7 @@ namespace Owasp.Esapi
         /// <summary> Loads the configuration.</summary>        
         private void LoadConfiguration()
         {
-            properties = (NameValueCollection)System.Configuration.ConfigurationManager.GetSection("esapi");
-            resourceDirectory = properties.Get("ResourceDirectory");
-            Console.WriteLine("Loaded ESAPI properties from espai/authentication");
-            
+            properties = (NameValueCollection)System.Configuration.ConfigurationManager.GetSection("esapi");       
             IEnumerator i = properties.GetEnumerator();            
             while (i.MoveNext())
             {                
@@ -380,14 +303,6 @@ namespace Owasp.Esapi
             {
                 return Type.GetType(properties[VALIDATOR_CLASS]);
             }
-        }
-        
-        /// <summary>
-        /// Static constructor
-        /// </summary>
-        static SecurityConfiguration()
-        {           
-            logger = Esapi.Logger;
         }
     }
 }
