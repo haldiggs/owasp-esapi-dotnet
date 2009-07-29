@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Text;
 using System.Text.RegularExpressions;
 using Owasp.Esapi.Interfaces;
+using System.Collections.Generic;
 
 namespace Owasp.Esapi
 {
@@ -193,7 +194,7 @@ namespace Owasp.Esapi
                 string key = (string)i.Current;
                 Console.WriteLine("  |   " + key + "=" + properties[(string)key]);
             }
-        }
+       }
 
         /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.GetQuota(string)" />
         public Threshold GetQuota(string eventName)

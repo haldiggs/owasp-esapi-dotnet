@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Owasp.Esapi;
 using Owasp.Esapi.Interfaces;
+using Rhino.Mocks;
 
 namespace EsapiTest
 {
@@ -98,10 +99,13 @@ namespace EsapiTest
             Assert.IsFalse(validator.IsValid(Validator.DOUBLE, "+NaN"));
             Assert.IsTrue(validator.IsValid(Validator.DOUBLE, "1e-6"));
             Assert.IsTrue(validator.IsValid(Validator.DOUBLE, "-1e-6"));
+
+            Assert.IsFalse(validator.IsValid(Validator.DOUBLE, string.Empty));
+            Assert.IsFalse(validator.IsValid(Validator.DOUBLE, null));
         }
 
         // <summary> Test of IsValidInteger method, of class Owasp.Esapi.Validator.</summary>
-        public void testIsValidInteger()
+        public void Test_IsValidInteger()
         {
             IValidator validator = Esapi.Validator;
             //testing negative range
@@ -129,6 +133,9 @@ namespace EsapiTest
             Assert.IsFalse(validator.IsValid(Validator.INTEGER, "+NaN"));
             Assert.IsFalse(validator.IsValid(Validator.INTEGER, "1e-6"));
             Assert.IsFalse(validator.IsValid(Validator.INTEGER, "-1e-6"));
+
+            Assert.IsFalse(validator.IsValid(Validator.INTEGER, string.Empty));
+            Assert.IsFalse(validator.IsValid(Validator.INTEGER, null));
         }
 
         /// <summary> Test of GetValidDate method, of class Owasp.Esapi.Validator.</summary>
@@ -136,11 +143,14 @@ namespace EsapiTest
         public void Test_GetValidDate()
         {            
             IValidator validator = Esapi.Validator;
+                        
             Assert.IsTrue(validator.IsValid(Validator.DATE, "June 23, 1967"));
             Assert.IsTrue(validator.IsValid(Validator.DATE, "Jun 23, 1967"));
             Assert.IsFalse(validator.IsValid(Validator.DATE, "June 32, 1967"));
             Assert.IsFalse(validator.IsValid(Validator.DATE, "June 32 1967"));
             Assert.IsFalse(validator.IsValid(Validator.DATE, "June 32 abcd"));
+            Assert.IsFalse(validator.IsValid(Validator.DATE, string.Empty));
+            Assert.IsFalse(validator.IsValid(Validator.DATE, null));
         }
 
         
@@ -153,7 +163,55 @@ namespace EsapiTest
             Assert.IsTrue(validator.IsValid(Validator.PRINTABLE, "!@#R()*$;><()"));
 
             char[] bytes = new char[] { (char)(0x60), (char)(0xFF), (char)(0x10), (char)(0x25) };
-            Assert.IsFalse(validator.IsValid(Validator.PRINTABLE, new String(bytes)));            
+            Assert.IsFalse(validator.IsValid(Validator.PRINTABLE, new String(bytes)));
+
+            Assert.IsTrue(validator.IsValid(Validator.PRINTABLE, string.Empty));
+            Assert.IsFalse(validator.IsValid(Validator.PRINTABLE, null));
+        }
+
+        [TestMethod]
+        public void Test_AddRule()
+        {
+            MockRepository mocks = new MockRepository();            
+            IValidationRule rule = mocks.StrictMock<IValidationRule>();
+
+            string test = Guid.NewGuid().ToString();
+
+            Esapi.Validator.AddRule(test, rule);
+            Assert.ReferenceEquals(Esapi.Validator.GetRule(test), rule);
+        }
+
+        [TestMethod]
+        public void Test_RemoveRule()
+        {
+            MockRepository mocks = new MockRepository();
+            IValidationRule rule = mocks.StrictMock<IValidationRule>();
+
+            string test = Guid.NewGuid().ToString();
+
+            Esapi.Validator.AddRule(test, rule);
+            Assert.ReferenceEquals(Esapi.Validator.GetRule(test), rule);
+
+            Esapi.Validator.RemoveRule(test);
+            Assert.IsNull(Esapi.Validator.GetRule(test));
+        }
+
+        [TestMethod]
+        public void Test_IsValid()
+        {
+            MockRepository mocks = new MockRepository();
+
+            string test = Guid.NewGuid().ToString();
+
+            IValidationRule rule = mocks.StrictMock<IValidationRule>();
+            Expect.Call(rule.IsValid(test)).Return(true);
+            mocks.ReplayAll();
+
+            Esapi.Validator.AddRule(test, rule);
+            Assert.ReferenceEquals(Esapi.Validator.GetRule(test), rule);
+
+            Assert.IsTrue(Esapi.Validator.IsValid(test, test));
+            mocks.VerifyAll();
         }
     }
 }

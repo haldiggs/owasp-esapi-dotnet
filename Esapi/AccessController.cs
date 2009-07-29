@@ -2,18 +2,19 @@
 using System.Web.Security;
 using Owasp.Esapi.Interfaces;
 using Owasp.Esapi.Errors;
+using System.Collections.Generic;
 
 namespace Owasp.Esapi
 {
     /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessController"/>
     /// <remarks>
     /// This is the reference implementation of the IAccessController interface. It simply
-    /// stores the access control rules in nested Hashtables.
+    /// stores the access control rules in nested maps.
     /// </remarks>
     public class AccessController : IAccessController
     {
-        private Hashtable resourceToSubjectsMap = new Hashtable();
-
+        private Dictionary<object, Dictionary<object, ArrayList>> resourceToSubjectsMap;
+        
         /// <summary>The logger.</summary>
         private static readonly ILogger logger = Esapi.Logger;
         
@@ -22,7 +23,7 @@ namespace Owasp.Esapi
         /// </summary>        
         public AccessController()
         {
-
+            resourceToSubjectsMap = new Dictionary<object, Dictionary<object, ArrayList>>();
         }
 
         /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessController.IsAuthorized(object, object)"/>
@@ -35,29 +36,38 @@ namespace Owasp.Esapi
         /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessController.IsAuthorized(object, object, object)"/>
         public bool IsAuthorized(object subject, object action, object resource)
         {
-            Hashtable subjects = (Hashtable)resourceToSubjectsMap[resource];
-            return (subjects != null && subjects[subject] != null && ((ArrayList)subjects[subject]).Contains(action));
+            Dictionary<object, ArrayList> subjects;            
+
+            if (resourceToSubjectsMap.TryGetValue(resource, out subjects)) {
+                ArrayList actions;
+
+                if (subjects.TryGetValue(subject, out actions)) {
+                    return actions.Contains(action);
+                }
+            }
+
+            return false;
         }
 
         /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessController.AddRule(object, object, object)"/>
         public void AddRule(object subject, object action, object resource)
         {
-            if (resourceToSubjectsMap[resource] == null)
-            {
-                resourceToSubjectsMap[resource] = new Hashtable();
+            Dictionary<object, ArrayList> subjects;            
+            if (!resourceToSubjectsMap.TryGetValue(resource, out subjects)) {
+                subjects = new Dictionary<object,ArrayList>();
+                resourceToSubjectsMap[resource] = subjects;
             }
-            Hashtable subjects = (Hashtable)resourceToSubjectsMap[resource];
-            if (subjects[subject] == null)
-            {
-                subjects[subject] = new ArrayList();
+
+            ArrayList actions;
+            if (!subjects.TryGetValue(subject, out actions)) {
+                actions = new ArrayList();
+                subjects[subject] = actions;
             }
-            ArrayList actions = (ArrayList)subjects[subject];
-            if (!actions.Contains(action))
-            {
+
+            if (!actions.Contains(action)) {
                 actions.Add(action);
             }
-            else
-            {                
+            else {                
                 string message = "Attempt to add an access control rule that already exists.";
                 throw new EnterpriseSecurityException(message, message);
             }
@@ -66,26 +76,30 @@ namespace Owasp.Esapi
         /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessController.RemoveRule(object, object, object)"/>
         public void RemoveRule(object subject, object action, object resource)
         {
-            if (resourceToSubjectsMap[resource] != null)
-            {
-                Hashtable subjects = (Hashtable)resourceToSubjectsMap[resource];
-                if (subjects[subject] != null)
-                {
-                    ArrayList actions = (ArrayList) subjects[subject];
-                    actions.Remove(action);
-                    if (actions.Count == 0)
-                    {
-                        subjects.Remove(subject);
-                        if (subjects.Count == 0)
-                        {
-                            resourceToSubjectsMap.Remove(resource);
+            Dictionary<object, ArrayList> subjects;
+
+            if (resourceToSubjectsMap.TryGetValue(resource, out subjects)) {
+                ArrayList actions;
+
+                if (subjects.TryGetValue(subject, out actions)) {
+                    if (actions.Contains(action)) {
+                        actions.Remove(action);
+
+                        if (actions.Count == 0) {
+                            subjects.Remove(actions);
+
+                            if (subjects.Count == 0) {
+                                resourceToSubjectsMap.Remove(subjects);
+                            }
                         }
+
+                        return;
                     }
-                    return;
                 }
             }
-            string message = "Attempt to remove an access control rule that does not exist.";
-            throw new EnterpriseSecurityException(message, message);
+
+            string ruleNotFound = "Attempt to remove an access control rule that does not exist.";
+            throw new EnterpriseSecurityException(ruleNotFound, ruleNotFound);
         }
     }
 }

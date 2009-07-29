@@ -4,15 +4,16 @@ using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi.ValidationRules
 {
-    class CreditCardValidationRule:IValidationRule
+    class CreditCardValidationRule : IValidationRule
     {
-     
         #region IValidationRule Members
 
         public bool IsValid(string input)
         {
-            if (input == null) return false;
-
+            if (string.IsNullOrEmpty(input)) {
+                return false;
+            }
+            
             // perform Luhn algorithm checking
             StringBuilder digitsOnly = new StringBuilder();
             char c;

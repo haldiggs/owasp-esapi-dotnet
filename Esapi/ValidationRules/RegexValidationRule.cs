@@ -16,6 +16,10 @@ namespace Owasp.Esapi.ValidationRules
 
         public bool IsValid(string input)
         {
+            if (input == null) {
+                return false;
+            }
+
             return regex.IsMatch(input, 0);
         }
 

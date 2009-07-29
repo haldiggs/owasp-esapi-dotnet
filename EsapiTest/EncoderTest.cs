@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Owasp.Esapi;
 using Owasp.Esapi.Interfaces;
+using Rhino.Mocks;
 
 namespace EsapiTest
 {
@@ -217,6 +217,110 @@ namespace EsapiTest
             {
                 Assert.Fail();
             }
+        }
+
+        [TestMethod]
+        public void Test_AddCodec()
+        {
+            MockRepository mocks = new MockRepository();
+
+            string codecName = Guid.NewGuid().ToString();
+            ICodec codec = mocks.StrictMock<ICodec>();
+
+            Esapi.Encoder.AddCodec(codecName, codec);
+            Assert.ReferenceEquals(Esapi.Encoder.GetCodec(codecName), codec);        
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Test_AddWrongCodecName()
+        {
+            MockRepository mocks = new MockRepository();
+
+            Esapi.Encoder.AddCodec(null, mocks.StrictMock<ICodec>());
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Test_AddDuplicateCodec()
+        {
+            MockRepository mocks = new MockRepository();
+
+            string codecName  = Guid.NewGuid().ToString();
+            
+            Esapi.Encoder.AddCodec(codecName, mocks.StrictMock<ICodec>());
+            Esapi.Encoder.AddCodec(codecName, mocks.StrictMock<ICodec>());
+        }
+
+        [TestMethod]
+        public void Test_RemoveCodec()
+        {
+            MockRepository mocks = new MockRepository();
+
+            string codecName = Guid.NewGuid().ToString();
+            ICodec codec = mocks.StrictMock<ICodec>();
+
+            Esapi.Encoder.AddCodec(codecName, codec);
+            Assert.ReferenceEquals(Esapi.Encoder.GetCodec(codecName), codec);      
+
+            Esapi.Encoder.RemoveCodec(codecName);
+            Assert.IsNull(Esapi.Encoder.GetCodec(codecName));
+        }
+
+        [TestMethod]
+        public void Test_Encode()
+        {
+            MockRepository mocks = new MockRepository();
+
+            string testString = Guid.NewGuid().ToString();
+            string codecName = Guid.NewGuid().ToString();
+
+            ICodec codec = mocks.StrictMock<ICodec>();
+            Expect.Call(codec.Encode(testString)).Return(testString);
+            mocks.ReplayAll();
+
+            Esapi.Encoder.AddCodec(codecName, codec);
+            Assert.ReferenceEquals(Esapi.Encoder.GetCodec(codecName), codec);        
+
+            Assert.AreEqual(testString, Esapi.Encoder.Encode(codecName, testString));
+            mocks.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void Test_EncodeWrongCodecName()
+        {
+            string codecName = Guid.NewGuid().ToString();
+
+            Esapi.Encoder.Encode(codecName, "test");
+        }
+
+        [TestMethod]
+        public void Test_Decode()
+        {
+            MockRepository mocks = new MockRepository();
+
+            string testString = Guid.NewGuid().ToString();
+            string codecName = Guid.NewGuid().ToString();
+
+            ICodec codec = mocks.StrictMock<ICodec>();
+            Expect.Call(codec.Decode(testString)).Return(testString);
+            mocks.ReplayAll();
+
+            Esapi.Encoder.AddCodec(codecName, codec);
+            Assert.ReferenceEquals(Esapi.Encoder.GetCodec(codecName), codec);        
+
+            Assert.AreEqual(testString, Esapi.Encoder.Decode(codecName, testString));
+            mocks.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void Test_DecodeWrongCodecName()
+        {
+            string codecName = Guid.NewGuid().ToString();
+
+            Esapi.Encoder.Decode(codecName, "test");
         }
     }
 }

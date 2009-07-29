@@ -92,16 +92,12 @@ namespace EsapiTest
             System.Console.Out.WriteLine("Update");
             // test to make sure update returns something
             arm.Update(accounts);
-            String indirect = arm.GetIndirectReference(account1);
-            if (indirect == null)
-            {
-                Assert.Fail();
-            }
+            Assert.IsNotNull(arm.GetIndirectReference(account1));
 
             // test to make sure update removes items that are no longer in the list
             accounts.Remove(account3);
             arm.Update(accounts);
-            indirect = arm.GetIndirectReference(account3);
+            String indirect = arm.GetIndirectReference(account3);
             Assert.IsNull(indirect);            
 
             // test to make sure old indirect reference is maintained after an update
