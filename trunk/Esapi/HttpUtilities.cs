@@ -8,7 +8,7 @@ namespace Owasp.Esapi
 {
     class HttpUtilities: IHttpUtilities
     {
-        public static readonly string CSRF_TOKEN_NAME = "CsrfToken";
+        public const string CSRF_TOKEN_NAME = "CsrfToken";
         #region IHttpUtilities Members
 
 

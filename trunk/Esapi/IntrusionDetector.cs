@@ -27,7 +27,6 @@ namespace Owasp.Esapi
                 DateTime past = (DateTime)times[count - 1];
                 long plong = past.Ticks;
                 long nlong = now.Ticks;
-                long l = nlong - plong;
                 long i = interval * 10000 * 1000;
                 if (nlong - plong < interval * 60 * 10000 * 1000)
                 {

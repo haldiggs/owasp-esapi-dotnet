@@ -10,16 +10,8 @@ namespace Owasp.Esapi.ValidationRules
 
         public bool IsValid(string input)
         {
-            try
-            {
-                DateTime date = DateTime.Parse(input);
-                return true;
-            }
-            catch (FormatException)
-            {
-                return false;
-            }
-
+            DateTime date;
+            return DateTime.TryParse(input, out date);
         }
 
         #endregion
