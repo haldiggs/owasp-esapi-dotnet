@@ -46,20 +46,27 @@ namespace Owasp.Esapi
         /// </summary>
         public static readonly int ALL = Int32.MinValue;
         
-        internal static int ParseLogLevel(string level)
+        /// <summary>
+        /// This method parses the string indiciating log level and returns the appropriate integer.
+        /// </summary>
+        /// <param name="level">The string indicating the log level.</param>
+        /// <returns>The integer representing the log level.</returns>
+        public static int ParseLogLevel(string level)
         {
-            if (level.ToUpper().Equals("FATAL", StringComparison.InvariantCultureIgnoreCase))
-                return LogLevels.FATAL;
-            if (level.ToUpper().Equals("ERROR", StringComparison.InvariantCultureIgnoreCase))
-                return LogLevels.ERROR;
-            if (level.ToUpper().Equals("WARNING", StringComparison.InvariantCultureIgnoreCase))
-                return LogLevels.WARN;
-            if (level.ToUpper().Equals("INFO", StringComparison.InvariantCultureIgnoreCase))
-                return LogLevels.INFO;
-            if (level.ToUpper().Equals("DEBUG", StringComparison.InvariantCultureIgnoreCase))
-                return LogLevels.DEBUG;
-            if (level.ToUpper().Equals("OFF", StringComparison.InvariantCultureIgnoreCase))
-                return LogLevels.OFF;
+            if (!string.IsNullOrEmpty(level)) {
+                if (0 == string.Compare(level, "FATAL", StringComparison.InvariantCultureIgnoreCase))
+                    return LogLevels.FATAL;
+                if (0 == string.Compare(level, "ERROR", StringComparison.InvariantCultureIgnoreCase))
+                    return LogLevels.ERROR;
+                if (0 == string.Compare(level, "WARNING", StringComparison.InvariantCultureIgnoreCase))
+                    return LogLevels.WARN;
+                if (0 == string.Compare(level, "INFO", StringComparison.InvariantCultureIgnoreCase))
+                    return LogLevels.INFO;
+                if (0 == string.Compare(level, "DEBUG", StringComparison.InvariantCultureIgnoreCase))
+                    return LogLevels.DEBUG;
+                if (0 == string.Compare(level, "OFF", StringComparison.InvariantCultureIgnoreCase))
+                    return LogLevels.OFF;
+            }
             return LogLevels.ALL;
         }
     }

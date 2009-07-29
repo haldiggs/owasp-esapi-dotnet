@@ -102,5 +102,20 @@ namespace EsapiTest
             logger.Fatal(LogEventTypes.SECURITY, "test message");
             logger.Fatal(LogEventTypes.SECURITY, "test message", null);
         }
+
+        [TestMethod]
+        public void Test_ParseLogLevel()
+        {
+            Assert.AreEqual(LogLevels.ParseLogLevel("OFF"), LogLevels.OFF);
+            Assert.AreEqual(LogLevels.ParseLogLevel("FATAL"), LogLevels.FATAL);
+            Assert.AreEqual(LogLevels.ParseLogLevel("ERROR"), LogLevels.ERROR);
+            Assert.AreEqual(LogLevels.ParseLogLevel("WARNING"), LogLevels.WARN);
+            Assert.AreEqual(LogLevels.ParseLogLevel("INFO"), LogLevels.INFO);
+            Assert.AreEqual(LogLevels.ParseLogLevel("DEBUG"), LogLevels.DEBUG);
+            Assert.AreEqual(LogLevels.ParseLogLevel("ALL"), LogLevels.ALL);
+
+            Assert.AreEqual(LogLevels.ParseLogLevel(string.Empty), LogLevels.ALL);
+            Assert.AreEqual(LogLevels.ParseLogLevel(null), LogLevels.ALL);
+        }
     }
 }

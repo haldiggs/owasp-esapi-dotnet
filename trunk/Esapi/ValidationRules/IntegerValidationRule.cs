@@ -10,19 +10,8 @@ namespace Owasp.Esapi.ValidationRules
 
         public bool IsValid(string input)
         {
-            try
-            {
-                int i = Int32.Parse(input);
-                return true;
-            }
-            catch (FormatException)
-            {
-                return false;
-            }
-            catch (OverflowException)
-            {
-                return false;
-            }
+            int value;
+            return int.TryParse(input, out value);
         }
 
         #endregion

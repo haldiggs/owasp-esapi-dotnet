@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Owasp.Esapi;
+using Owasp.Esapi.Errors;
+using System;
 
 namespace EsapiTest
 {
@@ -57,16 +59,61 @@ namespace EsapiTest
         [TestMethod]
         public void Test_AccessControllerAddRule()
         {
-            Esapi.AccessController.AddRule("test", "test", "test");
-            Assert.IsTrue(Esapi.AccessController.IsAuthorized("test", "test", "test"));
+            string test = Guid.NewGuid().ToString();
+
+            Esapi.AccessController.AddRule(test, test, test);
+            Assert.IsTrue(Esapi.AccessController.IsAuthorized(test, test, test));
         }
 
         [TestMethod]
+        [ExpectedException(typeof(EnterpriseSecurityException))]
+        public void Test_AddDuplicateRule()
+        {
+            string test = Guid.NewGuid().ToString();
+
+            Esapi.AccessController.AddRule(test, test, test);
+            Esapi.AccessController.AddRule(test, test, test);
+        }
+                
+        [TestMethod]
         public void Test_AccessControllerRemoveRule()
         {
-            Esapi.AccessController.AddRule("test", "test", "test");
-            Esapi.AccessController.RemoveRule("test", "test", "test");
-            Assert.IsFalse(Esapi.AccessController.IsAuthorized("test", "test", "test"));
+            string test = Guid.NewGuid().ToString();
+
+            Esapi.AccessController.AddRule(test, test, test);
+            Esapi.AccessController.RemoveRule(test, test, test);
+            Assert.IsFalse(Esapi.AccessController.IsAuthorized(test, test, test));
+        }
+
+
+        [TestMethod]
+        [ExpectedException(typeof(EnterpriseSecurityException))]
+        public void Test_RemoveRuleWrongSubject()
+        {
+            string test = Guid.NewGuid().ToString();
+
+            Esapi.AccessController.AddRule(test, test, test);
+            Esapi.AccessController.RemoveRule(string.Empty, test, test);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(EnterpriseSecurityException))]
+        public void Test_RemoveRuleWrongAction()
+        {
+            string test = Guid.NewGuid().ToString();
+
+            Esapi.AccessController.AddRule(test, test, test);
+            Esapi.AccessController.RemoveRule(test, string.Empty, test);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(EnterpriseSecurityException))]
+        public void Test_RemoveRuleWrongResource()
+        {
+            string test = Guid.NewGuid().ToString();
+
+            Esapi.AccessController.AddRule(test, test, test);
+            Esapi.AccessController.RemoveRule(test, test, string.Empty);
         }
     }
 }

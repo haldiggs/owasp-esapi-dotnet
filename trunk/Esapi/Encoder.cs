@@ -5,6 +5,7 @@ using Microsoft.Security.Application;
 using Owasp.Esapi.Codecs;
 using Owasp.Esapi.Errors;
 using Owasp.Esapi.Interfaces;
+using System.Collections.Generic;
 
 namespace Owasp.Esapi
 {
@@ -26,7 +27,7 @@ namespace Owasp.Esapi
             AddCodec(URL, new UrlCodec());
         }
 
-        private Hashtable codecs = new Hashtable();
+        private Dictionary<string, ICodec> codecs = new Dictionary<string, ICodec>();
 
         /// <summary>The Constant CHAR_ALPHANUMERICS. </summary>        
         public static readonly char[] CHAR_ALPHANUMERICS = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
@@ -107,7 +108,7 @@ namespace Owasp.Esapi
                 // try each codec and keep track of which ones work             
                 foreach (string codecName in codecNames) {
                     String old = working;
-                    ICodec codec = (ICodec) codecs[codecName];
+                    ICodec codec = codecs[codecName];
                     working = codec.Decode( working );
                     if ( !old.Equals( working ) ) {
                         if ( codecFound != null && codecFound != codec ) {
@@ -154,24 +155,43 @@ namespace Owasp.Esapi
         /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncoder.Encode(string, string)" />
         public string Encode(string codecName, string input)
         {
-            return GetCodec(codecName).Encode(input);
+            ICodec codec = GetCodec(codecName);
+            if (codec == null) {
+                throw new ArgumentOutOfRangeException("codecName");
+            }
+
+            return codec.Encode(input);
         }
 
         /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncoder.Decode(string, string)" />
         public string Decode(string codecName, string input)
         {
-            return GetCodec(codecName).Decode(input);
+            ICodec codec = GetCodec(codecName);
+            if (codec == null) {
+                throw new ArgumentOutOfRangeException("codecName");
+            }
+
+            return codec.Decode(input);
         }
 
         /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncoder.GetCodec(string)" />
         public ICodec GetCodec(string codecName)
         {
-            return (ICodec)codecs[codecName];
+            if (codecName == null) {
+                throw new ArgumentNullException("codecName");
+            }
+
+            ICodec codec;
+            codecs.TryGetValue(codecName, out codec);
+            return codec;
         }
 
         /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncoder.AddCodec(string, ICodec)" />
         public void AddCodec(string codecName, ICodec codec)
         {
+            if (codecName == null) {
+                throw new ArgumentNullException("codecName");
+            }
             codecs.Add(codecName, codec);
         }
 

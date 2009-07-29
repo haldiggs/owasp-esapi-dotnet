@@ -3,6 +3,7 @@ using System.Collections;
 using System.Web.Security;
 using Owasp.Esapi.Errors;
 using Owasp.Esapi.Interfaces;
+using System.Collections.Generic;
 
 namespace Owasp.Esapi
 {
@@ -111,7 +112,7 @@ namespace Owasp.Esapi
     {        
         /// <summary>The logger. </summary>
         private static readonly ILogger logger;
-        private static Hashtable users = new Hashtable();
+        private static Dictionary<string, Dictionary<string, Event>> users = new Dictionary<string, Dictionary<string, Event>>();
         
         /// <summary>
         /// Public constructor.
@@ -228,23 +229,24 @@ namespace Owasp.Esapi
         public void AddSecurityEvent(string eventName)
         {
             string username = (Membership.GetUser() == null) ? "Anonymous" : Membership.GetUser().UserName;
-            Hashtable events = (Hashtable)users[username];
-            if (events == null)
-            {
-                events = new Hashtable();
+
+            Dictionary<string, Event> events;
+
+            if (!users.TryGetValue(username, out events)) {
+                events = new Dictionary<string, Event>();
                 users[username] = events;
             }
-            Event securityEvent = (Event)events[eventName];
-            if (securityEvent == null)
-            {
+
+            Event securityEvent;
+
+            if (!events.TryGetValue(eventName, out securityEvent)) {
                 securityEvent = new Event(eventName);
                 events[eventName] = securityEvent;
             }
 
             Threshold q = Esapi.SecurityConfiguration.GetQuota(eventName);
             
-            if (q.Count > 0)
-            {
+            if (q.Count > 0) {
                 securityEvent.Increment(q.Count, q.Interval);
             }
 
