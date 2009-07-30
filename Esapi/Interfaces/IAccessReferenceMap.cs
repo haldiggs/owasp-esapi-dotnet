@@ -8,7 +8,7 @@ namespace Owasp.Esapi.Interfaces
     /// set of indirect references that are safe to disclose publicly. This can be used to help protect database 
     /// keys, filenames, and other types of direct object references.
     /// </summary>
-    interface IAccessReferenceMap
+    public interface IAccessReferenceMap
     {
         /// <summary> 
         /// Get a safe indirect reference to use in place of a potentially sensitive
