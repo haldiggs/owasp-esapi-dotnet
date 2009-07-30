@@ -6,7 +6,7 @@ namespace Owasp.Esapi.ValidationRules
     /// <summary>
     /// This class is for validating that text is valid according to a given regular expression pattern.
     /// </summary>
-    class RegexValidationRule:IValidationRule
+    public class RegexValidationRule:IValidationRule
     {
         Regex regex;
         

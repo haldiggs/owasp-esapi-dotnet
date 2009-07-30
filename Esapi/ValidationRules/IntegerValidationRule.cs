@@ -6,7 +6,7 @@ namespace Owasp.Esapi.ValidationRules
     /// <summary>
     /// This class performs integer validation.
     /// </summary>
-    class IntegerValidationRule:IValidationRule
+    public class IntegerValidationRule:IValidationRule
     {
         
         #region IValidationRule Members

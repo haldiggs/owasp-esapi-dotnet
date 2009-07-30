@@ -6,7 +6,7 @@ namespace Owasp.Esapi.ValidationRules
     /// <summary>
     /// This class performs double (decimal) validation.
     /// </summary>
-    class DoubleValidationRule : IValidationRule
+    public class DoubleValidationRule : IValidationRule
     {        
         #region IValidationRule Members
 
