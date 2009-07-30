@@ -7,7 +7,7 @@ namespace Owasp.Esapi
 {
     /// <inheritdoc cref="Owasp.Esapi.Interfaces.IValidator" />
     /// <summary>
-    /// Reference implementation of the <see href="Owasp.Esapi.Interfaces.IValidator"/> interface. This implementation
+    /// Reference implementation of the <see cref="Owasp.Esapi.Interfaces.IValidator"/> interface. This implementation
     /// keeps the validation rules in a map. It also adds the default set of validation rules defined in the reference 
     /// implementation.
     /// </summary>
