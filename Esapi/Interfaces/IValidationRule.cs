@@ -1,7 +1,7 @@
 ﻿namespace Owasp.Esapi.Interfaces
 {
     /// <summary>
-    /// A class that implements IValidationRule performs syntax and possibly semantic validation of a single 
+    /// A class that implements IValidationRule performs validation of a single 
     /// piece of data from an untrusted source.
     /// </summary>
     public interface IValidationRule

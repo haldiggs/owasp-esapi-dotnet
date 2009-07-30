@@ -9,10 +9,11 @@ namespace Owasp.Esapi.ValidationRules
     {        
         #region IValidationRule Members
 
-        /// <inheritdocs cref="Owasp.Esapi.Interfaces.IValidationRule.IsValid(string)"/>
-        /// <remarks>
-        /// This method checks whehter or not the input contains only valid printable ASCII characters.
-        /// </remarks>
+        /// <summary>
+        /// Checks whether the input is a valid printable character.
+        /// </summary>
+        /// <param name="input">The input to valdiate.</param>
+        /// <returns>True, if the input is valid. False, otherwise.</returns>
         public bool IsValid(string input)
         {
             if (input == null) {

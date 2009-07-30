@@ -9,7 +9,7 @@ namespace Owasp.Esapi.Errors
     /// either specially logging the event, logging out the current user, or invalidating the current user's account.    
     /// </summary>
     [Serializable]
-    public class IntrusionException : System.Exception
+    public class IntrusionException : Exception
     {
         /// <summary>
         /// The message for the user

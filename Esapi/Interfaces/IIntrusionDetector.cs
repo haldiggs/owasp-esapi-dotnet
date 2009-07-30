@@ -2,11 +2,7 @@
 
 namespace Owasp.Esapi.Interfaces
 {
-    /// <summary> The IIntrusionDetector interface is intended to track security relevant events and identify attack behavior. The
-    /// implementation can use as much state as necessary to detect attacks, but note that storing too much state will burden
-    /// your system.
-    /// The interface is currently designed to accept exceptions as well as custom events. Implementations can use this
-    /// stream of information to detect both normal and abnormal behavior.    
+    /// <summary> The IIntrusionDetector interface is intended to track security relevant events and identify attack behavior.
     /// </summary>
     public interface IIntrusionDetector
     {

@@ -2,7 +2,7 @@
 namespace Owasp.Esapi.Interfaces
 {
     /// <summary>
-    /// The HTTPUtilities interface is a collection of methods that provide additional security related to HTTP requests, responses, 
+    /// The IHttpUtilities interface is a collection of methods that provide additional security related to HTTP requests, responses, 
     /// sessions, cookies, headers, and logging.
     /// </summary>
     public interface IHttpUtilities

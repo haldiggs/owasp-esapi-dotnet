@@ -3,11 +3,7 @@
 namespace Owasp.Esapi.Interfaces
 {
     /// <summary> The IRandomizer interface defines a set of methods for creating
-    /// cryptographically random numbers and strings. Implementers should be sure to
-    /// use a strong cryptographic implementation, such as the JCE or BouncyCastle.
-    /// Weak sources of randomness can undermine a wide variety of security
-    /// mechanisms.
-    /// <img src="doc-files/Randomizer.jpg" height="600" />
+    /// cryptographically random numbers and strings.
     /// </summary>    
     public interface IRandomizer
     {

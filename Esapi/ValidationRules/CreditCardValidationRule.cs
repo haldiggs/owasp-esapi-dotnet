@@ -4,10 +4,18 @@ using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi.ValidationRules
 {
-    class CreditCardValidationRule : IValidationRule
+    /// <summary>
+    /// This class performs credit card number validation, including Luhn algorithm checking.
+    /// </summary>
+    public class CreditCardValidationRule : IValidationRule
     {
         #region IValidationRule Members
 
+        /// <summary>
+        /// Checks whether the input is a valid credit card number.
+        /// </summary>
+        /// <param name="input">The input to valdiate.</param>
+        /// <returns>True, if the input is valid. False, otherwise.</returns>
         public bool IsValid(string input)
         {
             if (string.IsNullOrEmpty(input)) {

@@ -3,16 +3,30 @@ using Microsoft.Security.Application;
 using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi.Codecs
-{
-    class XmlCodec:ICodec
+{   
+    /// <summary>
+    /// This class performs XML encoding.
+    /// </summary>
+    public class XmlCodec:ICodec
     {
         #region ICodec Members
 
+        /// <summary>
+        /// XML encode the input.
+        /// </summary>
+        /// <param name="input">The input to encode.</param>
+        /// <returns>The encoded input.</returns>
         public string Encode(string input)
         {
             return AntiXss.XmlEncode(input);
         }
 
+        /// <summary>
+        /// XML decode the input.
+        /// </summary>
+        /// <param name="input">The input to decode.</param>
+        /// <returns>The decoded input.</returns>
+        /// <remarks>This method is not implemented.</remarks>
         public string Decode(string input)
         {
             throw new NotImplementedException();

@@ -2,15 +2,7 @@
 namespace Owasp.Esapi.Interfaces
 {
     /// <summary>
-    /// The Validator interface defines a set of methods for validating untrusted input. 
-    /// Implementors should feel free to extend this interface to accommodate their own data formats. 
-    /// Rather than throw exceptions, this interface returns boolean results because not all validation 
-    /// problems are security issues. Boolean returns allow developers to handle both valid and invalid 
-    /// results more cleanly than exceptions.  
-    ///  
-    /// Implementations must adopt a "whitelist" approach to validation where a specific pattern or character
-    /// set is matched. "Blacklist" approaches that  attempt to identify the invalid or disallowed characters 
-    /// are much more likely to allow a bypass with encoding or other tricks. 
+    /// The IValidator interface defines a set of methods for validating untrusted input.
     /// </summary>
     public interface IValidator
     {
