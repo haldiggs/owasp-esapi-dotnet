@@ -10,7 +10,7 @@ using System.Collections.Generic;
 namespace Owasp.Esapi
 {
 
-    /// <inheritdocs cref="Owasp.Esapi.Interfaces.IEncoder" />
+    /// <inheritdoc  cref="Owasp.Esapi.Interfaces.IEncoder" />
     /// <summary> Reference implementation of the <see cref="Owasp.Esapi.Interfaces.IEncoder"/> interface, based on the AntiXss library.
     /// </summary>
     public class Encoder: IEncoder

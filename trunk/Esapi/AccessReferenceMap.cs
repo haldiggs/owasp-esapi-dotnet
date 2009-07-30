@@ -8,7 +8,7 @@ namespace Owasp.Esapi
 {
     /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessReferenceMap"/>
     /// <remarks>
-    /// This <see cref="Owasp.Esapi.Interfaces.IAccessReferenceMap"/> implementation uses short random strings to
+    /// Reference <see cref="Owasp.Esapi.Interfaces.IAccessReferenceMap"/> implementation uses short random strings to
     /// create a layer of indirection. Other possible implementations would use
     /// simple integers as indirect references.
     /// </remarks>

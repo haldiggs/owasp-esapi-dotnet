@@ -97,7 +97,7 @@ namespace Owasp.Esapi
     }
 
 
-    /// <inheritdocs cref="Owasp.Esapi.Interfaces.IIntrusionDetector"/>
+    /// <inheritdoc  cref="Owasp.Esapi.Interfaces.IIntrusionDetector"/>
     /// <remarks> Reference implementation of the <see cref="Owasp.Esapi.Interfaces.IIntrusionDetector"/> interface. This
     /// implementation monitors EnterpriseSecurityExceptions to see if any user
     /// exceeds a configurable threshold in a configurable time period. For example,
