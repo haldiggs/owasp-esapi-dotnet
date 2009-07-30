@@ -7,11 +7,11 @@ using System.Collections.Generic;
 namespace Owasp.Esapi
 {
     /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessReferenceMap"/>
-    /// <remarks>
+    /// <summary>
     /// Reference <see cref="Owasp.Esapi.Interfaces.IAccessReferenceMap"/> implementation uses short random strings to
     /// create a layer of indirection. Other possible implementations would use
     /// simple integers as indirect references.
-    /// </remarks>
+    /// </summary>
     public class AccessReferenceMap : IAccessReferenceMap
     {
         internal Dictionary<string, object> itod = new Dictionary<string, object>();

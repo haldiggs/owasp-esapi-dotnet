@@ -6,11 +6,11 @@ using Owasp.Esapi.ValidationRules;
 namespace Owasp.Esapi
 {
     /// <inheritdoc cref="Owasp.Esapi.Interfaces.IValidator" />
-    /// <remarks>
+    /// <summary>
     /// Reference implementation of the <see href="Owasp.Esapi.Interfaces.IValidator"/> interface. This implementation
     /// keeps the validation rules in a map. It also adds the default set of validation rules defined in the reference 
     /// implementation.
-    /// </remarks>
+    /// </summary>
     public class Validator:IValidator
     {
         /// <summary>

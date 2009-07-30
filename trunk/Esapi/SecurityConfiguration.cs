@@ -10,15 +10,14 @@ namespace Owasp.Esapi
 {
 
     /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration"/>
-    /// <remarks>
+    /// <summary>
     /// Reference implementation of the <see href="Owasp.Esapi.Interfaces.ISecurityConfiguration"/> interface
-    /// manages all the settings used by the ESAPI in a single place. Initializing the
-    /// Configuration is critically important to getting the ESAPI working properly.
-    /// 
-    /// You must have the relevant configuration in your config file (app.config, web.config).
-    /// 
+    /// manages all the settings used by the ESAPI in a single place.
+    /// </summary>
+    /// <remarks>
+    /// You must have the relevant configuration in your config file (app.config, web.config). 
     /// See the app.config file in the EsapiTest project for the necessary elements.
-    /// </remarks>
+    ///  </remarks>
     public class SecurityConfiguration : ISecurityConfiguration
     {
 

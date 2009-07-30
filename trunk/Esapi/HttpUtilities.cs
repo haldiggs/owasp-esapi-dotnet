@@ -7,9 +7,9 @@ using Owasp.Esapi.Interfaces;
 namespace Owasp.Esapi
 {
     /// <inheritdoc  cref="Owasp.Esapi.Interfaces.IHttpUtilities" />
-    /// <remarks>
+    /// <summary>
     /// Reference implementation for the <see cref="Owasp.Esapi.Interfaces.IHttpUtilities"/> class.
-    /// </remarks>
+    /// </summary>
     public class HttpUtilities: IHttpUtilities
     {
         /// <summary>

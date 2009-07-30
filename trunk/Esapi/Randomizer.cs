@@ -7,9 +7,9 @@ using Owasp.Esapi.Interfaces;
 namespace Owasp.Esapi
 {
     /// <inheritdoc cref="Owasp.Esapi.Interfaces.IRandomizer" />
-    /// <remarks> Reference implemenation of the <see cref="Owasp.Esapi.Interfaces.IRandomizer" /> interface. This implementation builds on the MSCAPI provider to provide a
+    /// <summary> Reference implemenation of the <see cref="Owasp.Esapi.Interfaces.IRandomizer" /> interface. This implementation builds on the MSCAPI provider to provide a
     /// cryptographically strong source of entropy. The specific algorithm used is configurable in the ESAPI properties.
-    /// </remarks>
+    /// </summary>
     public class Randomizer : IRandomizer
     {
         private RandomNumberGenerator randomNumberGenerator = null;
