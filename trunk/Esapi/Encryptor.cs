@@ -8,12 +8,12 @@ using Owasp.Esapi.Interfaces;
 namespace Owasp.Esapi
 {
 
-    /// <summary> Reference implementation of the IEncryptor interface. This implementation
+
+    /// <inheritdocs cref="Owasp.Esapi.Interfaces.IEncryptor"/>
+    /// <remarks>Reference implementation of the <see cref="Owasp.Esapi.Interfaces.IEncryptor"/> IEncryptor interface. This implementation
     /// layers on the .NET provided cryptographic package. 
-    /// Algorithms used are configurable in the ESAPI.properties file.
-    /// </summary>
-    /// <seealso cref="Owasp.Esapi.Interfaces.IEncryptor">
-    /// </seealso>
+    /// Algorithms used are configurable in the configuration file.
+    /// </remarks> 
     public class Encryptor:IEncryptor
     {
         /// <summary> Gets a timestamp representing the current date and time to be used by

@@ -4,23 +4,14 @@ using System.Collections;
 namespace Owasp.Esapi.Interfaces
 {
     /// <summary> The IEncoder interface contains a number of methods related to encoding input
-    /// so that it will be safe for a variety of interpreters. To prevent
-    /// double-encoding, all encoding methods should first check to see that the
-    /// input does not already contain encoded characters. There are a few methods
-    /// related to decoding that are used for canonicalization purposes. See the
-    /// Validator class for more information.
-    ///    
-    /// All of the methods here must use a "whitelist" or "positive" security model,
-    /// meaning that all characters should be encoded, except for a specific list of
-    /// "immune" characters that are known to be safe.    
+    /// so that it will be safe for a variety of interpreters.
     /// </summary>    
     public interface IEncoder
     {
         /// <summary>
         /// This method performs canonicalization on data received to ensure that it
-        /// has been reduced to its most basic form before validation. Canonicalization is the 
-        /// process of decoding something to its simplest form. The application can supply a list of
-        /// codecs and the data will be decoded by each codec cosecutively, until it has reaced it's
+        /// has been reduced to its most basic form before validation. The application can supply a list of
+        /// codecs and the data will be decoded by each codec cosecutively, until it has reached its
         /// canonical form.
         ///  </summary>
         /// <param name="codecNames">

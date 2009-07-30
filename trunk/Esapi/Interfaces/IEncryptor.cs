@@ -23,10 +23,7 @@ namespace Owasp.Esapi.Interfaces
         /// <summary> 
         /// Returns a string representation of the hash of the provided plaintext and
         /// salt. The salt helps to protect against a rainbow table attack by mixing
-        /// in some extra data with the plaintext. Some good choices for a salt might
-        /// be an account name or some other string that is known to the application
-        /// but not to an attacker.  See <a href="http://www.matasano.com/log/958/enough-with-the-rainbow-tables-what-you-need-to-know-about-secure-password-schemes/">this article</a> for 
-	    /// more information about hashing as it pertains to password schemes.        
+        /// in some extra data with the plaintext.  
         /// </summary>
         /// <param name="plaintext">The plaintext.
         /// </param>
@@ -46,7 +43,6 @@ namespace Owasp.Esapi.Interfaces
 
         /// <summary> Decrypts the provided ciphertext string (encrypted with the encrypt
         /// method) and returns a plaintext string.
-        /// 
         /// </summary>
         /// <param name="ciphertext">The encrypted value (ciphertext).
         /// </param>

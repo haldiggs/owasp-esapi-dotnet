@@ -4,15 +4,7 @@ using System.Collections;
 namespace Owasp.Esapi.Interfaces
 {
     /// <summary> The ISecurityConfiguration interface stores all configuration information
-    /// that directs the behavior of the ESAPI implementation.
-    /// <img src="doc-files/SecurityConfiguration.jpg" height="600"/>
-    /// Protection of this configuration information is critical to the secure
-    /// operation of the application using the ESAPI. You should use operating system
-    /// access controls to limit access to wherever the configuration information is
-    /// stored. Please note that adding another layer of encryption does not make the
-    /// attackers job much more difficult. Somewhere there must be a master "secret"
-    /// that is stored unencrypted on the application platform. Creating another
-    /// layer of indirection doesn't provide any real additional security.    
+    /// that directs the behavior of the ESAPI implementation. 
     /// </summary>
     public interface ISecurityConfiguration
     {

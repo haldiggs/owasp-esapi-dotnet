@@ -7,7 +7,7 @@ using Owasp.Esapi.Interfaces;
 namespace Owasp.Esapi
 {
     /// <summary>
-    ///  These are fields for the logger class
+    ///  These are fields for the logger class.
     /// </summary>
     public class LogLevels
     {
@@ -115,7 +115,7 @@ namespace Owasp.Esapi
 
     /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger"/>
     /// <remarks>
-    /// Reference implementation of the ILogger interface. This implementation uses the log4NET logging package, 
+    /// Reference implementation of the <see cref="Owasp.Esapi.Interfaces.ILogger" /> interface. This implementation uses the Log4Net logging package, 
     /// and marks each log message with the currently logged in user and the word "SECURITY" for security related events.
     /// </remarks>
     public class Logger : ILogger
