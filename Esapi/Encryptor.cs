@@ -10,10 +10,10 @@ namespace Owasp.Esapi
 
 
     /// <inheritdoc  cref="Owasp.Esapi.Interfaces.IEncryptor"/>
-    /// <remarks>Reference implementation of the <see cref="Owasp.Esapi.Interfaces.IEncryptor"/> IEncryptor interface. This implementation
+    /// <summary>Reference implementation of the <see cref="Owasp.Esapi.Interfaces.IEncryptor"/> IEncryptor interface. This implementation
     /// layers on the .NET provided cryptographic package. 
     /// Algorithms used are configurable in the configuration file.
-    /// </remarks> 
+    /// </summary> 
     public class Encryptor:IEncryptor
     {
         /// <summary> Gets a timestamp representing the current date and time to be used by

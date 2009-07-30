@@ -98,8 +98,10 @@ namespace Owasp.Esapi
 
 
     /// <inheritdoc  cref="Owasp.Esapi.Interfaces.IIntrusionDetector"/>
-    /// <remarks> Reference implementation of the <see cref="Owasp.Esapi.Interfaces.IIntrusionDetector"/> interface. This
-    /// implementation monitors EnterpriseSecurityExceptions to see if any user
+    /// <summary> Reference implementation of the <see cref="Owasp.Esapi.Interfaces.IIntrusionDetector"/> interface. 
+    /// </summary>
+    /// <remarks>
+    /// This implementation monitors EnterpriseSecurityExceptions to see if any user
     /// exceeds a configurable threshold in a configurable time period. For example,
     /// it can monitor to see if a user exceeds 10 input validation issues in a 1
     /// minute period. Or if there are more than 3 authentication problems in a 10

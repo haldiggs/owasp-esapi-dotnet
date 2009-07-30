@@ -114,10 +114,10 @@ namespace Owasp.Esapi
     }
 
     /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger"/>
-    /// <remarks>
+    /// <summary>
     /// Reference implementation of the <see cref="Owasp.Esapi.Interfaces.ILogger" /> interface. This implementation uses the Log4Net logging package, 
     /// and marks each log message with the currently logged in user and the word "SECURITY" for security related events.
-    /// </remarks>
+    /// </summary>
     public class Logger : ILogger
     {
         /// <summary>The Log4Net logger.</summary>

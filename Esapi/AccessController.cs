@@ -7,10 +7,10 @@ using System.Collections.Generic;
 namespace Owasp.Esapi
 {
     /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessController"/>
-    /// <remarks>
+    /// <summary>
     /// Reference implementation of the <see cref="Owasp.Esapi.Interfaces.IAccessController"/> interface. It simply
     /// stores the access control rules in nested collections.
-    /// </remarks>
+    /// </summary>
     public class AccessController : IAccessController
     {
         private Dictionary<object, Dictionary<object, ArrayList>> resourceToSubjectsMap;
