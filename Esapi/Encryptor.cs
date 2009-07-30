@@ -9,7 +9,7 @@ namespace Owasp.Esapi
 {
 
 
-    /// <inheritdocs cref="Owasp.Esapi.Interfaces.IEncryptor"/>
+    /// <inheritdoc  cref="Owasp.Esapi.Interfaces.IEncryptor"/>
     /// <remarks>Reference implementation of the <see cref="Owasp.Esapi.Interfaces.IEncryptor"/> IEncryptor interface. This implementation
     /// layers on the .NET provided cryptographic package. 
     /// Algorithms used are configurable in the configuration file.

@@ -10,7 +10,8 @@ namespace Owasp.Esapi
 {
 
     /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration"/>
-    /// <remarks>This implementation of the <see href="Owasp.Esapi.Interfaces.ISecurityConfiguration"/> interface
+    /// <remarks>
+    /// Reference implementation of the <see href="Owasp.Esapi.Interfaces.ISecurityConfiguration"/> interface
     /// manages all the settings used by the ESAPI in a single place. Initializing the
     /// Configuration is critically important to getting the ESAPI working properly.
     /// 

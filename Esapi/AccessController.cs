@@ -8,7 +8,7 @@ namespace Owasp.Esapi
 {
     /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessController"/>
     /// <remarks>
-    /// This is the reference implementation of the <see cref="Owasp.Esapi.Interfaces.IAccessController"/> interface. It simply
+    /// Reference implementation of the <see cref="Owasp.Esapi.Interfaces.IAccessController"/> interface. It simply
     /// stores the access control rules in nested collections.
     /// </remarks>
     public class AccessController : IAccessController

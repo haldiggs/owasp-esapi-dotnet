@@ -6,9 +6,9 @@ using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi
 {
-    /// <inheritdocs cref="Owasp.Esapi.Interfaces.IHttpUtilities" />
+    /// <inheritdoc  cref="Owasp.Esapi.Interfaces.IHttpUtilities" />
     /// <remarks>
-    /// This is the reference implementation for the <see cref="Owasp.Esapi.Interfaces.IHttpUtilities"/> class.
+    /// Reference implementation for the <see cref="Owasp.Esapi.Interfaces.IHttpUtilities"/> class.
     /// </remarks>
     public class HttpUtilities: IHttpUtilities
     {
@@ -18,14 +18,14 @@ namespace Owasp.Esapi
         public const string CSRF_TOKEN_NAME = "CsrfToken";
         #region IHttpUtilities Members
 
-        /// <inheritdocs cref="Owasp.Esapi.Interfaces.IHttpUtilities.AddCsrfToken()" />
+        /// <inheritdoc  cref="Owasp.Esapi.Interfaces.IHttpUtilities.AddCsrfToken()" />
         public void AddCsrfToken()
         {
             HttpContext context = HttpContext.Current;
             ((Page)context.CurrentHandler).ViewStateUserKey = context.Session.SessionID;
         }
 
-        /// <inheritdocs cref="Owasp.Esapi.Interfaces.IHttpUtilities.AddCsrfToken(string)" />
+        /// <inheritdoc  cref="Owasp.Esapi.Interfaces.IHttpUtilities.AddCsrfToken(string)" />
         public string AddCsrfToken(string href)
         {
             string csrfToken = (string) HttpContext.Current.Session[CSRF_TOKEN_NAME];
@@ -38,7 +38,7 @@ namespace Owasp.Esapi
             return href.IndexOf('?') != -1 ? href + "&" + token : href + "?" + token; 
         }
 
-        /// <inheritdocs cref="Owasp.Esapi.Interfaces.IHttpUtilities.VerifyCsrfToken()" />
+        /// <inheritdoc  cref="Owasp.Esapi.Interfaces.IHttpUtilities.VerifyCsrfToken()" />
         public void VerifyCsrfToken()
         {
             string csrfToken = (string)HttpContext.Current.Session[CSRF_TOKEN_NAME];
@@ -48,7 +48,7 @@ namespace Owasp.Esapi
             } 
         }
 
-        /// <inheritdocs cref="Owasp.Esapi.Interfaces.IHttpUtilities.ChangeSessionIdentifier()" />
+        /// <inheritdoc  cref="Owasp.Esapi.Interfaces.IHttpUtilities.ChangeSessionIdentifier()" />
         public void ChangeSessionIdentifier()
         {
             SessionIDManager manager = new SessionIDManager();
@@ -58,7 +58,7 @@ namespace Owasp.Esapi
             manager.SaveSessionID(HttpContext.Current, newSessionId, out redirected, out IsAdded);            
         }
 
-        /// <inheritdocs cref="Owasp.Esapi.Interfaces.IHttpUtilities.AddNoCacheHeaders()" />
+        /// <inheritdoc  cref="Owasp.Esapi.Interfaces.IHttpUtilities.AddNoCacheHeaders()" />
         public void AddNoCacheHeaders()
         {
             HttpResponse response = HttpContext.Current.Response;
