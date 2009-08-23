@@ -37,9 +37,12 @@
       <HintPath>Reference\Rhino.Mocks.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccessControllerTest.cs" />
@@ -47,6 +50,7 @@
     <Compile Include="EncoderTest.cs" />
     <Compile Include="IntrusionDetectorTest.cs" />
     <Compile Include="LoggerTest.cs" />
+    <Compile Include="MockHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EncryptorTest.cs" />
     <Compile Include="RandomizerTest.cs" />

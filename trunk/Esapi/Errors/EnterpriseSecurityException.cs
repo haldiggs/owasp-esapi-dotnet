@@ -35,10 +35,10 @@ namespace Owasp.Esapi.Errors
         }
 
         /// <summary>The logger. </summary>
-        protected internal static readonly ILogger logger;
+        private static readonly ILogger logger;
 
         /// <summary>The message for the log. </summary>
-        protected internal string _logMessage = null;
+        private string _logMessage = null;
 
         /// <summary> Instantiates a new security exception.</summary>
         protected internal EnterpriseSecurityException()

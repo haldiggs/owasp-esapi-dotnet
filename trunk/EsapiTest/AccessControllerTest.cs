@@ -1,7 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Owasp.Esapi;
+using Owasp.Esapi.Configuration;
 using Owasp.Esapi.Errors;
-using System;
+using Owasp.Esapi.Interfaces;
+using Rhino.Mocks;
 
 namespace EsapiTest
 {
@@ -10,51 +13,14 @@ namespace EsapiTest
     /// </summary>
     [TestClass]
     public class AccessControllerTest
-    {
-        public AccessControllerTest()
+    {        
+        [TestInitialize]
+        public void InitializeTests()
         {
-            
+            // Reset cached data
+            Esapi.Reset();
+            EsapiConfig.Reset();            
         }
-
-        private TestContext testContextInstance;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
 
         [TestMethod]
         public void Test_AccessControllerAddRule()
@@ -73,6 +39,80 @@ namespace EsapiTest
 
             Esapi.AccessController.AddRule(test, test, test);
             Esapi.AccessController.AddRule(test, test, test);
+        }
+
+        [TestMethod]        
+        public void Test_AddRuleNullParams()
+        {
+            try {
+                Esapi.AccessController.AddRule(null, string.Empty, string.Empty);
+                Assert.Fail();
+            }
+            catch (ArgumentNullException) {
+            }
+
+            try {
+                Esapi.AccessController.AddRule(string.Empty, null, string.Empty);
+                Assert.Fail();
+            }
+            catch (ArgumentNullException) {
+            }
+
+            try {
+                Esapi.AccessController.AddRule(string.Empty, string.Empty, null);
+                Assert.Fail();
+            }
+            catch (ArgumentNullException) {
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(EnterpriseSecurityException))]
+        public void Test_IsAuthorizedResource()
+        {
+            //TODO : this needs to be fixed when the code will be decoupled from Memebership impl
+            Guid action = Guid.NewGuid(), resource = Guid.NewGuid(), subject = Guid.NewGuid();
+
+            Esapi.AccessController.AddRule(subject, action, resource);
+            Assert.IsTrue(Esapi.AccessController.IsAuthorized(action, resource));
+
+            Assert.IsFalse(Esapi.AccessController.IsAuthorized(action, Guid.NewGuid()));
+        }
+
+        [TestMethod]
+        public void Test_IsAuthorizedSubject()
+        {
+            Guid action = Guid.NewGuid(), resource = Guid.NewGuid(), subject = Guid.NewGuid();
+
+            Esapi.AccessController.AddRule(subject, action, resource);
+            Assert.IsTrue(Esapi.AccessController.IsAuthorized(subject, action, resource));
+
+            Assert.IsFalse(Esapi.AccessController.IsAuthorized(Guid.NewGuid(), action, resource));
+        }
+
+        [TestMethod]
+        public void Test_IsAuthorizedNullParams()
+        {
+            try {
+                Esapi.AccessController.IsAuthorized(null, string.Empty, string.Empty);
+                Assert.Fail();
+            }
+            catch (ArgumentNullException) {
+            }
+
+            try {
+                Esapi.AccessController.IsAuthorized(string.Empty, null, string.Empty);
+                Assert.Fail();
+            }
+            catch (ArgumentNullException) {
+            }
+
+            try {
+                Esapi.AccessController.IsAuthorized(string.Empty, string.Empty, null);
+                Assert.Fail();
+            }
+            catch (ArgumentNullException) {
+            }
         }
                 
         [TestMethod]
@@ -115,5 +155,55 @@ namespace EsapiTest
             Esapi.AccessController.AddRule(test, test, test);
             Esapi.AccessController.RemoveRule(test, test, string.Empty);
         }
+
+        [TestMethod]
+        public void Test_RemoveRuleNullParams()
+        {
+            try {
+                Esapi.AccessController.RemoveRule(null, string.Empty, string.Empty);
+                Assert.Fail();
+            }
+            catch (ArgumentNullException) {
+            }
+
+            try {
+                Esapi.AccessController.RemoveRule(string.Empty, null, string.Empty);
+                Assert.Fail();
+            }
+            catch (ArgumentNullException) {
+            }
+
+            try {
+                Esapi.AccessController.RemoveRule(string.Empty, string.Empty, null);
+                Assert.Fail();
+            }
+            catch (ArgumentNullException) {
+            }
+        }
+
+        [TestMethod]
+        public void Test_LoadCustom()
+        {
+            MockRepository mocks = new MockRepository();
+
+            // Set new controller type
+            EsapiConfig.Instance.AccessController.Type = typeof(ForwardAccessController).AssemblyQualifiedName;
+
+            // Get existing
+            IAccessController accessController = Esapi.AccessController;
+            Assert.IsTrue(accessController.GetType().Equals(typeof(ForwardAccessController)));
+
+            // Call some methods
+            IAccessController mockController = mocks.StrictMock<IAccessController>();
+            ((ForwardAccessController)accessController).Impl = mockController;
+                        
+            Expect.Call(mockController.IsAuthorized(null, null)).Return(true);
+            Expect.Call(mockController.IsAuthorized(null, null, null)).Return(false);
+            mocks.ReplayAll();
+
+            Assert.IsTrue(Esapi.AccessController.IsAuthorized(null, null));
+            Assert.IsFalse(Esapi.AccessController.IsAuthorized(null, null, null));
+            mocks.VerifyAll();
+        }        
     }
 }

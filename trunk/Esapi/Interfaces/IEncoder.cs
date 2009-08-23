@@ -1,6 +1,5 @@
-﻿
-using Owasp.Esapi.Codecs;
-using System.Collections;
+﻿using System.Collections.Generic;
+
 namespace Owasp.Esapi.Interfaces
 {
     /// <summary> The IEncoder interface contains a number of methods related to encoding input
@@ -23,7 +22,7 @@ namespace Owasp.Esapi.Interfaces
         /// </param>
         /// <returns> The canonicalized string.
         /// </returns>
-        string Canonicalize(ICollection codecNames, string input, bool strict);
+        string Canonicalize(IEnumerable<string> codecNames, string input, bool strict);
 
         /// <summary> Reduce all non-ascii characters to their ASCII form so that simpler
         /// validation rules can be applied. For example, an accented-e character

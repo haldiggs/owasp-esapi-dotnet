@@ -5,6 +5,7 @@ namespace Owasp.Esapi.ValidationRules
     /// <summary>
     /// This class is for validating that text is valid printable ASCII characters.
     /// </summary>
+    [ValidationRule(BuiltinValidationRules.Printable)]
     public class PrintableValidationRule : IValidationRule
     {        
         #region IValidationRule Members

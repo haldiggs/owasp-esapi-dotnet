@@ -4,17 +4,16 @@ using System.Security.Cryptography;
 using System.Text;
 using Owasp.Esapi.Errors;
 using Owasp.Esapi.Interfaces;
+using EM = Owasp.Esapi.Resources.Errors;
 
 namespace Owasp.Esapi
 {
-
-
     /// <inheritdoc  cref="Owasp.Esapi.Interfaces.IEncryptor"/>
     /// <summary>Reference implementation of the <see cref="Owasp.Esapi.Interfaces.IEncryptor"/> IEncryptor interface. This implementation
     /// layers on the .NET provided cryptographic package. 
     /// Algorithms used are configurable in the configuration file.
     /// </summary> 
-    public class Encryptor:IEncryptor
+    public class Encryptor : IEncryptor
     {
         /// <summary> Gets a timestamp representing the current date and time to be used by
         /// other functions in the library.
@@ -36,15 +35,12 @@ namespace Owasp.Esapi
         private byte[] secretKey;
         
         /// <summary>The asymmetric key pair </summary>
-        internal CspParameters asymmetricKeyPair;
+        private CspParameters asymmetricKeyPair;
 
-        /// <summary>The logger. </summary>
-        private static readonly ILogger logger = Esapi.Logger;
-
-        internal string encryptAlgorithm = Esapi.SecurityConfiguration.EncryptionAlgorithm;
-        internal string signatureAlgorithm = Esapi.SecurityConfiguration.DigitalSignatureAlgorithm;
-        internal string hashAlgorithm = Esapi.SecurityConfiguration.HashAlgorithm;
-        internal string encoding = Esapi.SecurityConfiguration.CharacterEncoding;
+        internal string encryptAlgorithm    = Esapi.SecurityConfiguration.EncryptionAlgorithm;
+        internal string signatureAlgorithm  = Esapi.SecurityConfiguration.DigitalSignatureAlgorithm;
+        internal string hashAlgorithm       = Esapi.SecurityConfiguration.HashAlgorithm;
+        internal string encoding            = Esapi.SecurityConfiguration.CharacterEncoding;
        
         /// <summary>
         /// Public constructor.
@@ -69,7 +65,7 @@ namespace Owasp.Esapi
             }
             catch (Exception e)
             {                
-                throw new EncryptionException("Encryption failure", "Error creating Encryptor", e);
+                throw new EncryptionException(EM.Encryptor_EncryptionFailure, EM.Encryptor_EncryptorCreateFailed, e);
             }
         }
 
@@ -101,7 +97,7 @@ namespace Owasp.Esapi
             }
             catch (Exception e)
             {
-                throw new EncryptionException("Internal error", "Can't find hash algorithm " + hashAlgorithm, e);
+                throw new EncryptionException(EM.Encryptor_EncryptionFailure, string.Format(EM.Encryptor_WrongHashAlg1, hashAlgorithm), e);
             }
         }
 
@@ -148,7 +144,7 @@ namespace Owasp.Esapi
             }
             catch (Exception e)
             {                
-                throw new EncryptionException("Encryption failure", "Decryption problem: " + e.Message, e);
+                throw new EncryptionException(EM.Encryptor_EncryptionFailure, string.Format(EM.Encryptor_DecryptFailed1, e.Message), e);
             }
            
         }
@@ -198,13 +194,17 @@ namespace Owasp.Esapi
             }
             catch (Exception e)
             {                
-                throw new EncryptionException("Decryption failed", "Decryption problem: " + e.Message, e);
+                throw new EncryptionException(EM.Encryptor_DecryptionFailure, string.Format(EM.Encryptor_DecryptFailed1, e.Message), e);
             }
         }
 
         /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncryptor.Sign(string)" />
         public string Sign(string data)
         {
+            if (data == null) {
+                throw new ArgumentNullException();
+            }
+
             // Since this is the only asymmetric algorithm with signing capabilities, its hardcoded.
             // The more general APIs just aren't friendly.
             DSACryptoServiceProvider dsaCsp = new DSACryptoServiceProvider(asymmetricKeyPair);
@@ -264,13 +264,13 @@ namespace Owasp.Esapi
             }
             catch (EncryptionException e)
             {
-                throw new EncryptionException("Invalid seal", "Seal did not decrypt properly", e);
+                throw new EncryptionException( EM.Encryptor_InvalidSeal, EM.Encryptor_SealDecryptFailed, e);
             }
 
             int index = plaintext.IndexOf(":");
             if (index == -1)
             {
-                throw new EncryptionException("Invalid seal", "Seal did not contain properly formatted separator");
+                throw new EncryptionException(EM.Encryptor_InvalidSeal, EM.Encryptor_SealWrongFormat);
             }
 
             String timestring = plaintext.Substring(0, index);
@@ -278,7 +278,7 @@ namespace Owasp.Esapi
             long expiration = Convert.ToInt64(timestring);
             if (now > expiration)
             {
-                throw new EncryptionException("Invalid seal", "Seal expiration date has expired");
+                throw new EncryptionException(EM.Encryptor_InvalidSeal, EM.Encryptor_SealExpired);
             }
 
             index = plaintext.IndexOf(":", index + 1);

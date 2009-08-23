@@ -6,7 +6,8 @@ namespace Owasp.Esapi.ValidationRules
     /// <summary>
     /// This class performs date validation.
     /// </summary>
-    public class DateValidationRule:IValidationRule
+    [ValidationRule(BuiltinValidationRules.Date)]
+    public class DateValidationRule : IValidationRule
     {        
 
         #region IValidationRule Members

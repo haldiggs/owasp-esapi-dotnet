@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Web.Security;
 using log4net;
+using Owasp.Esapi.Codecs;
 using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi
@@ -203,7 +204,7 @@ namespace Owasp.Esapi
             // HTML encode log message if it will be viewed in a web browser
             if (Esapi.SecurityConfiguration.LogEncodingRequired)
             {
-                clean = Esapi.Encoder.Encode(Encoder.HTML, message);
+                clean = Esapi.Encoder.Encode(BuiltinCodecs.Html, message);
                 if (!message.Equals(clean))
                 {
                     clean += " (Encoded)";

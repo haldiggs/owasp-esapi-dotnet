@@ -1,28 +1,38 @@
 ﻿using System;
 using Owasp.Esapi.Interfaces;
+using Owasp.Esapi.Configuration;
+using System.Threading;
 
 namespace Owasp.Esapi
 {
     /// <summary>
     /// This class provides accessor methods for the various ESAPI implementations.
     /// </summary>
-    public class Esapi
+    public static class Esapi
     {
-        private static IAccessController accessController;        
+        private static IAccessController _accessController;
+        private static object _accessControllerLock = new object();
         
-        private static IEncoder encoder;
+        private static IEncoder _encoder;
+        private static object _encoderLock = new object();
 
-        private static IEncryptor encryptor;
+        private static IEncryptor _encryptor;
+        private static object _encryptorLock = new object();
         
-        private static IHttpUtilities httpUtilities;
+        private static IHttpUtilities _httpUtilities;
+        private static object _httpUtilitiesLock = new object();
 
-        private static IIntrusionDetector intrusionDetector;
+        private static IIntrusionDetector _intrusionDetector;
+        private static object _instrusionDetectorLock = new object();
 
-        private static IRandomizer randomizer;
+        private static IRandomizer _randomizer;
+        private static object _randomizerLock = new object();
 
-        private static ISecurityConfiguration securityConfiguration;
+        private static ISecurityConfiguration _securityConfiguration;
+        private static object _securityConfigurationLock = new object();
 
-        private static IValidator validator;
+        private static IValidator _validator;
+        private static object _validatorLock = new object();
 
         /// <summary>
         /// The IAccessController implementation.
@@ -31,16 +41,22 @@ namespace Owasp.Esapi
         {
             set
             {
-                accessController = value;
+                lock (_accessControllerLock) {
+                    _accessController = value;
+                }
             }
 
             get
             {
-                if (accessController == null)
-                {
-                    accessController = (IAccessController)Activator.CreateInstance(Esapi.SecurityConfiguration.AccessControllerClass);
+                if (_accessController == null) {
+                    lock (_accessControllerLock) {
+                        if (_accessController == null) {
+                            Thread.MemoryBarrier();
+                            _accessController = EsapiLoader.LoadAccessController(EsapiConfig.Instance.AccessController);
+                        }
+                    }                    
                 }
-                return accessController;
+                return _accessController;
             }
         }
 
@@ -52,16 +68,22 @@ namespace Owasp.Esapi
         {
             set
             {
-                encoder = value;
+                lock (_encoderLock) {
+                    _encoder = value;
+                }
             }
 
             get
             {
-                if (encoder == null)
-                {
-                    encoder = (IEncoder) Activator.CreateInstance(Esapi.SecurityConfiguration.EncoderClass);
+                if (_encoder == null) {
+                    lock (_encoderLock) {
+                        if (_encoder == null) {
+                            Thread.MemoryBarrier();
+                            _encoder = EsapiLoader.LoadEncoder(EsapiConfig.Instance.Encoder);
+                        }
+                    }                    
                 }
-                return encoder;                
+                return _encoder;                
             }
         }
         
@@ -72,15 +94,21 @@ namespace Owasp.Esapi
         {
             set
             {
-                encryptor = value;
+                lock (_encryptorLock) {
+                    _encryptor = value;
+                }
             }
             get
             {
-                if (encryptor == null)
-                {
-                    encryptor = (IEncryptor)Activator.CreateInstance(Esapi.SecurityConfiguration.EncryptorClass);
+                if (_encryptor == null) {
+                    lock (_encryptorLock) {
+                        if (_encryptor == null) {
+                            Thread.MemoryBarrier();
+                            _encryptor = EsapiLoader.LoadEncryptor(EsapiConfig.Instance.Encryptor);
+                        }
+                    }
                 }
-                return encryptor;                
+                return _encryptor;                
             }
         }
 
@@ -91,15 +119,21 @@ namespace Owasp.Esapi
         {
             set
             {
-                httpUtilities = value;
+                lock (_httpUtilitiesLock) {
+                    _httpUtilities = value;
+                }
             }
             get
             {
-                if (httpUtilities == null)
-                {
-                    httpUtilities = (IHttpUtilities)Activator.CreateInstance(Esapi.SecurityConfiguration.HttpUtilitiesClass);
+                if (_httpUtilities == null) {
+                    lock (_httpUtilitiesLock) {
+                        if (_httpUtilities == null) {
+                            Thread.MemoryBarrier();
+                            _httpUtilities = EsapiLoader.LoadHttpUtilities(EsapiConfig.Instance.HttpUtilities);
+                        }
+                    }
                 }
-                return httpUtilities;
+                return _httpUtilities;
             }
         }
 
@@ -110,15 +144,21 @@ namespace Owasp.Esapi
         {
             set
             {
-                intrusionDetector = value;
+                lock (_instrusionDetectorLock) {
+                    _intrusionDetector = value;
+                }
             }
             get
             {
-                if (intrusionDetector == null)
-                {
-                    intrusionDetector =  (IIntrusionDetector)Activator.CreateInstance(Esapi.SecurityConfiguration.IntrusionDetectorClass);
+                if (_intrusionDetector == null) {
+                    lock (_instrusionDetectorLock) {
+                        if (_intrusionDetector == null) {
+                            Thread.MemoryBarrier();
+                            _intrusionDetector = EsapiLoader.LoadIntrustionDetector(EsapiConfig.Instance.IntrusionDetector);
+                        }
+                    }
                 }
-                return intrusionDetector;               
+                return _intrusionDetector;
             }
         }
 
@@ -129,15 +169,21 @@ namespace Owasp.Esapi
         {
             set
             {
-                randomizer = value;
+                lock (_randomizerLock) {
+                    _randomizer = value;
+                }
             }
             get
             {
-                if (randomizer == null)
-                {
-                    randomizer =  (IRandomizer)Activator.CreateInstance(Esapi.SecurityConfiguration.RandomizerClass);
+                if (_randomizer == null) {
+                    lock (_randomizerLock) {
+                        if (_randomizer == null) {
+                            Thread.MemoryBarrier();
+                            _randomizer = EsapiLoader.LoadRandomizer(EsapiConfig.Instance.Randomizer);
+                        }
+                    }
                 }
-                return randomizer;         
+                return _randomizer;         
             }
         }
 
@@ -148,16 +194,22 @@ namespace Owasp.Esapi
         {
             set
             {
-                validator = value;
+                lock (_validatorLock) {
+                    _validator = value;
+                }
             }
 
             get
             {
-                if (validator == null)
-                {
-                    validator = (IValidator)Activator.CreateInstance(Esapi.SecurityConfiguration.ValidatorClass);
+                if (_validator == null) {
+                    lock (_validatorLock) {
+                        if (_validator == null){
+                            Thread.MemoryBarrier();
+                            _validator = EsapiLoader.LoadValidator(EsapiConfig.Instance.Validator);
+                        }
+                    }
                 }
-                return validator;
+                return _validator;
             }
         }
 
@@ -168,15 +220,21 @@ namespace Owasp.Esapi
         {
             set
             {
-                securityConfiguration = value;
+                lock (_securityConfigurationLock) {
+                    _securityConfiguration = value;
+                }
             }
             get
             {
-                if (securityConfiguration == null)
-                {
-                    securityConfiguration = new SecurityConfiguration();
+                if (_securityConfiguration == null) {
+                    lock (_securityConfigurationLock) {
+                        if (_securityConfiguration == null) {
+                            Thread.MemoryBarrier();
+                            _securityConfiguration = EsapiLoader.LoadSecurityConfiguration(EsapiConfig.Instance.SecurityConfiguration);
+                        }
+                    }
                 }
-                return securityConfiguration;
+                return _securityConfiguration;
             }
         }
 
@@ -187,7 +245,7 @@ namespace Owasp.Esapi
         {
             get
             {
-                return new Logger("Owasp.Esapi");
+                return GetLogger("Owasp.Esapi");
             }
         }
 
@@ -201,10 +259,20 @@ namespace Owasp.Esapi
         {
             return new Logger(className);
         }
-       
-        /// <summary>Prevent instantiation of this class.</summary>
-        private Esapi()
+
+        /// <summary>
+        /// Reset all cached instances
+        /// </summary>
+        internal static void Reset()
         {
-        }        
+            AccessController  = null;
+            Encoder           = null;
+            Encryptor         = null;
+            HttpUtilities     = null;
+            IntrusionDetector = null;
+            Randomizer        = null;
+            SecurityConfiguration = null;
+            Validator         = null;
+        }
     }        	
 }

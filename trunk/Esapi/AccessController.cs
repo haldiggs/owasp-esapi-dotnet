@@ -1,8 +1,10 @@
-﻿using System.Collections;
-using System.Web.Security;
-using Owasp.Esapi.Interfaces;
-using Owasp.Esapi.Errors;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Web.Security;
+using Owasp.Esapi.Errors;
+using Owasp.Esapi.Interfaces;
+using EM = Owasp.Esapi.Resources.Errors;
 
 namespace Owasp.Esapi
 {
@@ -15,9 +17,6 @@ namespace Owasp.Esapi
     {
         private Dictionary<object, Dictionary<object, ArrayList>> resourceToSubjectsMap;
         
-        /// <summary>The logger.</summary>
-        private static readonly ILogger logger = Esapi.Logger;
-        
         /// <summary> 
         /// Default constructor.        
         /// </summary>        
@@ -29,13 +28,21 @@ namespace Owasp.Esapi
         /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessController.IsAuthorized(object, object)"/>
         public bool IsAuthorized(object action, object resource)
         {
-            string userName = Membership.GetUser().UserName;
-            return IsAuthorized(userName, action, resource);
+            MembershipUser currentUser = Membership.GetUser();
+            if (currentUser == null) {
+                throw new EnterpriseSecurityException(EM.AccessControl_NoCurrentUser, EM.AccessControl_NoCurrentUser);
+            }
+
+            return IsAuthorized(currentUser.UserName, action, resource);
         }
 
         /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessController.IsAuthorized(object, object, object)"/>
         public bool IsAuthorized(object subject, object action, object resource)
         {
+            if (subject == null || action == null || resource == null) {
+                throw new ArgumentNullException();
+            }
+
             Dictionary<object, ArrayList> subjects;            
 
             if (resourceToSubjectsMap.TryGetValue(resource, out subjects)) {
@@ -52,6 +59,10 @@ namespace Owasp.Esapi
         /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessController.AddRule(object, object, object)"/>
         public void AddRule(object subject, object action, object resource)
         {
+            if (subject == null || action == null || resource == null) {
+                throw new ArgumentNullException();
+            }
+
             Dictionary<object, ArrayList> subjects;            
             if (!resourceToSubjectsMap.TryGetValue(resource, out subjects)) {
                 subjects = new Dictionary<object,ArrayList>();
@@ -68,14 +79,18 @@ namespace Owasp.Esapi
                 actions.Add(action);
             }
             else {                
-                string message = "Attempt to add an access control rule that already exists.";
-                throw new EnterpriseSecurityException(message, message);
+                throw new EnterpriseSecurityException(EM.AcessControl_AddDuplicateRule, 
+                                EM.AcessControl_AddDuplicateRule);
             }
         }
 
         /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessController.RemoveRule(object, object, object)"/>
         public void RemoveRule(object subject, object action, object resource)
         {
+            if (subject == null || action == null || resource == null) {
+                throw new ArgumentNullException();
+            }
+
             Dictionary<object, ArrayList> subjects;
 
             if (resourceToSubjectsMap.TryGetValue(resource, out subjects)) {
@@ -98,8 +113,8 @@ namespace Owasp.Esapi
                 }
             }
 
-            string ruleNotFound = "Attempt to remove an access control rule that does not exist.";
-            throw new EnterpriseSecurityException(ruleNotFound, ruleNotFound);
+            throw new EnterpriseSecurityException(EM.AccessControl_RemoveInvalidRule, 
+                                EM.AccessControl_RemoveInvalidRule);
         }
     }
 }

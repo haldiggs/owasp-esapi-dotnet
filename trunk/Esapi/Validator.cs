@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Owasp.Esapi.Interfaces;
-using Owasp.Esapi.ValidationRules;
 
 namespace Owasp.Esapi
 {
@@ -11,46 +10,9 @@ namespace Owasp.Esapi
     /// keeps the validation rules in a map. It also adds the default set of validation rules defined in the reference 
     /// implementation.
     /// </summary>
-    public class Validator:IValidator
+    public class Validator : IValidator
     {
-        /// <summary>
-        /// Rule name key for the credit card validation rule.
-        /// </summary>
-        public static readonly string CREDIT_CARD = "CreditCard";
-
-        /// <summary>
-        /// Rule name key for the date validation rule.
-        /// </summary>
-        public static readonly string DATE = "Date";
-
-        /// <summary>
-        /// Rule name key for the double validation rule.
-        /// </summary>
-        public static readonly string DOUBLE = "Double";
-
-        /// <summary>
-        /// Rule name key for the integer validation rule.
-        /// </summary>
-        public static readonly string INTEGER = "Integer";
-
-        /// <summary>
-        /// Rule name key for the printable validation rule.
-        /// </summary>
-        public static readonly string PRINTABLE = "Printable";
-
         private Dictionary<string, IValidationRule> rules = new Dictionary<string, IValidationRule>();
-
-        /// <summary>
-        /// Default constructor, adds the default rules.
-        /// </summary>
-        public Validator()
-        {
-            AddRule(CREDIT_CARD, new CreditCardValidationRule());
-            AddRule(DATE, new DateValidationRule());
-            AddRule(DOUBLE, new DoubleValidationRule());
-            AddRule(INTEGER, new IntegerValidationRule());
-            AddRule(PRINTABLE, new PrintableValidationRule());
-        }
 
         /// <inheritdoc cref="Owasp.Esapi.Interfaces.IValidator.AddRule(string, IValidationRule)" />
         public void AddRule(string name, IValidationRule rule)

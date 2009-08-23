@@ -7,6 +7,7 @@ namespace Owasp.Esapi.ValidationRules
     /// <summary>
     /// This class performs credit card number validation, including Luhn algorithm checking.
     /// </summary>
+    [ValidationRule(BuiltinValidationRules.CreditCard)]
     public class CreditCardValidationRule : IValidationRule
     {
         #region IValidationRule Members
