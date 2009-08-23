@@ -3,6 +3,7 @@ using System.Web.SessionState;
 using System.Web.UI;
 using Owasp.Esapi.Errors;
 using Owasp.Esapi.Interfaces;
+using EM = Owasp.Esapi.Resources.Errors;
 
 namespace Owasp.Esapi
 {
@@ -31,7 +32,7 @@ namespace Owasp.Esapi
             string csrfToken = (string) HttpContext.Current.Session[CSRF_TOKEN_NAME];
             if (csrfToken == null)
             {
-                csrfToken = Esapi.Randomizer.GetRandomString(8, Encoder.CHAR_ALPHANUMERICS);
+                csrfToken = Esapi.Randomizer.GetRandomString(8, CharSetValues.Alphanumerics);
                 HttpContext.Current.Session[CSRF_TOKEN_NAME] = csrfToken;
             }
             string token = CSRF_TOKEN_NAME + "=" + csrfToken;
@@ -44,7 +45,7 @@ namespace Owasp.Esapi
             string csrfToken = (string)HttpContext.Current.Session[CSRF_TOKEN_NAME];
             string receivedCsrfToken = HttpContext.Current.Request.QueryString[CSRF_TOKEN_NAME]; 
             if (receivedCsrfToken == null || !receivedCsrfToken.Equals(csrfToken)) { 
-                throw new IntrusionException("Authentication failed", "Possibly forged HTTP request without proper CSRF token detected"); 
+                throw new IntrusionException(EM.HttpUtilities_AuthFailed, EM.HttpUtilities_CsrfCheckFailed); 
             } 
         }
 

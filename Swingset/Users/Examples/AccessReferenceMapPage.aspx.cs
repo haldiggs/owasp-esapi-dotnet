@@ -1,5 +1,6 @@
 ﻿using System;
 using Owasp.Esapi.Errors;
+using Owasp.Esapi.ValidationRules;
 
 namespace Owasp.Esapi.Swingset.Users.Examples
 {
@@ -10,7 +11,7 @@ namespace Owasp.Esapi.Swingset.Users.Examples
             string id = Request.QueryString["id"]; 
             if (id != null)            
             {
-                if (!Esapi.Validator.IsValid(Owasp.Esapi.Validator.PRINTABLE, Request.QueryString["id"]))
+                if (!Esapi.Validator.IsValid(BuiltinValidationRules.Printable, Request.QueryString["id"]))
                 {
                     throw new ValidationException("The parameter value supplied was not valid.", "The ID parameter to the AccessReferenceMap page was not valid.");
                 }

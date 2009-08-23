@@ -3,6 +3,7 @@ using System.Collections;
 using Owasp.Esapi.Errors;
 using Owasp.Esapi.Interfaces;
 using System.Collections.Generic;
+using EM = Owasp.Esapi.Resources.Errors;
 
 namespace Owasp.Esapi
 {
@@ -14,10 +15,10 @@ namespace Owasp.Esapi
     /// </summary>
     public class AccessReferenceMap : IAccessReferenceMap
     {
-        internal Dictionary<string, object> itod = new Dictionary<string, object>();
-        internal Dictionary<object, string> dtoi = new Dictionary<object, string>();
+        private Dictionary<string, object> itod = new Dictionary<string, object>();
+        private Dictionary<object, string> dtoi = new Dictionary<object, string>();
 
-        internal IRandomizer random = Esapi.Randomizer;
+        private IRandomizer random = Esapi.Randomizer;
 
         /// <summary>
         /// Default constructor.
@@ -53,7 +54,11 @@ namespace Owasp.Esapi
         /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessReferenceMap.AddDirectReference(object)"/>
         public string AddDirectReference(object direct)
         {
-            string indirect = random.GetRandomString(6, Encoder.CHAR_ALPHANUMERICS);
+            if (direct == null) {
+                throw new ArgumentNullException("direct");
+            }
+
+            string indirect = random.GetRandomString(6, CharSetValues.Alphanumerics);
             itod[indirect] = direct;
             dtoi[direct] = indirect;
             return indirect;
@@ -62,6 +67,10 @@ namespace Owasp.Esapi
         /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessReferenceMap.RemoveDirectReference(object)"/>	
         public string RemoveDirectReference(object direct)
         {
+            if (direct == null) {
+                throw new ArgumentNullException("direct");
+            }
+
             string indirect = dtoi[direct];
             if (indirect != null)
             {
@@ -74,6 +83,10 @@ namespace Owasp.Esapi
         /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessReferenceMap.Update(ICollection)"/>
         public void Update(ICollection directReferences)
         {
+            if (directReferences == null) {
+                throw new ArgumentNullException("directReferences");
+            }
+
             // Avoid making copies / deletions, collect new records then update current
             Dictionary<object, string> dtoi_new = new Dictionary<object, string>();
             Dictionary<string, object> itod_new = new Dictionary<string, object>();
@@ -89,7 +102,7 @@ namespace Owasp.Esapi
                     // collide with any existing indirect references
                     do
                     {
-                        indirect = random.GetRandomString(6, Encoder.CHAR_ALPHANUMERICS);
+                        indirect = random.GetRandomString(6, CharSetValues.Alphanumerics);
                     }
                     while (itod_new.ContainsKey(indirect));
                 }
@@ -105,6 +118,10 @@ namespace Owasp.Esapi
         /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessReferenceMap.GetIndirectReference(object)"/>
         public string GetIndirectReference(Object directReference)
         {
+            if (directReference == null) {
+                throw new ArgumentNullException("directReference");
+            }
+
             string indirect;
             dtoi.TryGetValue(directReference, out indirect);
 
@@ -114,9 +131,13 @@ namespace Owasp.Esapi
         /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessReferenceMap.GetDirectReference(string)"/>
         public object GetDirectReference(string indirectReference)
         {
-            if (!itod.ContainsKey(indirectReference))
-            {
-                throw new AccessControlException("Access denied", "Request for invalid indirect reference");
+            if (indirectReference == null) {
+                throw new ArgumentNullException("indirectReference");
+            }
+
+            if (!itod.ContainsKey(indirectReference)) {
+                throw new AccessControlException(EM.AccessReferenceMap_AccessDeniedUser, 
+                                EM.AccessReferenceMap_AccessDeniedLog);
             }
 
             return itod[indirectReference];

@@ -37,6 +37,7 @@
     <Reference Include="AntiXSSLibrary, Version=3.0.3264.23865, Culture=neutral, PublicKeyToken=d127efab8a9c114f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft Information Security\Microsoft Anti-Cross Site Scripting Library v3.0 Beta\Library\AntiXSSLibrary.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -62,9 +63,22 @@
   <ItemGroup>
     <Compile Include="AccessController.cs" />
     <Compile Include="AccessReferenceMap.cs" />
+    <Compile Include="CharSetValues.cs" />
     <Compile Include="Codecs\Base64Codec.cs" />
+    <Compile Include="Codecs\BuiltinCodec.cs" />
     <Compile Include="Codecs\HtmlAttributeCodec.cs" />
     <Compile Include="Codecs\HtmlCodec.cs" />
+    <Compile Include="Configuration\AccessControllerElement.cs" />
+    <Compile Include="Configuration\EncoderElement.cs" />
+    <Compile Include="Configuration\EncryptorElement.cs" />
+    <Compile Include="Configuration\EsapiConfig.cs" />
+    <Compile Include="Configuration\HttpUtilitiesElement.cs" />
+    <Compile Include="Configuration\IntrusionDetectorElement.cs" />
+    <Compile Include="Configuration\RandomizerElement.cs" />
+    <Compile Include="Configuration\SecurityConfigurationElement.cs" />
+    <Compile Include="Configuration\ValidatorElement.cs" />
+    <Compile Include="CodecAttribute.cs" />
+    <Compile Include="EsapiLoader.cs" />
     <Compile Include="Interfaces\ICodec.cs" />
     <Compile Include="Codecs\JavaScriptCodec.cs" />
     <Compile Include="Codecs\UrlCodec.cs" />
@@ -93,11 +107,18 @@
     <Compile Include="Interfaces\ISecurityConfiguration.cs" />
     <Compile Include="Interfaces\IValidator.cs">
     </Compile>
+    <Compile Include="Resources\Errors.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Errors.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ValidationRuleAttribute.cs" />
     <Compile Include="IntrusionDetector.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Randomizer.cs" />
     <Compile Include="SecurityConfiguration.cs" />
+    <Compile Include="ValidationRules\BuiltinValidationRule.cs" />
     <Compile Include="ValidationRules\CreditCardValidationRule.cs" />
     <Compile Include="ValidationRules\DateValidationRule.cs" />
     <Compile Include="ValidationRules\DoubleValidationRule.cs" />
@@ -107,6 +128,15 @@
     <Compile Include="ValidationRules\RegexValidationRule.cs" />
     <Compile Include="Validator.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Errors.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Errors.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -115,4 +145,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PostBuildEvent>"%25ProgramFiles%25\Microsoft FxCop 1.36\FxCopCmd.exe" /file:"$(TargetPath)" /console</PostBuildEvent>
+  </PropertyGroup>
 </Project>

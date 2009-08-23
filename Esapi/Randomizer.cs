@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Owasp.Esapi.Errors;
 using Owasp.Esapi.Interfaces;
+using EM = Owasp.Esapi.Resources.Errors;
 
 namespace Owasp.Esapi
 {
@@ -13,10 +14,6 @@ namespace Owasp.Esapi
     public class Randomizer : IRandomizer
     {
         private RandomNumberGenerator randomNumberGenerator = null;
-
-        private static readonly ILogger logger = Esapi.Logger;
-
-        private static char[] CHARS_HEX = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 
         /// <summary>
         /// Instantiates the class, with the apropriate algorithm.
@@ -30,7 +27,7 @@ namespace Owasp.Esapi
             }
             catch (Exception e)
             {
-                throw new EncryptionException("Error creating randomizer", "Can't find random algorithm " + algorithm, e);
+                throw new EncryptionException(EM.Randomizer_Failure, string.Format(EM.Randomizer_AlgCreateFailed1, algorithm), e);
             }
         }
 
@@ -46,17 +43,13 @@ namespace Owasp.Esapi
         /// <inheritdoc cref="Owasp.Esapi.Interfaces.IRandomizer.GetRandomGUID()" />
         public Guid GetRandomGUID()
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append(GetRandomString(8, CHARS_HEX));
-            sb.Append("-");
-            sb.Append(GetRandomString(4, CHARS_HEX));
-            sb.Append("-");
-            sb.Append(GetRandomString(4, CHARS_HEX));
-            sb.Append("-");
-            sb.Append(GetRandomString(4, CHARS_HEX));
-            sb.Append("-");
-            sb.Append(GetRandomString(12, CHARS_HEX));
-            return new Guid(sb.ToString());
+            string guidString = string.Format("{0}-{1}-{2}-{3}-{4}",
+                                        GetRandomString(8, CharSetValues.Hex),
+                                        GetRandomString(4, CharSetValues.Hex),
+                                        GetRandomString(4, CharSetValues.Hex),
+                                        GetRandomString(4, CharSetValues.Hex),
+                                        GetRandomString(12, CharSetValues.Hex));
+            return new Guid(guidString);
 
         }
 
@@ -98,7 +91,7 @@ namespace Owasp.Esapi
         /// <inheritdoc cref="Owasp.Esapi.Interfaces.IRandomizer.GetRandomFilename(string)" />
         public string GetRandomFilename(string extension)
         {
-            return this.GetRandomString(12, Encoder.CHAR_ALPHANUMERICS) + "." + extension;
+            return this.GetRandomString(12, CharSetValues.Alphanumerics) + "." + extension;
         }
 
         static bool Contains(StringBuilder sb, char c)

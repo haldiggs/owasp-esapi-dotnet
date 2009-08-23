@@ -106,6 +106,13 @@ namespace EsapiTest
             Assert.AreEqual(indirect, newIndirect);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Test_UpdateNull()
+        {
+            arm.Update(null);
+        }
+
 
         /// <summary> Test of GetDirectReferences method, of class Owasp.Esapi.AccessReferenceMap.</summary>        
         [TestMethod]
@@ -166,6 +173,54 @@ namespace EsapiTest
         {
             System.Console.Out.WriteLine("GetDirectReference");
             arm.GetDirectReference("invalid");            
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Test_GetDirectReferenceNull()
+        {
+            arm.GetDirectReference(null);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Test_GetIndirectReferenceNull()
+        {
+            arm.GetIndirectReference(null);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Test_AddDirectReferenceNull()
+        {
+            arm.AddDirectReference(null);
+        }
+
+        [TestMethod]
+        public void Test_AddDirectReference()
+        {
+            Guid direct = Guid.NewGuid();
+
+            string indirect = arm.AddDirectReference(direct);
+            Assert.AreEqual(arm.GetDirectReference(indirect), direct);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Test_RemoveDirectReferenceNull()
+        {
+            arm.RemoveDirectReference(null);
+        }
+
+        [TestMethod]
+        public void Test_RemoveDirectReference()
+        {
+            Guid direct = Guid.NewGuid();
+
+            string indirect = arm.AddDirectReference(direct);
+            Assert.AreEqual(direct, arm.GetDirectReference(indirect));
+
+            Assert.AreEqual(indirect, arm.RemoveDirectReference(direct));
         }
     }
 }

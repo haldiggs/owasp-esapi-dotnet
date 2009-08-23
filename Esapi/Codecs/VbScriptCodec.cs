@@ -8,7 +8,8 @@ namespace Owasp.Esapi.Codecs
     /// This class performs VBScript encoding. This is useful for encoding values that will be displayed in a browser
     /// as JavaScript  (i.e. &lt;script type="VbScript" &gt; "untrusted data here" &lt;/script&gt;)
     /// </summary>
-    public class VbScriptCodec:ICodec
+    [Codec(BuiltinCodecs.VbScript)]
+    public class VbScriptCodec : ICodec
     {
         #region ICodec Members
 

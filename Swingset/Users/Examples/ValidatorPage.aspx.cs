@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.UI.WebControls;
+using Owasp.Esapi.ValidationRules;
 
 namespace Owasp.Esapi.Swingset.Users.Examples
 {
@@ -16,30 +17,30 @@ namespace Owasp.Esapi.Swingset.Users.Examples
 
         protected void vldCreditCard_ServerValidate(object source, ServerValidateEventArgs args)
         {
-            args.IsValid = Esapi.Validator.IsValid(Owasp.Esapi.Validator.CREDIT_CARD, args.Value);
+            args.IsValid = Esapi.Validator.IsValid(BuiltinValidationRules.CreditCard, args.Value);
             lblCreditCardSuccess.Visible = args.IsValid;            
         }
         protected void vldDate_ServerValidate(object source, ServerValidateEventArgs args)
         {
-            args.IsValid = Esapi.Validator.IsValid(Owasp.Esapi.Validator.DATE, args.Value);
+            args.IsValid = Esapi.Validator.IsValid(BuiltinValidationRules.Date, args.Value);
             lblDateSuccess.Visible = args.IsValid;
         }
 
         protected void vldDouble_ServerValidate(object source, ServerValidateEventArgs args)
         {
-            args.IsValid = Esapi.Validator.IsValid(Owasp.Esapi.Validator.DOUBLE, args.Value);
+            args.IsValid = Esapi.Validator.IsValid(BuiltinValidationRules.Double, args.Value);
             lblDoubleSuccess.Visible = args.IsValid;
         }
 
         protected void vldInteger_ServerValidate(object source, ServerValidateEventArgs args)
         {
-            args.IsValid = Esapi.Validator.IsValid(Owasp.Esapi.Validator.INTEGER, args.Value);
+            args.IsValid = Esapi.Validator.IsValid(BuiltinValidationRules.Integer, args.Value);
             lblIntegerSuccess.Visible = args.IsValid;
         }
 
         protected void vldPrintable_ServerValidate(object source, ServerValidateEventArgs args)
         {
-            args.IsValid = Esapi.Validator.IsValid(Owasp.Esapi.Validator.PRINTABLE, args.Value);
+            args.IsValid = Esapi.Validator.IsValid(BuiltinValidationRules.Printable, args.Value);
             lblPrintableSuccess.Visible = args.IsValid;
         }
     }
