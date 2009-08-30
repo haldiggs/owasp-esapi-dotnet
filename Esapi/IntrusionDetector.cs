@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Security.Principal;
 using System.Text;
 using System.Web.Security;
 using Owasp.Esapi.Errors;
@@ -280,14 +281,11 @@ namespace Owasp.Esapi
             {
                 _logger.Fatal(LogEventTypes.SECURITY, "INTRUSION - " + message);
             }
-            if (Membership.GetUser() != null)
-            {
-                if (action.Equals("disable"))
-                {
-                    Membership.GetUser().IsApproved = false;
-                }
-                if (action.Equals("logout"))
-                {
+
+            if (null != Esapi.SecurityConfiguration.CurrentUser) {
+                //if (action.Equals("disable")) {
+                //}
+                if (action.Equals("logout")) {
                     FormsAuthentication.SignOut();
                 }
             }
@@ -299,9 +297,12 @@ namespace Owasp.Esapi
         /// <param name="eventName">
         /// The security event to add.
         /// </param>
-        public void AddSecurityEvent(string eventName)
-        {            
-            string username = (Membership.GetUser() == null) ? "Anonymous" : Membership.GetUser().UserName;
+        private void AddSecurityEvent(string eventName)
+        {
+            IPrincipal currentUser = Esapi.SecurityConfiguration.CurrentUser;
+
+            string username = (currentUser != null && currentUser.Identity != null ? 
+                                    currentUser.Identity.Name : "Anonymous");
 
             Dictionary<string, Event> events;
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Web.Security;
+using System.Security.Principal;
 using Owasp.Esapi.Errors;
 using Owasp.Esapi.Interfaces;
 using EM = Owasp.Esapi.Resources.Errors;
@@ -28,12 +28,13 @@ namespace Owasp.Esapi
         /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessController.IsAuthorized(object, object)"/>
         public bool IsAuthorized(object action, object resource)
         {
-            MembershipUser currentUser = Membership.GetUser();
-            if (currentUser == null) {
+            IPrincipal currentUser = Esapi.SecurityConfiguration.CurrentUser;
+
+            if (currentUser == null || currentUser.Identity == null) {
                 throw new EnterpriseSecurityException(EM.AccessControl_NoCurrentUser, EM.AccessControl_NoCurrentUser);
             }
 
-            return IsAuthorized(currentUser.UserName, action, resource);
+            return IsAuthorized(currentUser.Identity.Name, action, resource);
         }
 
         /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessController.IsAuthorized(object, object, object)"/>
