@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
+using System.Security.Principal;
 
 namespace Owasp.Esapi.Interfaces
 {
@@ -89,6 +89,14 @@ namespace Owasp.Esapi.Interfaces
         /// Whether or not HTML encoding is required in the log file.
         /// </summary>
         bool LogEncodingRequired
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Current user
+        /// </summary>
+        IPrincipal CurrentUser
         {
             get;
         }

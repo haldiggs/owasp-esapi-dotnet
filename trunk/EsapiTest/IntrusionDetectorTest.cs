@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Owasp.Esapi;
 using Owasp.Esapi.Errors;
+using Owasp.Esapi.Configuration;
 
 namespace EsapiTest
 {
@@ -11,58 +12,95 @@ namespace EsapiTest
     [TestClass]
     public class IntrusionDetectorTest
     {
-        public IntrusionDetectorTest()
+        [TestInitialize]
+        public void InitializeTests()
         {
-            //
-            // TODO: Add constructor logic here
-            //
+            Esapi.Reset();
+            EsapiConfig.Reset();
         }
-
-        private TestContext testContextInstance;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
-
+                
         [TestMethod]
         public void Test_AddException()
         {
-            Console.WriteLine("AddException");
             Esapi.IntrusionDetector.AddException(new IntrusionException("user message", "log message"));
+        }
+
+        [TestMethod]
+        public void Test_AddESAPIException()
+        {
+            EnterpriseSecurityException secExp = new EnterpriseSecurityException();
+            Esapi.IntrusionDetector.AddException(secExp);
+        }
+
+        [TestMethod]
+        public void Test_AddExceptionSecurityEvent()
+        {
+            string evtName = typeof(ArgumentException).FullName;
+
+            Threshold threshold = new Threshold(evtName, 1, 1, new[] { "log" });
+            Esapi.IntrusionDetector.AddThreshold(threshold);
+
+            ArgumentException arg = new ArgumentException();
+            Esapi.IntrusionDetector.AddException(arg);
+        }
+
+        [TestMethod]
+        public void Test_AddEvent()
+        {
+            string evtName = Guid.NewGuid().ToString();
+
+            Esapi.IntrusionDetector.AddEvent(evtName);
+        }
+
+        [TestMethod]
+        public void Test_AddThreshold()
+        {
+            string evtName = Guid.NewGuid().ToString();
+
+            Threshold threshold = new Threshold(evtName, 1, 1, new[] { "logout" });
+            Esapi.IntrusionDetector.AddThreshold(threshold);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Test_AddNullThreshold()
+        {
+            Esapi.IntrusionDetector.AddThreshold(null);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Test_AddDuplicateThreshold()
+        {
+            string evtName = Guid.NewGuid().ToString();
+
+            Threshold threshold = new Threshold(evtName, 1, 1, new[] { "logout" });
+            Esapi.IntrusionDetector.AddThreshold(threshold);
+
+            Threshold dup = new Threshold(evtName, 2, 2, null);
+            Esapi.IntrusionDetector.AddThreshold(dup);
+        }
+
+        [TestMethod]
+        public void Test_RemoveThreshold()
+        {
+            string evtName = Guid.NewGuid().ToString();
+
+            Threshold threshold = new Threshold(evtName, 1, 1, new[] { "logout" });
+            Esapi.IntrusionDetector.AddThreshold(threshold);
+
+            Assert.IsTrue( Esapi.IntrusionDetector.RemoveThreshold(evtName));
+        }
+
+        [TestMethod]
+        public void Test_IntrusionDetected()
+        {
+            string evtName = Guid.NewGuid().ToString();
+
+            Threshold threshold = new Threshold(evtName, 1, 1, new[] { "log" });
+            Esapi.IntrusionDetector.AddThreshold(threshold);
+
+            Esapi.IntrusionDetector.AddEvent(evtName);
         }
     }
 }

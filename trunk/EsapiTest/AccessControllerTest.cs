@@ -5,6 +5,8 @@ using Owasp.Esapi.Configuration;
 using Owasp.Esapi.Errors;
 using Owasp.Esapi.Interfaces;
 using Rhino.Mocks;
+using System.Security.Principal;
+using System.Threading;
 
 namespace EsapiTest
 {
@@ -13,13 +15,21 @@ namespace EsapiTest
     /// </summary>
     [TestClass]
     public class AccessControllerTest
-    {        
+    {
+        private void SetCurrentUser(string subject)
+        {
+            Thread.CurrentPrincipal = !string.IsNullOrEmpty(subject) ? 
+                                            new GenericPrincipal(new GenericIdentity(subject), null) : 
+                                            null;
+        }
+    
         [TestInitialize]
         public void InitializeTests()
         {
             // Reset cached data
             Esapi.Reset();
-            EsapiConfig.Reset();            
+            EsapiConfig.Reset();
+            SetCurrentUser(null);
         }
 
         [TestMethod]
@@ -66,14 +76,18 @@ namespace EsapiTest
             }
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(EnterpriseSecurityException))]
+        [TestMethod]        
         public void Test_IsAuthorizedResource()
         {
-            //TODO : this needs to be fixed when the code will be decoupled from Memebership impl
-            Guid action = Guid.NewGuid(), resource = Guid.NewGuid(), subject = Guid.NewGuid();
+            Guid    action = Guid.NewGuid(), resource = Guid.NewGuid();
+            string  subject = Guid.NewGuid().ToString();
 
+            SetCurrentUser(subject);
+            
+            // Allow action
             Esapi.AccessController.AddRule(subject, action, resource);
+
+            // Verify current
             Assert.IsTrue(Esapi.AccessController.IsAuthorized(action, resource));
 
             Assert.IsFalse(Esapi.AccessController.IsAuthorized(action, Guid.NewGuid()));

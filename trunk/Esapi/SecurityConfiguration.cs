@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Principal;
 using System.Text;
+using System.Threading;
+using System.Web;
 using Owasp.Esapi.Configuration;
 using Owasp.Esapi.Interfaces;
 
@@ -129,6 +132,18 @@ namespace Owasp.Esapi
 
         }
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.CurrentUser"/>
+        public IPrincipal CurrentUser
+        {
+            get
+            {
+                if (HttpContext.Current != null) {
+                    return HttpContext.Current.User;
+                }
+                return Thread.CurrentPrincipal;
+            }
+        }
+
         /// <summary> Instantiates a new configuration.</summary>
         internal SecurityConfiguration(SecurityConfigurationElement settings)
         {
@@ -137,6 +152,6 @@ namespace Owasp.Esapi
             }
 
             _settings = settings;
-        }
+        }        
     }
 }

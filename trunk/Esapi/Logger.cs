@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Web.Security;
+using System.Security.Principal;
 using log4net;
 using Owasp.Esapi.Codecs;
 using Owasp.Esapi.Interfaces;
@@ -196,10 +196,12 @@ namespace Owasp.Esapi
         /// </param>
         private string GetLogMessage(int type, string message, Exception throwable)
         {
-            MembershipUser user =  Membership.GetUser();
-            
+            IPrincipal currentUser = Esapi.SecurityConfiguration.CurrentUser;
+                        
             // Ensure no CRLF injection into logs for forging records
-            String clean = message.Replace('\n', '_').Replace('\r', '_');
+            string clean = !string.IsNullOrEmpty(message) ?
+                                message.Replace('\n', '_').Replace('\r', '_') :
+                                message;
             
             // HTML encode log message if it will be viewed in a web browser
             if (Esapi.SecurityConfiguration.LogEncodingRequired)
@@ -230,12 +232,10 @@ namespace Owasp.Esapi
             
             string msg;
 
-            if (user != null)
-            {
-                msg = LogEventTypes.GetType(type) + ": " + user.UserName + ": " + clean;
+            if (currentUser != null && currentUser.Identity != null) {
+                msg = LogEventTypes.GetType(type) + ": " + currentUser.Identity.Name + ": " + clean;
             }
-            else
-            {
+            else {
                 msg = LogEventTypes.GetType(type) + ": "  + clean;
             }
         
