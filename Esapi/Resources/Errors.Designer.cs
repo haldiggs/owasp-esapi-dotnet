@@ -250,6 +250,15 @@ namespace Owasp.Esapi.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User exceeded quota of  {0}  per  {1} seconds for event  {2} ..
+        /// </summary>
+        internal static string InstrusionDetector_ExceededQuota3 {
+            get {
+                return ResourceManager.GetString("InstrusionDetector_ExceededQuota3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User exceeded quota of  {0}  per  {1} seconds for event  {2} . Taking action {3}.
         /// </summary>
         internal static string InstrusionDetector_ExceededQuota4 {
@@ -259,11 +268,47 @@ namespace Owasp.Esapi.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid action name.
+        /// </summary>
+        internal static string InstrusionDetector_InvalidActionName {
+            get {
+                return ResourceManager.GetString("InstrusionDetector_InvalidActionName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Threshold exceeded for {0}.
         /// </summary>
         internal static string InstrusionDetector_ThresholdExceeded1 {
             get {
                 return ResourceManager.GetString("InstrusionDetector_ThresholdExceeded1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Action {0} is referenced.
+        /// </summary>
+        internal static string IntrusionDetector_ActionIsReferenced1 {
+            get {
+                return ResourceManager.GetString("IntrusionDetector_ActionIsReferenced1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Required action {0} not found.
+        /// </summary>
+        internal static string IntrusionDetector_ActionNotFound1 {
+            get {
+                return ResourceManager.GetString("IntrusionDetector_ActionNotFound1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An action with this name already exists.
+        /// </summary>
+        internal static string IntrusionDetector_DuplicateActionName {
+            get {
+                return ResourceManager.GetString("IntrusionDetector_DuplicateActionName", resourceCulture);
             }
         }
         

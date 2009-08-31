@@ -154,7 +154,7 @@ namespace Owasp.Esapi
                     lock (_instrusionDetectorLock) {
                         if (_intrusionDetector == null) {
                             Thread.MemoryBarrier();
-                            _intrusionDetector = EsapiLoader.LoadIntrustionDetector(EsapiConfig.Instance.IntrusionDetector);
+                            _intrusionDetector = EsapiLoader.LoadIntrusionDetector(EsapiConfig.Instance.IntrusionDetector);
                         }
                     }
                 }
