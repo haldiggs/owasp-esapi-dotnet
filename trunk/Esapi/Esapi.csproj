@@ -63,6 +63,8 @@
   <ItemGroup>
     <Compile Include="AccessController.cs" />
     <Compile Include="AccessReferenceMap.cs" />
+    <Compile Include="ActionArgs.cs" />
+    <Compile Include="ActionAttribute.cs" />
     <Compile Include="CharSetValues.cs" />
     <Compile Include="Codecs\Base64Codec.cs" />
     <Compile Include="Codecs\BuiltinCodec.cs" />
@@ -79,6 +81,7 @@
     <Compile Include="Configuration\ValidatorElement.cs" />
     <Compile Include="CodecAttribute.cs" />
     <Compile Include="EsapiLoader.cs" />
+    <Compile Include="Interfaces\IAction.cs" />
     <Compile Include="Interfaces\ICodec.cs" />
     <Compile Include="Codecs\JavaScriptCodec.cs" />
     <Compile Include="Codecs\UrlCodec.cs" />
@@ -107,6 +110,12 @@
     <Compile Include="Interfaces\ISecurityConfiguration.cs" />
     <Compile Include="Interfaces\IValidator.cs">
     </Compile>
+    <Compile Include="IntrusionDetection\Actions\BuiltinActions.cs" />
+    <Compile Include="IntrusionDetection\Actions\DisableMembershipAction.cs" />
+    <Compile Include="IntrusionDetection\Actions\FomsAuthenticationLogoutAction.cs" />
+    <Compile Include="IntrusionDetection\Actions\LogAction.cs" />
+    <Compile Include="IntrusionDetection\IntrusionActionArgs.cs" />
+    <Compile Include="NamedAddinAttribute.cs" />
     <Compile Include="Resources\Errors.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

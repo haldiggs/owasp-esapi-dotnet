@@ -180,11 +180,26 @@
   <data name="InstrusionDetector_EventReceived1" xml:space="preserve">
     <value>Security event {0} received</value>
   </data>
+  <data name="InstrusionDetector_ExceededQuota3" xml:space="preserve">
+    <value>User exceeded quota of  {0}  per  {1} seconds for event  {2} .</value>
+  </data>
   <data name="InstrusionDetector_ExceededQuota4" xml:space="preserve">
     <value>User exceeded quota of  {0}  per  {1} seconds for event  {2} . Taking action {3}</value>
   </data>
+  <data name="InstrusionDetector_InvalidActionName" xml:space="preserve">
+    <value>Invalid action name</value>
+  </data>
   <data name="InstrusionDetector_ThresholdExceeded1" xml:space="preserve">
     <value>Threshold exceeded for {0}</value>
+  </data>
+  <data name="IntrusionDetector_ActionIsReferenced1" xml:space="preserve">
+    <value>Action {0} is referenced</value>
+  </data>
+  <data name="IntrusionDetector_ActionNotFound1" xml:space="preserve">
+    <value>Required action {0} not found</value>
+  </data>
+  <data name="IntrusionDetector_DuplicateActionName" xml:space="preserve">
+    <value>An action with this name already exists</value>
   </data>
   <data name="IntrusionDetector_ThresholdExceeded" xml:space="preserve">
     <value>Threshold exceeded</value>

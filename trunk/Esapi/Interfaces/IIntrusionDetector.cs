@@ -6,6 +6,20 @@ namespace Owasp.Esapi.Interfaces
     /// </summary>
     public interface IIntrusionDetector
     {
+        /// <summary>
+        /// Add action 
+        /// </summary>
+        /// <param name="name">Action unique name</param>
+        /// <param name="action">Action instance</param>
+        void AddAction(string name, IAction action);
+
+        /// <summary>
+        /// Remove action
+        /// </summary>
+        /// <param name="name">Action unique name</param>
+        /// <returns>True if succeeded, false otherwise</returns>
+        bool RemoveAction(string name);
+
         /// <summary> 
         /// The intrusion detection quota for a particular event.
         /// </summary>

@@ -6,7 +6,7 @@ using System.Text;
 namespace Owasp.Esapi.ValidationRules
 {
     /// <summary>
-    /// ESAPI builtint validation rules
+    /// ESAPI builtin validation rules
     /// </summary>
     public static class BuiltinValidationRules
     {
