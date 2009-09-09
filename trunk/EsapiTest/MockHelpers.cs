@@ -1,217 +1,64 @@
-﻿using System.Collections.Generic;
-using Owasp.Esapi.Interfaces;
+﻿using System;
+using System.Globalization;
+using System.IO;
+using System.Reflection;
+using System.Threading;
+using System.Web;
+using System.Web.Hosting;
+using System.Web.SessionState;
+using System.Runtime.Remoting.Messaging;
 
 namespace EsapiTest
 {
-    /// <summary>
-    /// Custom access controller class
-    /// </summary>
-    /// <remarks>Need to have an explicit one because RhinoMocks
-    /// cannot create named types</remarks>
-    internal class ForwardAccessController : IAccessController
+    /// <remarks>
+    /// From http://www.jasonbock.net/JB/Default.aspx?blog=entry.161daabc728842aca6f329d87c81cfcb
+    /// </remarks>
+    public sealed class MockHttpContext
     {
-        public IAccessController Impl { get; set; }
-        #region IAccessController Members
+        private const string ThreadDataKeyAppPath = ".appPath";
+        private const string ThreadDataKeyAppPathValue = "c:\\inetpub\\wwwroot\\webapp\\";
+        private const string ThreadDataKeyAppVPath = ".appVPath";
+        private const string ThreadDataKeyAppVPathValue = "/webapp";
+        
+        private HttpContext _context = null;
 
-        public bool IsAuthorized(object action, object resource)
+        public MockHttpContext()
+            : this("default.aspx", string.Empty)
         {
-            return Impl.IsAuthorized(action, resource);
         }
 
-        public bool IsAuthorized(object subject, object action, object resource)
+        public MockHttpContext(string page, string query)
         {
-            return Impl.IsAuthorized(subject, action, resource);
+            Thread.GetDomain().SetData( ThreadDataKeyAppPath, ThreadDataKeyAppPathValue);
+            Thread.GetDomain().SetData( ThreadDataKeyAppVPath, ThreadDataKeyAppVPathValue);
+
+            SimpleWorkerRequest request = new SimpleWorkerRequest(page, query, new StringWriter());
+            _context = new HttpContext(request);
+
+            HttpSessionStateContainer container = new HttpSessionStateContainer( Guid.NewGuid().ToString("N"), new SessionStateItemCollection(), 
+                                                        new HttpStaticObjectsCollection(), 5, true, HttpCookieMode.AutoDetect, SessionStateMode.InProc, 
+                                                        false);
+
+            HttpSessionState state = Activator.CreateInstance( typeof(HttpSessionState), 
+                                        BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.CreateInstance,
+                                        null, new object[] { container }, CultureInfo.CurrentCulture) as HttpSessionState;
+            _context.Items["AspSession"] = state;
         }
 
-        public void AddRule(object subject, object action, object resource)
+        public HttpContext Context
         {
-            Impl.AddRule(subject, action, resource);
+            get
+            {
+                return _context;
+            }
         }
 
-        public void RemoveRule(object subject, object action, object resource)
+        /// <summary>
+        /// Set a mock context as HttpContext.Current
+        /// </summary>
+        public static void InitializeCurrentContext()
         {
-            Impl.RemoveRule(subject, action, resource);
+            CallContext.HostContext = (new MockHttpContext()).Context;
         }
-
-        #endregion
-    }
-
-    /// <summary>
-    /// Forward encryptor for mocking
-    /// </summary>
-    internal class ForwardEncryptor : IEncryptor
-    {
-        public IEncryptor Impl { get; set; }
-        #region IEncryptor Members
-
-        public long TimeStamp
-        {
-            get { return Impl.TimeStamp; }
-        }
-
-        public string Hash(string plaintext, string salt)
-        {
-            return Impl.Hash(plaintext, salt);
-        }
-
-        public string Encrypt(string plaintext)
-        {
-            return Impl.Encrypt(plaintext);
-        }
-
-        public string Decrypt(string ciphertext)
-        {
-            return Impl.Decrypt(ciphertext);
-        }
-
-        public string Sign(string data)
-        {
-            return Impl.Sign(data);
-        }
-
-        public bool VerifySignature(string signature, string data)
-        {
-            return Impl.VerifySignature(signature, data);
-        }
-
-        public string Seal(string data, long timestamp)
-        {
-            return Impl.Seal(data, timestamp);
-        }
-
-        public string Unseal(string seal)
-        {
-            return Impl.Unseal(seal);
-        }
-
-        public bool VerifySeal(string seal)
-        {
-            return Impl.VerifySeal(seal);
-        }
-
-        #endregion
-    }
-
-    /// <summary>
-    /// Forward validator
-    /// </summary>
-    internal class ForwardValidator : IValidator
-    {
-        public static IValidator DefaultValidator;
-        private IValidator _instanceValidator;
-
-        public IValidator Impl
-        {
-            get { return _instanceValidator == null ? DefaultValidator : _instanceValidator; }
-            set { _instanceValidator = value; }
-        }
-
-        #region IValidator Members
-
-        public bool IsValid(string rule, string input)
-        {
-            return Impl.IsValid(rule, input);
-        }
-
-        public void AddRule(string name, IValidationRule rule)
-        {
-            Impl.AddRule(name, rule);
-        }
-
-        public IValidationRule GetRule(string name)
-        {
-            return Impl.GetRule(name);
-        }
-
-        public void RemoveRule(string name)
-        {
-            Impl.RemoveRule(name);
-        }
-
-        #endregion
-    }
-    /// <summary>
-    /// Forward validation rule
-    /// </summary>
-    internal class ForwardValidationRule : IValidationRule
-    {
-        public IValidationRule Implt { get; set; }
-        #region IValidationRule Members
-
-        public bool IsValid(string input)
-        {
-            return Implt.IsValid(input);
-        }
-
-        #endregion
-    }
-
-    // Forward encoder
-    internal class ForwardEncoder : IEncoder
-    {
-        internal static IEncoder DefaultEncoder;
-        private IEncoder _instanceImpl;
-
-        public IEncoder Impl
-        {
-            get { return _instanceImpl != null ? _instanceImpl : DefaultEncoder; }
-            set { _instanceImpl = value; }
-        }
-        #region IEncoder Members
-
-        public string Canonicalize(IEnumerable<string> codecNames, string input, bool strict)
-        {
-            return Impl.Canonicalize(codecNames, input, strict);
-        }
-
-        public string Normalize(string input)
-        {
-            return Impl.Normalize(input);
-        }
-
-        public string Encode(string codecName, string input)
-        {
-            return Impl.Encode(codecName, input);
-        }
-
-        public string Decode(string codecName, string input)
-        {
-            return Impl.Decode(codecName, input);
-        }
-
-        public ICodec GetCodec(string codecName)
-        {
-            return Impl.GetCodec(codecName);
-        }
-
-        public void AddCodec(string codecName, ICodec codec)
-        {
-            Impl.AddCodec(codecName, codec);
-        }
-
-        public void RemoveCodec(string codecName)
-        {
-            Impl.RemoveCodec(codecName);
-        }
-
-        #endregion
-    }
-    // Forward codec
-    internal class ForwardCodec : ICodec
-    {
-        public ICodec Impl { get; set; }
-        #region ICodec Members
-
-        public string Encode(string input)
-        {
-            return Impl.Encode(input);
-        }
-
-        public string Decode(string input)
-        {
-            return Impl.Decode(input);
-        }
-
-        #endregion
     }
 }

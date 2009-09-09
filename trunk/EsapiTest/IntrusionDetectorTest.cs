@@ -7,6 +7,8 @@ using Owasp.Esapi.IntrusionDetection.Actions;
 using Rhino.Mocks;
 using Owasp.Esapi.Interfaces;
 using EM = Owasp.Esapi.Resources.Errors;
+using Rhino.Mocks.Constraints;
+using EsapiTest.Surrogates;
 
 namespace EsapiTest
 {
@@ -186,6 +188,132 @@ namespace EsapiTest
             }
             catch (ArgumentException) {
             }
+        }
+
+        /// <summary>
+        /// Test loading of a custom intrusion detector
+        /// </summary>
+        [TestMethod]
+        public void Test_LoadCustom()
+        {
+            // Set new 
+            EsapiConfig.Instance.IntrusionDetector.Type = typeof(SurrogateIntrusionDetector).AssemblyQualifiedName;
+
+            IIntrusionDetector detector = Esapi.IntrusionDetector;
+            Assert.IsTrue(detector.GetType().Equals(typeof(SurrogateIntrusionDetector)));
+        }
+
+        /// <summary>
+        /// Test loading of actions from a custom assembly
+        /// </summary>
+        [TestMethod]
+        public void Test_LoadCustomActionAssembly()
+        {
+            MockRepository mocks = new MockRepository();
+
+            // Set new
+            EsapiConfig.Instance.IntrusionDetector.Type = typeof(SurrogateIntrusionDetector).AssemblyQualifiedName;
+
+            // Set assemblies to load
+            AddinAssemblyCollection addinAssemblies = new AddinAssemblyCollection();
+            EsapiConfig.Instance.IntrusionDetector.Actions.Assemblies = addinAssemblies;
+            
+            AddinAssemblyElement addinAssembly = new AddinAssemblyElement();
+            addinAssembly.Name = typeof(Esapi).Assembly.FullName;
+            EsapiConfig.Instance.IntrusionDetector.Actions.Assemblies.Add(addinAssembly);            
+
+            // Set mock expectations
+            IIntrusionDetector mockDetector = mocks.StrictMock<IIntrusionDetector>();
+
+            // Load default
+            Expect.Call(delegate { mockDetector.AddAction(BuiltinActions.Log, null); }).Constraints(Is.Equal(BuiltinActions.Log), Is.Anything());
+            Expect.Call(delegate { mockDetector.AddAction(BuiltinActions.FormsAuthenticationLogout, null); }).Constraints(Is.Equal(BuiltinActions.FormsAuthenticationLogout), Is.Anything());
+            Expect.Call(delegate { mockDetector.AddAction(BuiltinActions.MembershipDisable, null); }).Constraints(Is.Equal(BuiltinActions.MembershipDisable), Is.Anything());
+            mocks.ReplayAll();
+
+            SurrogateIntrusionDetector.DefaultDetector = mockDetector;
+            IIntrusionDetector detector = Esapi.IntrusionDetector;
+
+            Assert.IsTrue(detector.GetType().Equals(typeof(SurrogateIntrusionDetector)));
+            mocks.VerifyAll();
+        }
+
+        /// <summary>
+        /// Load custom actions via configuration
+        /// </summary>
+        [TestMethod]
+        public void Test_LoadCustomActions()
+        {
+            MockRepository mocks = new MockRepository();
+
+            EsapiConfig.Instance.IntrusionDetector.Type = typeof(SurrogateIntrusionDetector).AssemblyQualifiedName;
+
+            // Set actions to load
+            EsapiConfig.Instance.IntrusionDetector.Actions = new ActionCollection();
+
+            string[] actionNames = new[] { Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString() };
+            foreach (string actionName in actionNames) {
+                ActionElement actionElement = new ActionElement();
+                actionElement.Name = actionName;
+                actionElement.Type = typeof(SurrogateAction).AssemblyQualifiedName;
+
+                EsapiConfig.Instance.IntrusionDetector.Actions.Add(actionElement);
+            }
+
+            // Set mock expectations
+            IIntrusionDetector mockDetector = mocks.StrictMock<IIntrusionDetector>();
+
+            // Custom actions are loaded and are of proper type
+            foreach (string actionName in actionNames) {
+                Expect.Call(delegate { mockDetector.AddAction(actionName, null); }).Constraints(Is.Equal(actionName), Is.TypeOf<SurrogateAction>());
+            }
+            mocks.ReplayAll();
+
+            // Create and test
+            SurrogateIntrusionDetector.DefaultDetector = mockDetector;
+            IIntrusionDetector detector = Esapi.IntrusionDetector;
+
+            Assert.IsTrue(detector.GetType().Equals(typeof(SurrogateIntrusionDetector)));
+            mocks.VerifyAll();
+        }
+
+        /// <summary>
+        /// Test event threshold configurationa
+        /// </summary>
+        [TestMethod]
+        public void Test_LoadCustomEventThreshold()
+        {
+            MockRepository mocks = new MockRepository();
+
+            EsapiConfig.Instance.IntrusionDetector.Type = typeof(SurrogateIntrusionDetector).AssemblyQualifiedName;
+
+            // Set actions
+            AddinAssemblyElement addinAssembly = new AddinAssemblyElement();
+            addinAssembly.Name = typeof(Esapi).Assembly.FullName;
+            EsapiConfig.Instance.IntrusionDetector.Actions.Assemblies.Add(addinAssembly);            
+            
+            // Set thresholds
+            ThresholdElement thresholdElement = new ThresholdElement() {
+                                                    Actions = BuiltinActions.Log,
+                                                    Count = 1,
+                                                    Interval = 1,
+                                                    Name = Guid.NewGuid().ToString()
+                                                };
+            EsapiConfig.Instance.IntrusionDetector.EventThresholds = new EventThresholdCollection();
+            EsapiConfig.Instance.IntrusionDetector.EventThresholds.Add(thresholdElement);
+
+            // Set mock expectations
+            IIntrusionDetector mockDetector = mocks.StrictMock<IIntrusionDetector>();
+            Expect.Call(delegate { mockDetector.AddAction(null, null); }).Constraints(Is.Anything(), Is.Anything()).Repeat.Any();
+            Expect.Call(delegate { mockDetector.AddThreshold(null); }).Constraints(Is.Anything());
+            mocks.ReplayAll();
+
+            // Test
+            SurrogateIntrusionDetector.DefaultDetector = mockDetector;
+            IIntrusionDetector detector = Esapi.IntrusionDetector;
+
+            Assert.IsTrue(detector.GetType().Equals(typeof(SurrogateIntrusionDetector)));
+            mocks.VerifyAll();            
         }
     }
 }
