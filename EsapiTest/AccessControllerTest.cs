@@ -7,6 +7,7 @@ using Owasp.Esapi.Interfaces;
 using Rhino.Mocks;
 using System.Security.Principal;
 using System.Threading;
+using EsapiTest.Surrogates;
 
 namespace EsapiTest
 {
@@ -201,15 +202,15 @@ namespace EsapiTest
             MockRepository mocks = new MockRepository();
 
             // Set new controller type
-            EsapiConfig.Instance.AccessController.Type = typeof(ForwardAccessController).AssemblyQualifiedName;
+            EsapiConfig.Instance.AccessController.Type = typeof(SurrogateAccessController).AssemblyQualifiedName;
 
             // Get existing
             IAccessController accessController = Esapi.AccessController;
-            Assert.IsTrue(accessController.GetType().Equals(typeof(ForwardAccessController)));
+            Assert.IsTrue(accessController.GetType().Equals(typeof(SurrogateAccessController)));
 
             // Call some methods
             IAccessController mockController = mocks.StrictMock<IAccessController>();
-            ((ForwardAccessController)accessController).Impl = mockController;
+            ((SurrogateAccessController)accessController).Impl = mockController;
                         
             Expect.Call(mockController.IsAuthorized(null, null)).Return(true);
             Expect.Call(mockController.IsAuthorized(null, null, null)).Return(false);

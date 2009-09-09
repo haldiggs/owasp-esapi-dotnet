@@ -6,6 +6,7 @@ using Rhino.Mocks;
 using Owasp.Esapi.ValidationRules;
 using Owasp.Esapi.Configuration;
 using Rhino.Mocks.Constraints;
+using EsapiTest.Surrogates;
 
 namespace EsapiTest
 {
@@ -21,7 +22,7 @@ namespace EsapiTest
             Esapi.Reset();
             EsapiConfig.Reset();
 
-            ForwardValidator.DefaultValidator = null;
+            SurrogateValidator.DefaultValidator = null;
         }
 
         [TestMethod]
@@ -186,10 +187,10 @@ namespace EsapiTest
         public void Test_LoadCustom()
         {
             // Set new
-            EsapiConfig.Instance.Validator.Type = typeof(ForwardValidator).AssemblyQualifiedName;
+            EsapiConfig.Instance.Validator.Type = typeof(SurrogateValidator).AssemblyQualifiedName;
 
             IValidator validator = Esapi.Validator;
-            Assert.IsTrue(validator.GetType().Equals(typeof(ForwardValidator)));           
+            Assert.IsTrue(validator.GetType().Equals(typeof(SurrogateValidator)));           
         }
 
         /// <summary>
@@ -202,7 +203,7 @@ namespace EsapiTest
             MockRepository mocks = new MockRepository();
 
             // Set new
-            EsapiConfig.Instance.Validator.Type = typeof(ForwardValidator).AssemblyQualifiedName;
+            EsapiConfig.Instance.Validator.Type = typeof(SurrogateValidator).AssemblyQualifiedName;
 
             // Set assemblies to load
             AddinAssemblyElement addinAssembly = new AddinAssemblyElement();
@@ -221,10 +222,10 @@ namespace EsapiTest
             mocks.ReplayAll();
 
             // Create and test
-            ForwardValidator.DefaultValidator = mockValidator;
+            SurrogateValidator.DefaultValidator = mockValidator;
             IValidator validator = Esapi.Validator;
 
-            Assert.IsTrue(validator.GetType().Equals(typeof(ForwardValidator)));
+            Assert.IsTrue(validator.GetType().Equals(typeof(SurrogateValidator)));
             mocks.VerifyAll();
         }
 
@@ -237,14 +238,14 @@ namespace EsapiTest
             MockRepository mocks = new MockRepository();
 
             // Set new
-            EsapiConfig.Instance.Validator.Type = typeof(ForwardValidator).AssemblyQualifiedName;
+            EsapiConfig.Instance.Validator.Type = typeof(SurrogateValidator).AssemblyQualifiedName;
 
             // Set rules to load
             string[] ruleNames = new[] { Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString() };
             foreach (string ruleName in ruleNames) {
                 ValidationRuleElement ruleElement = new ValidationRuleElement();
                 ruleElement.Name = ruleName;
-                ruleElement.Type = typeof(ForwardValidationRule).AssemblyQualifiedName;
+                ruleElement.Type = typeof(SurrogateValidationRule).AssemblyQualifiedName;
 
                 EsapiConfig.Instance.Validator.Rules.Add(ruleElement);
             }
@@ -254,15 +255,15 @@ namespace EsapiTest
 
             // Custom rules are loaded and are of proper type
             foreach (string ruleName in ruleNames) {
-                Expect.Call(delegate { mockValidator.AddRule(ruleName, null); }).Constraints(Is.Equal(ruleName), Is.TypeOf<ForwardValidationRule>());
+                Expect.Call(delegate { mockValidator.AddRule(ruleName, null); }).Constraints(Is.Equal(ruleName), Is.TypeOf<SurrogateValidationRule>());
             }
             mocks.ReplayAll();
 
             // Create and test
-            ForwardValidator.DefaultValidator = mockValidator;
+            SurrogateValidator.DefaultValidator = mockValidator;
             IValidator validator = Esapi.Validator;
 
-            Assert.IsTrue(validator.GetType().Equals(typeof(ForwardValidator)));
+            Assert.IsTrue(validator.GetType().Equals(typeof(SurrogateValidator)));
             mocks.VerifyAll();
         }
     }

@@ -5,6 +5,7 @@ using Owasp.Esapi.Errors;
 using Owasp.Esapi.Interfaces;
 using Owasp.Esapi.Configuration;
 using Rhino.Mocks;
+using EsapiTest.Surrogates;
 
 namespace EsapiTest
 {
@@ -180,14 +181,14 @@ namespace EsapiTest
             MockRepository mocks = new MockRepository();
 
             // Set new encryptor
-            EsapiConfig.Instance.Encryptor.Type = typeof(ForwardEncryptor).AssemblyQualifiedName;
+            EsapiConfig.Instance.Encryptor.Type = typeof(SurrogateEncryptor).AssemblyQualifiedName;
 
             IEncryptor encryptor = Esapi.Encryptor;
-            Assert.IsTrue(encryptor.GetType().Equals(typeof(ForwardEncryptor)));
+            Assert.IsTrue(encryptor.GetType().Equals(typeof(SurrogateEncryptor)));
 
             // Do some calls
             IEncryptor mockEncryptor = mocks.StrictMock<IEncryptor>();
-            ((ForwardEncryptor)encryptor).Impl = mockEncryptor;
+            ((SurrogateEncryptor)encryptor).Impl = mockEncryptor;
 
             Expect.Call(mockEncryptor.VerifySeal(null)).Return(true);
             Expect.Call(mockEncryptor.Seal(null, 0)).Return(null);

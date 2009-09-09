@@ -42,18 +42,29 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccessControllerTest.cs" />
     <Compile Include="AccessReferenceMapTest.cs" />
     <Compile Include="EncoderTest.cs" />
+    <Compile Include="HttpUtilitiesTest.cs" />
     <Compile Include="IntrusionDetectorTest.cs" />
     <Compile Include="LoggerTest.cs" />
     <Compile Include="MockHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EncryptorTest.cs" />
     <Compile Include="RandomizerTest.cs" />
+    <Compile Include="Surrogates\AccessController.cs" />
+    <Compile Include="Surrogates\Encoder.cs" />
+    <Compile Include="Surrogates\Encryptor.cs" />
+    <Compile Include="Surrogates\HttpUtilities.cs" />
+    <Compile Include="Surrogates\IntrusionDetector.cs" />
+    <Compile Include="Surrogates\Validator.cs" />
+    <Compile Include="Surrogates\WebPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="ValidatorTest.cs" />
   </ItemGroup>
   <ItemGroup>

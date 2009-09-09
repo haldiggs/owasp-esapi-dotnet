@@ -8,6 +8,7 @@ using Owasp.Esapi.Configuration;
 using Owasp.Esapi.Interfaces;
 using Rhino.Mocks;
 using Rhino.Mocks.Constraints;
+using EsapiTest.Surrogates;
 
 namespace EsapiTest
 {
@@ -23,7 +24,7 @@ namespace EsapiTest
             Esapi.Reset();
             EsapiConfig.Reset();
 
-            ForwardEncoder.DefaultEncoder = null;
+            SurrogateEncoder.DefaultEncoder = null;
         }
 
         /// <summary> Test of Canonicalize method, of class Owasp.Esapi.Validator.
@@ -305,10 +306,10 @@ namespace EsapiTest
         public void Test_LoadCustom()
         {
             // Set new
-            EsapiConfig.Instance.Encoder.Type = typeof(ForwardEncoder).AssemblyQualifiedName;
+            EsapiConfig.Instance.Encoder.Type = typeof(SurrogateEncoder).AssemblyQualifiedName;
 
             IEncoder encoder = Esapi.Encoder;
-            Assert.IsTrue(encoder.GetType().Equals(typeof(ForwardEncoder)));
+            Assert.IsTrue(encoder.GetType().Equals(typeof(SurrogateEncoder)));
         }
 
         /// <summary>
@@ -321,7 +322,7 @@ namespace EsapiTest
             MockRepository mocks = new MockRepository();
 
             // Set new
-            EsapiConfig.Instance.Encoder.Type = typeof(ForwardEncoder).AssemblyQualifiedName;
+            EsapiConfig.Instance.Encoder.Type = typeof(SurrogateEncoder).AssemblyQualifiedName;
 
             // Set assemblies to load
             AddinAssemblyElement addinAssembly = new AddinAssemblyElement();
@@ -343,10 +344,10 @@ namespace EsapiTest
             mocks.ReplayAll();
 
             // Create and test
-            ForwardEncoder.DefaultEncoder = mockEncoder;
+            SurrogateEncoder.DefaultEncoder = mockEncoder;
             IEncoder encoder = Esapi.Encoder;
 
-            Assert.IsTrue(encoder.GetType().Equals(typeof(ForwardEncoder)));
+            Assert.IsTrue(encoder.GetType().Equals(typeof(SurrogateEncoder)));
             mocks.VerifyAll();
         }
 
@@ -359,14 +360,14 @@ namespace EsapiTest
             MockRepository mocks = new MockRepository();
 
             // Set new
-            EsapiConfig.Instance.Encoder.Type = typeof(ForwardEncoder).AssemblyQualifiedName;
+            EsapiConfig.Instance.Encoder.Type = typeof(SurrogateEncoder).AssemblyQualifiedName;
             
             // Set codecs to load
             string[] codecNames = new [] { Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString() };
             foreach (string codecName in codecNames) {
                 CodecElement codecElement = new CodecElement();
                 codecElement.Name = codecName;
-                codecElement.Type = typeof(ForwardCodec).AssemblyQualifiedName;
+                codecElement.Type = typeof(SurrogateCodec).AssemblyQualifiedName;
 
                 EsapiConfig.Instance.Encoder.Codecs.Add(codecElement);
             }
@@ -376,15 +377,15 @@ namespace EsapiTest
 
             // Custom codecs are loaded and are of proper type
             foreach (string codecName in codecNames) {
-                Expect.Call(delegate { mockEncoder.AddCodec(codecName, null); }).Constraints(Is.Equal(codecName), Is.TypeOf<ForwardCodec>());
+                Expect.Call(delegate { mockEncoder.AddCodec(codecName, null); }).Constraints(Is.Equal(codecName), Is.TypeOf<SurrogateCodec>());
             }
             mocks.ReplayAll();
 
             // Create and test
-            ForwardEncoder.DefaultEncoder = mockEncoder;
+            SurrogateEncoder.DefaultEncoder = mockEncoder;
             IEncoder encoder = Esapi.Encoder;
 
-            Assert.IsTrue(encoder.GetType().Equals(typeof(ForwardEncoder)));
+            Assert.IsTrue(encoder.GetType().Equals(typeof(SurrogateEncoder)));
             mocks.VerifyAll();
         }
     }
