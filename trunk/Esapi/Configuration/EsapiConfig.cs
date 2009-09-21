@@ -322,7 +322,7 @@ namespace Owasp.Esapi.Configuration
 		/// <summary>
 		/// Gets or sets the Types.
 		/// </summary>
-		[ConfigurationProperty(TypesPropertyName, IsRequired = false, IsKey = false, IsDefaultCollection = false, DefaultValue = ".*")]
+		[ConfigurationProperty(TypesPropertyName, IsRequired = false, IsKey = false, IsDefaultCollection = false, DefaultValue = "*")]
 		public string Types
 		{
 			get

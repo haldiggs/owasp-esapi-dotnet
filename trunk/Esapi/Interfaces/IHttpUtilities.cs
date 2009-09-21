@@ -39,6 +39,6 @@ namespace Owasp.Esapi.Interfaces
         /// <summary>
         /// This method changes the session identifier, while leaving the underlying session data consistent.
         /// </summary>
-        void ChangeSessionIdentifier();        
+        void ChangeSessionIdentifier();           
     }
 }
