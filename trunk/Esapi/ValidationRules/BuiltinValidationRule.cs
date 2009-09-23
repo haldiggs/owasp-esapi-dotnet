@@ -34,5 +34,9 @@ namespace Owasp.Esapi.ValidationRules
         /// Credit card validation rule
         /// </summary>
         public const string CreditCard = "CreditCard";
+        /// <summary>
+        /// String validation rule
+        /// </summary>
+        public const string String = "String";
     }
 }

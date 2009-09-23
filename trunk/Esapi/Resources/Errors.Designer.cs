@@ -331,6 +331,15 @@ namespace Owasp.Esapi.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid argument value.
+        /// </summary>
+        internal static string InvalidArgument {
+            get {
+                return ResourceManager.GetString("InvalidArgument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Can&apos;t find random algorithm {1}.
         /// </summary>
         internal static string Randomizer_AlgCreateFailed1 {

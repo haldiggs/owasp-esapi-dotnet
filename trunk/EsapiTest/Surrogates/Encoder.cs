@@ -16,6 +16,11 @@ namespace EsapiTest.Surrogates
         }
         #region IEncoder Members
 
+        public string Canonicalize(string input, bool strict)
+        {
+            return Impl.Canonicalize(input, strict);
+        }
+
         public string Canonicalize(IEnumerable<string> codecNames, string input, bool strict)
         {
             return Impl.Canonicalize(codecNames, input, strict);

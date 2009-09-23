@@ -8,7 +8,27 @@ namespace Owasp.Esapi.ValidationRules
     /// </summary>
     [ValidationRule(BuiltinValidationRules.Date)]
     public class DateValidationRule : IValidationRule
-    {        
+    {
+        private DateTime _minValue = DateTime.MinValue;
+        private DateTime _maxValue = DateTime.MaxValue;
+
+        /// <summary>
+        /// Date min value
+        /// </summary>
+        public DateTime MinValue
+        {
+            get { return _minValue;  }
+            set { _minValue = value; }
+        }
+
+        /// <summary>
+        /// Date maximum value
+        /// </summary>
+        public DateTime MaxValue
+        {
+            get { return _maxValue;  }
+            set { _maxValue = value; }
+        }
 
         #region IValidationRule Members
 
@@ -20,7 +40,11 @@ namespace Owasp.Esapi.ValidationRules
         public bool IsValid(string input)
         {
             DateTime value;
-            return DateTime.TryParse(input, out value);
+            if (!DateTime.TryParse(input, out value)) {
+                return false;
+            }
+
+            return (value >= _minValue && value <= _maxValue);
         }
 
         #endregion

@@ -207,6 +207,9 @@
   <data name="IntrusionDetector_UnknownEventName" xml:space="preserve">
     <value>Unknown event name.</value>
   </data>
+  <data name="InvalidArgument" xml:space="preserve">
+    <value>Invalid argument value</value>
+  </data>
   <data name="Randomizer_AlgCreateFailed1" xml:space="preserve">
     <value>Can't find random algorithm {1}</value>
   </data>

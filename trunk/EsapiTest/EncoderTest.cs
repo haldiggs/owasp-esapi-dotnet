@@ -34,7 +34,7 @@ namespace EsapiTest
         [TestMethod]
         public void Test_Canonicalize()
         {
-            
+           
         }
 
         /// <summary> Test of Normalize method, of class Owasp.Esapi.Validator.
