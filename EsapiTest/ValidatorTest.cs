@@ -27,8 +27,7 @@ namespace EsapiTest
 
         [TestMethod]
         public void Test_CreditCardValidator()
-        {
-            		
+        {            		
 		    IValidator validator = Esapi.Validator;
 		    Assert.IsTrue(validator.IsValid(BuiltinValidationRules.CreditCard, "1234 9876 0000 0008"));
 		    Assert.IsTrue(validator.IsValid(BuiltinValidationRules.CreditCard, "1234987600000008"));
@@ -41,7 +40,6 @@ namespace EsapiTest
         [TestMethod]
         public void Test_IsValidDouble()
         {
-            System.Console.Out.WriteLine("IsValidNumber");
             IValidator validator = Esapi.Validator;
             //testing negative range
             Assert.IsTrue(validator.IsValid(BuiltinValidationRules.Double, "-4"));
@@ -67,7 +65,24 @@ namespace EsapiTest
             Assert.IsTrue(validator.IsValid(BuiltinValidationRules.Double, "-1e-6"));
 
             Assert.IsFalse(validator.IsValid(BuiltinValidationRules.Double, string.Empty));
-            Assert.IsFalse(validator.IsValid(BuiltinValidationRules.Double, null));
+            Assert.IsFalse(validator.IsValid(BuiltinValidationRules.Double, null));            
+        }
+
+        [TestMethod]
+        public void Test_DoubleRuleRange()
+        {
+            IValidator validator = Esapi.Validator;
+
+            // Test range
+            string id = Guid.NewGuid().ToString();
+            DoubleValidationRule doubleRule = new DoubleValidationRule() { MinValue = 0, MaxValue = 10 };
+            validator.AddRule(id, doubleRule);
+
+            Assert.IsTrue(validator.IsValid(id, "0"));
+            Assert.IsTrue(validator.IsValid(id, "10"));
+            Assert.IsTrue(validator.IsValid(id, "5"));
+            Assert.IsFalse(validator.IsValid(id, "-1"));
+            Assert.IsFalse(validator.IsValid(id, "11"));
         }
 
         // <summary> Test of IsValidInteger method, of class Owasp.Esapi.Validator.</summary>
@@ -104,6 +119,23 @@ namespace EsapiTest
             Assert.IsFalse(validator.IsValid(BuiltinValidationRules.Integer, null));
         }
 
+        [TestMethod]
+        public void Test_IntegerRuleRange()
+        {
+            IValidator validator = Esapi.Validator;
+
+            // Test range
+            string id = Guid.NewGuid().ToString();
+            IntegerValidationRule rule = new IntegerValidationRule() { MinValue = 0, MaxValue = 10 };
+            validator.AddRule(id, rule);
+
+            Assert.IsTrue(validator.IsValid(id, "0"));
+            Assert.IsTrue(validator.IsValid(id, "10"));
+            Assert.IsTrue(validator.IsValid(id, "5"));
+            Assert.IsFalse(validator.IsValid(id, "-1"));
+            Assert.IsFalse(validator.IsValid(id, "11"));
+        }
+
         /// <summary> Test of GetValidDate method, of class Owasp.Esapi.Validator.</summary>
         [TestMethod]
         public void Test_GetValidDate()
@@ -119,6 +151,80 @@ namespace EsapiTest
             Assert.IsFalse(validator.IsValid(BuiltinValidationRules.Date, null));
         }
 
+
+        [TestMethod]
+        public void Test_DateRuleRange()
+        {
+            IValidator validator = Esapi.Validator;
+
+            // Test range
+            DateTime now = DateTime.Now;
+            string id = Guid.NewGuid().ToString();
+
+            // NOTE : conversion to string looses precision so force a conversion otherwise 
+            // validating MinValue or MaxValue would fail (see the tests below)
+            DateValidationRule rule = new DateValidationRule() 
+                { 
+                    MinValue = DateTime.Parse(now.AddDays(1).ToString()), 
+                    MaxValue = DateTime.Parse(now.AddDays(10).ToString())
+                };
+            validator.AddRule(id, rule);
+
+            Assert.IsTrue(validator.IsValid(id, now.AddDays(1).ToString()));
+            Assert.IsTrue(validator.IsValid(id, now.AddDays(10).ToString()));
+            Assert.IsTrue(validator.IsValid(id, now.AddDays(5).ToString()));
+            Assert.IsFalse(validator.IsValid(id,now.ToString()));
+            Assert.IsFalse(validator.IsValid(id, now.AddDays(11).ToString()));
+        }
+
+        [TestMethod]
+        public void Test_StringRule()
+        {
+            IValidator validator = Esapi.Validator;
+
+            string id = Guid.NewGuid().ToString();
+            StringValidationRule rule = new StringValidationRule();
+            validator.AddRule(id, rule);
+
+            // Test valid
+            Assert.IsTrue(validator.IsValid(id, Guid.NewGuid().ToString()));
+
+            // Test allow null or empty
+            Assert.IsFalse(validator.IsValid(id, string.Empty));
+            Assert.IsFalse(validator.IsValid(id, null));
+            
+            rule.AllowNullOrEmpty = true;
+            Assert.IsTrue(validator.IsValid(id, string.Empty));
+            Assert.IsTrue(validator.IsValid(id, null));
+            
+            // Test whitelist
+            Assert.IsTrue(validator.IsValid(id, "abc"));
+            rule.AddWhitelistPattern("\\d+");
+            Assert.IsFalse(validator.IsValid(id, "abc"));
+            Assert.IsTrue(validator.IsValid(id, "123"));
+
+            // Test blacklist
+            rule.AddBlacklistPattern("1");
+            Assert.IsFalse(validator.IsValid(id, "123"));
+            Assert.IsTrue(validator.IsValid(id, "23"));
+        }
+
+        [TestMethod]
+        public void Test_StringRuleRange()
+        {
+            IValidator validator = Esapi.Validator;
+
+            // Test range
+            string id = Guid.NewGuid().ToString();
+            StringValidationRule rule = new StringValidationRule() { MinLength = 1, MaxLength = 10 };
+            validator.AddRule(id, rule);
+
+            Assert.IsTrue(validator.IsValid(id, "a"));
+            Assert.IsTrue(validator.IsValid(id, "1234567890"));
+            Assert.IsTrue(validator.IsValid(id, "12345"));
+            Assert.IsFalse(validator.IsValid(id, ""));
+            Assert.IsFalse(validator.IsValid(id, "12345678901"));
+        }
         
         /// <summary> Test of IsValidPrintable method, of class Owasp.Esapi.Validator.</summary>
         [TestMethod]

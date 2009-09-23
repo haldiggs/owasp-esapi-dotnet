@@ -16,6 +16,12 @@ namespace Owasp.Esapi
         private readonly ILogger logger = Esapi.Logger;
         private Dictionary<string, ICodec> codecs = new Dictionary<string, ICodec>();
 
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncoder.Canonicalize(string, bool)" />
+        public string Canonicalize(string input, bool strict)
+        {
+            return Canonicalize(codecs.Keys, input, strict);
+        }
+
         /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncoder.Canonicalize(IEnumerable&lt;string&gt;, string, bool)" />
         public string Canonicalize(IEnumerable<string> codecNames, string input, bool strict)
         {

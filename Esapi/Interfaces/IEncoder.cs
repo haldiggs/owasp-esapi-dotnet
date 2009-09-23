@@ -6,7 +6,7 @@ namespace Owasp.Esapi.Interfaces
     /// so that it will be safe for a variety of interpreters.
     /// </summary>    
     public interface IEncoder
-    {
+    {        
         /// <summary>
         /// This method performs canonicalization on data received to ensure that it
         /// has been reduced to its most basic form before validation. The application can supply a list of
@@ -23,6 +23,14 @@ namespace Owasp.Esapi.Interfaces
         /// <returns> The canonicalized string.
         /// </returns>
         string Canonicalize(IEnumerable<string> codecNames, string input, bool strict);
+
+        /// <summary>
+        /// Canonicalize input using loaded codecs
+        /// </summary>
+        /// <param name="input">String input</param>
+        /// <param name="strict">If true double encoding causes exception</param>
+        /// <returns>Canonicalized string</returns>
+        string Canonicalize(string input, bool strict);
 
         /// <summary> Reduce all non-ascii characters to their ASCII form so that simpler
         /// validation rules can be applied. For example, an accented-e character

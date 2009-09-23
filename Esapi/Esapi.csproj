@@ -135,6 +135,7 @@
     <Compile Include="Interfaces\IValidationRule.cs" />
     <Compile Include="ValidationRules\PrintableValidationRule.cs" />
     <Compile Include="ValidationRules\RegexValidationRule.cs" />
+    <Compile Include="ValidationRules\StringValidationRule.cs" />
     <Compile Include="Validator.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +146,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Errors.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="IntrusionDetection\Rules\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
