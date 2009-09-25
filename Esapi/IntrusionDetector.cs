@@ -200,6 +200,19 @@ namespace Owasp.Esapi
         }
 
         /// <summary>
+        /// Get action by name
+        /// </summary>
+        /// <param name="name">Action name</param>
+        /// <rereturns>Action if found, null otherwise</rereturns>
+        public IAction GetAction(string name)
+        {
+            IAction action;
+            _actions.TryGetValue(name, out action);
+
+            return action;
+        }
+
+        /// <summary>
         /// Add event threshold
         /// </summary>
         /// <param name="threshold"></param>

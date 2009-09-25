@@ -10,7 +10,7 @@ using EM = Owasp.Esapi.Resources.Errors;
 using Rhino.Mocks.Constraints;
 using EsapiTest.Surrogates;
 
-namespace EsapiTest
+namespace EsapiTest.InstrusionDetector
 {
     /// <summary>
     /// Summary description for IntrusionDetector
@@ -164,6 +164,20 @@ namespace EsapiTest
         }
 
         [TestMethod]
+        public void Test_GetAction()
+        {
+            MockRepository mocks = new MockRepository();
+
+            // Get valid
+            string name = Guid.NewGuid().ToString();
+            Esapi.IntrusionDetector.AddAction(name, mocks.StrictMock<IAction>());
+            Assert.IsNotNull(Esapi.IntrusionDetector.GetAction(name));
+
+            // Get invalid
+            Assert.IsNull(Esapi.IntrusionDetector.GetAction(Guid.NewGuid().ToString()));
+        }
+
+        [TestMethod]
         public void Test_RemoveInvalidAction()
         {
             string name = Guid.NewGuid().ToString();
@@ -229,6 +243,7 @@ namespace EsapiTest
             Expect.Call(delegate { mockDetector.AddAction(BuiltinActions.Log, null); }).Constraints(Is.Equal(BuiltinActions.Log), Is.Anything());
             Expect.Call(delegate { mockDetector.AddAction(BuiltinActions.FormsAuthenticationLogout, null); }).Constraints(Is.Equal(BuiltinActions.FormsAuthenticationLogout), Is.Anything());
             Expect.Call(delegate { mockDetector.AddAction(BuiltinActions.MembershipDisable, null); }).Constraints(Is.Equal(BuiltinActions.MembershipDisable), Is.Anything());
+            Expect.Call(delegate { mockDetector.AddAction(BuiltinActions.Block, null); }).Constraints(Is.Equal(BuiltinActions.Block), Is.Anything());
             mocks.ReplayAll();
 
             SurrogateIntrusionDetector.DefaultDetector = mockDetector;

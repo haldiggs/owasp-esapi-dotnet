@@ -20,6 +20,13 @@ namespace Owasp.Esapi.Interfaces
         /// <returns>True if succeeded, false otherwise</returns>
         bool RemoveAction(string name);
 
+        /// <summary>
+        /// Get action by name
+        /// </summary>
+        /// <param name="name">Action name</param>
+        /// <returns>Action if found, null otherwise</returns>
+        IAction GetAction(string name);
+
         /// <summary> 
         /// The intrusion detection quota for a particular event.
         /// </summary>

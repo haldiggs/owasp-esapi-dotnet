@@ -110,10 +110,13 @@
     <Compile Include="Interfaces\ISecurityConfiguration.cs" />
     <Compile Include="Interfaces\IValidator.cs">
     </Compile>
+    <Compile Include="IntrusionDetection\Actions\BlockAction.cs" />
     <Compile Include="IntrusionDetection\Actions\BuiltinActions.cs" />
     <Compile Include="IntrusionDetection\Actions\DisableMembershipAction.cs" />
     <Compile Include="IntrusionDetection\Actions\FomsAuthenticationLogoutAction.cs" />
     <Compile Include="IntrusionDetection\Actions\LogAction.cs" />
+    <Compile Include="IntrusionDetection\Actions\RedirectAction.cs" />
+    <Compile Include="IntrusionDetection\Actions\TransferAction.cs" />
     <Compile Include="IntrusionDetection\IntrusionActionArgs.cs" />
     <Compile Include="NamedAddinAttribute.cs" />
     <Compile Include="Resources\Errors.Designer.cs">

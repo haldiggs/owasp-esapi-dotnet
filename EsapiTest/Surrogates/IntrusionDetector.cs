@@ -26,6 +26,11 @@ namespace EsapiTest.Surrogates
             return Impl.RemoveAction(name);
         }
 
+        public IAction GetAction(string name)
+        {
+            return Impl.GetAction(name);
+        }
+
         public void AddThreshold(Owasp.Esapi.Threshold threshold)
         {
             Impl.AddThreshold(threshold);
