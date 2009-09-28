@@ -1,4 +1,7 @@
 ﻿
+using System.Collections.Generic;
+using System.Web;
+using System.Security.Principal;
 namespace Owasp.Esapi.Interfaces
 {
     /// <summary>
@@ -39,6 +42,14 @@ namespace Owasp.Esapi.Interfaces
         /// <summary>
         /// This method changes the session identifier, while leaving the underlying session data consistent.
         /// </summary>
-        void ChangeSessionIdentifier();           
+        void ChangeSessionIdentifier();
+
+        /// <summary>
+        /// Log HTTP request 
+        /// </summary>
+        /// <param name="request">Request to log</param>
+        /// <param name="logger">Logger to use</param>
+        /// <param name="obfuscatedParams">Parameter names to obfuscate</param>
+        void LogHttpRequest(HttpRequest request, ILogger logger, ICollection<string> obfuscatedParams);
     }
 }

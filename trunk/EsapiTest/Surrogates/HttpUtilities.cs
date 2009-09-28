@@ -1,4 +1,8 @@
 ﻿using Owasp.Esapi.Interfaces;
+using System.Web;
+using System.Collections.Generic;
+using System.Security.Principal;
+using System.Threading;
 
 namespace EsapiTest.Surrogates
 {
@@ -32,6 +36,11 @@ namespace EsapiTest.Surrogates
         public void ChangeSessionIdentifier()
         {
             Impl.ChangeSessionIdentifier();
+        }
+
+        public void LogHttpRequest(HttpRequest request, ILogger logger, ICollection<string> obfuscatedParams)
+        {
+            Impl.LogHttpRequest(request, logger, obfuscatedParams);
         }
 
         #endregion

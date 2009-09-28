@@ -81,6 +81,8 @@
     <Compile Include="Configuration\ValidatorElement.cs" />
     <Compile Include="CodecAttribute.cs" />
     <Compile Include="EsapiLoader.cs" />
+    <Compile Include="HttpUtilities\HttpDataWriter.cs" />
+    <Compile Include="HttpUtilities\HttpRequestWriter.cs" />
     <Compile Include="Interfaces\IAction.cs" />
     <Compile Include="Interfaces\ICodec.cs" />
     <Compile Include="Codecs\JavaScriptCodec.cs" />
@@ -98,7 +100,7 @@
     <Compile Include="Errors\IntrusionException.cs" />
     <Compile Include="Errors\ValidationException.cs" />
     <Compile Include="Esapi.cs" />
-    <Compile Include="HttpUtilities.cs" />
+    <Compile Include="HttpUtilities\HttpUtilities.cs" />
     <Compile Include="Interfaces\IAccessReferenceMap.cs" />
     <Compile Include="Interfaces\IAccessController.cs" />
     <Compile Include="Interfaces\IEncoder.cs" />
