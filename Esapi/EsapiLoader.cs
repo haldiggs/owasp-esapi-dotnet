@@ -210,7 +210,7 @@ namespace Owasp.Esapi
             }
 
             // Default
-            return new HttpUtilities();
+            return new HttpUtilities.HttpUtilities();
         }
         #endregion
 

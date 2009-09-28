@@ -1,17 +1,23 @@
-﻿using System.Web;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.IO;
+using System.Security.Principal;
+using System.Text;
+using System.Web;
 using System.Web.SessionState;
 using System.Web.UI;
 using Owasp.Esapi.Errors;
 using Owasp.Esapi.Interfaces;
 using EM = Owasp.Esapi.Resources.Errors;
 
-namespace Owasp.Esapi
-{
+namespace Owasp.Esapi.HttpUtilities
+{       
     /// <inheritdoc  cref="Owasp.Esapi.Interfaces.IHttpUtilities" />
     /// <summary>
     /// Reference implementation for the <see cref="Owasp.Esapi.Interfaces.IHttpUtilities"/> class.
     /// </summary>
-    public class HttpUtilities: IHttpUtilities
+    public class HttpUtilities : IHttpUtilities
     {
         /// <summary>
         /// The name to use for the CSRF token.
@@ -68,6 +74,28 @@ namespace Owasp.Esapi
             // HTTP 1.0
             response.AddHeader("Pragma","no-cache");
             response.Expires = -1;
+        }
+
+        /// <inheriteddoc cref="Owasp.Esapi.Interfaces.IHttpUtilities.LogHttpRequest(HttpRequest, ILogger, ICollection&lt;string&gt;)" />
+        public void LogHttpRequest(HttpRequest request, ILogger logger, ICollection<string> obfuscatedParams)
+        {
+            if (request == null) {
+                throw new ArgumentNullException("request");
+            }
+            if (logger == null) {
+                throw new ArgumentNullException("logger");
+            }
+
+            StringBuilder requestData = new StringBuilder();
+
+            // Write request data
+            using (TextWriter dataWriter = new StringWriter(requestData)) {
+                HttpRequestWriter writer = new HttpRequestWriter(dataWriter);
+                writer.Write(request, Esapi.SecurityConfiguration.CurrentUser, obfuscatedParams, true);
+            }
+
+            // Log 
+            logger.Info(LogEventTypes.FUNCTIONALITY, requestData.ToString());
         }
 
         #endregion
