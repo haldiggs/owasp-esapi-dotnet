@@ -51,5 +51,11 @@ namespace Owasp.Esapi.Interfaces
         /// <param name="logger">Logger to use</param>
         /// <param name="obfuscatedParams">Parameter names to obfuscate</param>
         void LogHttpRequest(HttpRequest request, ILogger logger, ICollection<string> obfuscatedParams);
+
+        /// <summary>
+        /// Ensure request is secure (over SSL and using POST)
+        /// </summary>
+        /// <param name="request">Request to test</param>
+        void AssertSecureRequest(HttpRequest request);
     }
 }
