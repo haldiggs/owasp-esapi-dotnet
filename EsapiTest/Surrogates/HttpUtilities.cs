@@ -43,6 +43,11 @@ namespace EsapiTest.Surrogates
             Impl.LogHttpRequest(request, logger, obfuscatedParams);
         }
 
+        public void AssertSecureRequest(HttpRequest request)
+        {
+            Impl.AssertSecureRequest(request);
+        }
+
         #endregion
     }
 }

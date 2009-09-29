@@ -98,6 +98,24 @@ namespace Owasp.Esapi.HttpUtilities
             logger.Info(LogEventTypes.FUNCTIONALITY, requestData.ToString());
         }
 
+        /// <summary>
+        /// Assert request is secure (over SSL and using POST)
+        /// </summary>
+        /// <param name="request">Request to test</param>
+        public void AssertSecureRequest(HttpRequest request)
+        {
+            if (request == null) {
+                throw new ArgumentNullException("request");
+            }
+
+            if (!request.IsSecureConnection) {
+                throw new AccessControlException(EM.HttpUtilities_InsecureRequest, EM.HttpUtilities_InsecureProtocol);
+            }
+            if ( string.Compare(request.HttpMethod, "POST", true) != 0) {
+                throw new AccessControlException(EM.HttpUtilities_InsecureRequest, EM.HttpUtilities_InsecureMethod);
+            }
+        }
+
         #endregion
     }
 }

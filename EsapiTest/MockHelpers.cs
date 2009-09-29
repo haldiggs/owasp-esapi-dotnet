@@ -60,5 +60,17 @@ namespace EsapiTest
         {
             CallContext.HostContext = (new MockHttpContext()).Context;
         }
+
+        /// <summary>
+        /// Set current http context
+        /// </summary>
+        /// <param name="context"></param>
+        public static void SetCurrentContext(MockHttpContext context)
+        {
+            if (context == null) {
+                throw new ArgumentNullException("request");
+            }
+            CallContext.HostContext = context.Context;
+        }
     }
 }

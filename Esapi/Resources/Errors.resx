@@ -177,6 +177,15 @@
   <data name="HttpUtilities_CsrfCheckFailed" xml:space="preserve">
     <value>Possibly forged HTTP request without proper CSRF token detected</value>
   </data>
+  <data name="HttpUtilities_InsecureMethod" xml:space="preserve">
+    <value>Insecure method</value>
+  </data>
+  <data name="HttpUtilities_InsecureProtocol" xml:space="preserve">
+    <value>Insecure protocol</value>
+  </data>
+  <data name="HttpUtilities_InsecureRequest" xml:space="preserve">
+    <value>Insecure request</value>
+  </data>
   <data name="InstrusionDetector_EventReceived1" xml:space="preserve">
     <value>Security event {0} received</value>
   </data>

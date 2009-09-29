@@ -1,18 +1,18 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
+using System.Security.Principal;
 using System.Text;
-using System.Threading;
 using System.Web;
 using EsapiTest.Surrogates;
+using log4net;
 using log4net.Appender;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Owasp.Esapi;
 using Owasp.Esapi.Configuration;
+using Owasp.Esapi.Errors;
 using Owasp.Esapi.HttpUtilities;
 using Owasp.Esapi.Interfaces;
-using log4net;
-using System.Security.Principal;
+using System.Web.SessionState;
 
 namespace EsapiTest
 {
@@ -105,5 +105,32 @@ namespace EsapiTest
             MockHttpContext.InitializeCurrentContext();
             Esapi.HttpUtilities.LogHttpRequest(HttpContext.Current.Request, null, null);            
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(AccessControlException))]
+        public void Test_SecureRequest()
+        {
+            MockHttpContext.InitializeCurrentContext();
+            Esapi.HttpUtilities.AssertSecureRequest(HttpContext.Current.Request);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Test_NullSecureRequest()
+        {
+            Esapi.HttpUtilities.AssertSecureRequest(null);
+        }
+
+        //[TestMethod]
+        //public void Test_AddNoCacheHeaders()
+        //{
+        //    MockHttpContext.InitializeCurrentContext();
+
+        //    Esapi.HttpUtilities.AddNoCacheHeaders();
+
+        //    Assert.IsNotNull(HttpContext.Current.Response.Headers.Get("Cache-Control"));
+        //    Assert.IsNotNull(HttpContext.Current.Response.Headers.Get("Pragma"));
+        //    Assert.AreEqual(HttpContext.Current.Response.Expires, -1);
+        //}
     }
 }
