@@ -225,4 +225,10 @@
   <data name="Randomizer_Failure" xml:space="preserve">
     <value>Randomizer failure</value>
   </data>
+  <data name="RequestThrottleRule_MaximumExceeded" xml:space="preserve">
+    <value>Maximum request count exceeded</value>
+  </data>
+  <data name="RequestThrottleRule_SessionRequired" xml:space="preserve">
+    <value>Session not initialized</value>
+  </data>
 </root>

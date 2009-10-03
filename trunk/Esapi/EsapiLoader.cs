@@ -9,38 +9,7 @@ using System.Text;
 namespace Owasp.Esapi
 {
     internal class EsapiLoader
-    {
-        #region Miscellaneous
-        /// <summary>
-        /// Convert wildcard match string to a regex
-        /// </summary>
-        /// <param name="wildcardMatch">Wildcard string</param>
-        /// <returns></returns>
-        internal static Regex WildcardToRegex(string wildcardMatch)
-        {
-            StringBuilder sbRegex = new StringBuilder();
-            sbRegex.Append("^");
-
-            if (!string.IsNullOrEmpty(wildcardMatch)) {
-                foreach (char w in wildcardMatch) {
-                    if (w == '*') {
-                        sbRegex.Append(".*");
-                        continue;
-                    }
-                    if (w == '?') {
-                        sbRegex.Append(".");
-                        continue;
-                    }
-                    sbRegex.Append(Regex.Escape(w.ToString()));
-                }
-            }
-
-            sbRegex.Append("$");
-
-            return new Regex(sbRegex.ToString());
-        }
-        #endregion
-
+    {        
         #region AccessController
         /// <summary>
         /// Load access controller 
@@ -139,7 +108,7 @@ namespace Owasp.Esapi
             else {
                 // Create default encoder and load all local codec defs
                 encoder = new Encoder();                
-                LoadCodecs(encoder, typeof(Encoder).Assembly, WildcardToRegex(@"Owasp.Esapi.Codecs.*"));
+                LoadCodecs(encoder, typeof(Encoder).Assembly, MatchHelper.WildcardToRegex(@"Owasp.Esapi.Codecs.*"));
             }
             
             CodecCollection codecs = encoderConfig.Codecs;
@@ -148,7 +117,7 @@ namespace Owasp.Esapi
             foreach (AddinAssemblyElement codecAssembly in codecs.Assemblies) {
                 try {
                     Assembly assembly = Assembly.Load(codecAssembly.Name);
-                    Regex typeMatch = WildcardToRegex(codecAssembly.Types);
+                    Regex typeMatch = MatchHelper.WildcardToRegex(codecAssembly.Types);
 
                     LoadCodecs(encoder, assembly, typeMatch);
                 }
@@ -291,14 +260,14 @@ namespace Owasp.Esapi
             else {
                 // Create default and load all actions
                 detector = new IntrusionDetector();
-                LoadActions(detector, typeof(IntrusionDetector).Assembly, WildcardToRegex(@"Owasp.Esapi.IntrusionDetection.Actions.*"));
+                LoadActions(detector, typeof(IntrusionDetector).Assembly, MatchHelper.WildcardToRegex(@"Owasp.Esapi.IntrusionDetection.Actions.*"));
             }
 
             // Load actions
             foreach (AddinAssemblyElement actionAssembly in detectorConfig.Actions.Assemblies) {
                 try {
                     Assembly assembly = Assembly.Load(actionAssembly.Name);
-                    Regex typeMatch = WildcardToRegex( actionAssembly.Types);
+                    Regex typeMatch = MatchHelper.WildcardToRegex(actionAssembly.Types);
 
                     LoadActions(detector, assembly, typeMatch);
                 }
@@ -435,7 +404,7 @@ namespace Owasp.Esapi
             else {
                 // Create default and load local rules
                 validator = new Validator();
-                LoadValidationRules(validator, typeof(Validator).Assembly, WildcardToRegex(@"Owasp.Esapi.ValidationRules.*"));
+                LoadValidationRules(validator, typeof(Validator).Assembly, MatchHelper.WildcardToRegex(@"Owasp.Esapi.ValidationRules.*"));
             }
 
             ValidationRuleCollection rules = validatorConfig.Rules;
@@ -444,7 +413,7 @@ namespace Owasp.Esapi
             foreach (AddinAssemblyElement ruleAssembly in rules.Assemblies) {
                 try {
                     Assembly assembly = Assembly.Load(ruleAssembly.Name);
-                    Regex typeMatch = WildcardToRegex( ruleAssembly.Types);
+                    Regex typeMatch = MatchHelper.WildcardToRegex(ruleAssembly.Types);
 
                     LoadValidationRules(validator, assembly, typeMatch);
                 }
