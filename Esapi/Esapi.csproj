@@ -119,7 +119,17 @@
     <Compile Include="IntrusionDetection\Actions\LogAction.cs" />
     <Compile Include="IntrusionDetection\Actions\RedirectAction.cs" />
     <Compile Include="IntrusionDetection\Actions\TransferAction.cs" />
+    <Compile Include="IntrusionDetection\IContextSelector.cs" />
+    <Compile Include="IntrusionDetection\InstrusionRule.cs" />
+    <Compile Include="IntrusionDetection\IntrusionRuleArgs.cs" />
     <Compile Include="IntrusionDetection\IntrusionActionArgs.cs" />
+    <Compile Include="IntrusionDetection\Rules\ClickjackRule.cs" />
+    <Compile Include="IntrusionDetection\Rules\CsrfRule.cs" />
+    <Compile Include="IntrusionDetection\Rules\RequestThrottleRule.cs" />
+    <Compile Include="IntrusionDetection\Conditions\ParametersCondition.cs" />
+    <Compile Include="IntrusionDetection\Conditions\UrlCondition.cs" />
+    <Compile Include="IntrusionDetection\Conditions\UserCondition.cs" />
+    <Compile Include="MatchHelper.cs" />
     <Compile Include="NamedAddinAttribute.cs" />
     <Compile Include="Resources\Errors.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -151,9 +161,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Errors.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="IntrusionDetection\Rules\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
