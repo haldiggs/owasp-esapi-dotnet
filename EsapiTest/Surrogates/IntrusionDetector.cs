@@ -61,7 +61,7 @@ namespace EsapiTest.Surrogates
 
         #region IAction Members
 
-        public void Execute(Owasp.Esapi.ActionArgs args)
+        public void Execute(Owasp.Esapi.Interfaces.ActionArgs args)
         {
             Impl.Execute(args);
         }

@@ -63,7 +63,7 @@
   <ItemGroup>
     <Compile Include="AccessController.cs" />
     <Compile Include="AccessReferenceMap.cs" />
-    <Compile Include="ActionArgs.cs" />
+    <Compile Include="Interfaces\ActionArgs.cs" />
     <Compile Include="ActionAttribute.cs" />
     <Compile Include="CharSetValues.cs" />
     <Compile Include="Codecs\Base64Codec.cs" />
@@ -83,6 +83,7 @@
     <Compile Include="EsapiLoader.cs" />
     <Compile Include="HttpUtilities\HttpDataWriter.cs" />
     <Compile Include="HttpUtilities\HttpRequestWriter.cs" />
+    <Compile Include="Interfaces\ConditionArgs.cs" />
     <Compile Include="Interfaces\IAction.cs" />
     <Compile Include="Interfaces\ICodec.cs" />
     <Compile Include="Codecs\JavaScriptCodec.cs" />
@@ -103,15 +104,18 @@
     <Compile Include="HttpUtilities\HttpUtilities.cs" />
     <Compile Include="Interfaces\IAccessReferenceMap.cs" />
     <Compile Include="Interfaces\IAccessController.cs" />
+    <Compile Include="Interfaces\ICondition.cs" />
     <Compile Include="Interfaces\IEncoder.cs" />
     <Compile Include="Interfaces\IEncryptor.cs" />
     <Compile Include="Interfaces\IHttpUtilities.cs" />
     <Compile Include="Interfaces\IIntrusionDetector.cs" />
     <Compile Include="Interfaces\ILogger.cs" />
     <Compile Include="Interfaces\IRandomizer.cs" />
+    <Compile Include="Interfaces\IRule.cs" />
     <Compile Include="Interfaces\ISecurityConfiguration.cs" />
     <Compile Include="Interfaces\IValidator.cs">
     </Compile>
+    <Compile Include="Interfaces\RuleArgs.cs" />
     <Compile Include="IntrusionDetection\Actions\BlockAction.cs" />
     <Compile Include="IntrusionDetection\Actions\BuiltinActions.cs" />
     <Compile Include="IntrusionDetection\Actions\DisableMembershipAction.cs" />
@@ -119,8 +123,7 @@
     <Compile Include="IntrusionDetection\Actions\LogAction.cs" />
     <Compile Include="IntrusionDetection\Actions\RedirectAction.cs" />
     <Compile Include="IntrusionDetection\Actions\TransferAction.cs" />
-    <Compile Include="IntrusionDetection\IContextSelector.cs" />
-    <Compile Include="IntrusionDetection\InstrusionRule.cs" />
+    <Compile Include="IntrusionDetection\IntrusionConditionArgs.cs" />
     <Compile Include="IntrusionDetection\IntrusionRuleArgs.cs" />
     <Compile Include="IntrusionDetection\IntrusionActionArgs.cs" />
     <Compile Include="IntrusionDetection\Rules\ClickjackRule.cs" />

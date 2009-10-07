@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
 using System.Web;
+using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi.IntrusionDetection.Rules
 {
     /// <summary>
     /// Clickjack detection rule
     /// </summary>
-    public class ClickjackRule : IIntrusionOutputRule
+    public class ClickjackRule : IRule
     {
         /// <summary>
         /// Framing mode
@@ -59,16 +56,22 @@ namespace Owasp.Esapi.IntrusionDetection.Rules
             _mode = mode;
         }
 
-        #region IIntrusionOutputRule Members
+        #region IRule Members
 
         /// <summary>
         /// Insert clickjack prevention
         /// </summary>
         /// <param name="args"></param>
-        public void Process(IntrusionOutputRuleArgs args)
+        public void Process(RuleArgs args)
         {
             if (args == null) {
                 throw new ArgumentNullException("args");
+            }
+
+            // Verify request stage
+            IntrusionRuleArgs intrusionArgs = (IntrusionRuleArgs)args;
+            if (intrusionArgs.Stage != RequestStage.PostRequestHandlerExecute) {
+                return;
             }
             
             // Get response
