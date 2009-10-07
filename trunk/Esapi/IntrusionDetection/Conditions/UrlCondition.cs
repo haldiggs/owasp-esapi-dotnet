@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi.IntrusionDetection.Conditions
 {
     /// <summary>
     /// Regex based URL context condition
     /// </summary>
-    public class UrlCondition : IContextCondition
+    public class UrlCondition : ICondition
     {
         /// <summary>
         /// Any URL pattern
@@ -42,20 +43,21 @@ namespace Owasp.Esapi.IntrusionDetection.Conditions
                 
         }
 
-        #region IContextSelector Members
+        #region ICondition Members
 
         /// <summary>
         /// Verify URL condition
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        public bool Evaluate(ContextConditionArgs args)
+        public bool Evaluate(ConditionArgs args)
         {
             if (args == null) {
                 throw new ArgumentNullException();
             }
 
-            return _url.IsMatch(args.RequestUri.ToString());
+            IntrusionConditionArgs intrusionArgs = (IntrusionConditionArgs)args;
+            return _url.IsMatch(intrusionArgs.RequestUri.ToString());
         }
 
         #endregion

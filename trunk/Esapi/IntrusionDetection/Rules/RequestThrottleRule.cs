@@ -4,11 +4,15 @@ using System.Diagnostics;
 using System.Web;
 using System.Web.SessionState;
 using Owasp.Esapi.Errors;
+using Owasp.Esapi.Interfaces;
 using EM = Owasp.Esapi.Resources.Errors;
 
 namespace Owasp.Esapi.IntrusionDetection.Rules
 {
-    public class RequestThrottleRule : IInstrusionInputRule
+    /// <summary>
+    /// Throttle requests rule
+    /// </summary>
+    public class RequestThrottleRule : IRule
     {
         private const string SessionKey = "Owasp.Esapi.IntrusionDetection.Rules.RequestThrottleRule";
 
@@ -89,16 +93,22 @@ namespace Owasp.Esapi.IntrusionDetection.Rules
             return history;
         }
 
-        #region IInstrusionInputRule Members
+        #region IRule Members
 
         /// <summary>
         /// Verify request rate
         /// </summary>
         /// <param name="args"></param>
-        public void Process(IntrusionInputRuleArgs args)
+        public void Process(RuleArgs args)
         {
             if (args == null) {
                 throw new ArgumentNullException("args");
+            }
+
+            // Verify request stage
+            IntrusionRuleArgs intrusionArgs = (IntrusionRuleArgs)args;
+            if (intrusionArgs.Stage != RequestStage.PreRequestHandlerExecute) {
+                return;
             }
             
             // Get current and history requests

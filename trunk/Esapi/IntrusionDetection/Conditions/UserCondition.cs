@@ -1,14 +1,15 @@
 ﻿using System;
-using System.Text.RegularExpressions;
-using System.Security.Principal;
 using System.Collections.Generic;
+using System.Security.Principal;
+using System.Text.RegularExpressions;
+using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi.IntrusionDetection.Conditions
 {
     /// <summary>
     /// User test condition
     /// </summary>
-    public class UserCondition : IContextCondition
+    public class UserCondition : ICondition
     {
         /// <summary>
         /// Any user name pattern
@@ -64,12 +65,12 @@ namespace Owasp.Esapi.IntrusionDetection.Conditions
             set { _roles = (value == null ? new List<string>() : new List<string>(value)); }
         }
 
-        #region IContextSelector Members
+        #region ICondition Members
         /// <summary>
         /// Test if the current user identity and roles matches
         /// </summary>
         /// <returns></returns>
-        public bool Evaluate(ContextConditionArgs args)
+        public bool Evaluate(ConditionArgs args)
         {
             if (args == null) {
                 throw new ArgumentNullException("args");

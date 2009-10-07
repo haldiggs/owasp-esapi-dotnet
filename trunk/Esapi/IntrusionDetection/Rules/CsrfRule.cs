@@ -1,32 +1,37 @@
-﻿namespace Owasp.Esapi.IntrusionDetection.Rules
+﻿using System;
+using Owasp.Esapi.Interfaces;
+
+namespace Owasp.Esapi.IntrusionDetection.Rules
 {
     /// <summary>
     /// Intrusion detection CSRF rule
     /// </summary>
-    public class CsrfRule : IInstrusionInputRule, IIntrusionOutputRule
+    public class CsrfRule : IRule
     {
-        #region IInstrusionInputRule Members
+        #region IRule Members
 
         /// <summary>
-        /// Verify CSRF token
+        /// Process CSRF rule
         /// </summary>
         /// <param name="args"></param>
-        public void Process(IntrusionInputRuleArgs args)
+        public void Process(RuleArgs args)
         {
-            Esapi.HttpUtilities.VerifyCsrfToken();
-        }
+            if (args == null) {
+                throw new ArgumentNullException("args");
+            }
 
-        #endregion
+            IntrusionRuleArgs intrusionArgs = (IntrusionRuleArgs)args;
 
-        #region IIntrusionOutputRule Members
-
-        /// <summary>
-        /// Add CSRF token
-        /// </summary>
-        /// <param name="args"></param>
-        public void Process(IntrusionOutputRuleArgs args)
-        {
-            Esapi.HttpUtilities.AddCsrfToken();
+            switch (intrusionArgs.Stage) {
+                case RequestStage.PreRequestHandlerExecute:
+                    Esapi.HttpUtilities.VerifyCsrfToken();
+                    break;
+                case RequestStage.PostRequestHandlerExecute:
+                    Esapi.HttpUtilities.AddCsrfToken();
+                    break;
+                default:
+                    break;
+            }            
         }
 
         #endregion

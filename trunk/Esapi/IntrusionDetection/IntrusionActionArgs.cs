@@ -1,4 +1,5 @@
 ﻿using System;
+using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi.IntrusionDetection
 {   
