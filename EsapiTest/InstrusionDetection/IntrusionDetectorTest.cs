@@ -1,14 +1,13 @@
 ﻿using System;
+using EsapiTest.Surrogates;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Owasp.Esapi;
-using Owasp.Esapi.Errors;
 using Owasp.Esapi.Configuration;
+using Owasp.Esapi.Errors;
+using Owasp.Esapi.Interfaces;
 using Owasp.Esapi.IntrusionDetection.Actions;
 using Rhino.Mocks;
-using Owasp.Esapi.Interfaces;
-using EM = Owasp.Esapi.Resources.Errors;
 using Rhino.Mocks.Constraints;
-using EsapiTest.Surrogates;
 
 namespace EsapiTest.InstrusionDetector
 {
