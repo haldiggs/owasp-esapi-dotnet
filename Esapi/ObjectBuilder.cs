@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
+using Owasp.Esapi.Configuration;
+using System.Configuration;
 
 namespace Owasp.Esapi
 {
@@ -10,6 +12,36 @@ namespace Owasp.Esapi
     /// </summary>
     internal class ObjectBuilder
     {
+        /// <summary>
+        /// Build object instance
+        /// </summary>
+        /// <typeparam name="T">Instance type</typeparam>
+        /// <param name="configuration">Instance configuratio</param>
+        /// <returns></returns>
+        public static T BuildInstance<T>(ObjectInstanceElement configuration)
+            where T : class
+        {
+            if (configuration == null) {
+                throw new ArgumentNullException("configuration");
+            }
+
+            // Get type
+            Type typeInstance = Type.GetType(configuration.Type, true);
+
+            // Create properties
+            Dictionary<string, object> properties = null;
+            if (configuration.PropertyValues != null && configuration.PropertyValues.Count > 0) {
+                properties = new Dictionary<string, object>();
+
+                foreach (KeyValueConfigurationElement key in configuration.PropertyValues) {
+                    properties[key.Key] = key.Value;
+                }
+            }
+
+            // Construct
+            return Build<T>(typeInstance, properties);
+        }
+
         /// <summary>
         /// Build object instance
         /// </summary>

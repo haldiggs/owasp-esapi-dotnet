@@ -58,7 +58,6 @@
     <Compile Include="Configuration\ExecuteRuleElements.cs" />
     <Compile Include="Configuration\MatchConditionElements.cs" />
     <Compile Include="Configuration\NamedElements.cs" />
-    <Compile Include="Configuration\PropertyElements.cs" />
     <Compile Include="Configuration\RuleContextElements.cs" />
     <Compile Include="Configuration\RuleElements.cs" />
     <Compile Include="Configuration\ObjectInstanceElement.cs" />

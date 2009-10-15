@@ -21,8 +21,7 @@ namespace Owasp.Esapi
             Debug.Assert(controllerConfig != null);
 
             if (!string.IsNullOrEmpty(controllerConfig.Type)) {
-                Type controllerType = Type.GetType(controllerConfig.Type, true);
-                return (IAccessController)Activator.CreateInstance(controllerType);
+                return ObjectBuilder.Build<IAccessController>(controllerConfig.Type);
             }
 
             return new AccessController();
@@ -48,26 +47,12 @@ namespace Owasp.Esapi
                 CodecAttribute codecAttr = (CodecAttribute)attrs[0];
 
                 if (codecAttr.AutoLoad) {
-                    encoder.AddCodec(codecAttr.Name, (ICodec)Activator.CreateInstance(codec));
+                    encoder.AddCodec(codecAttr.Name, ObjectBuilder.Build<ICodec>(codec));
                     loaded = true;
                 }
             }
 
             return loaded;
-        }
-        /// <summary>
-        /// Load named codec instance
-        /// </summary>
-        /// <param name="encoder">Encoder instance</param>
-        /// <param name="codec">Codec type</param>
-        /// <param name="name">Codec name</param>
-        private static void LoadCodec(IEncoder encoder, Type codec, string name)
-        {
-            Debug.Assert(encoder != null);
-            Debug.Assert(codec != null);
-            Debug.Assert(name != null);
-
-            encoder.AddCodec(name, (ICodec)Activator.CreateInstance(codec));
         }
 
         /// <summary>
@@ -102,8 +87,7 @@ namespace Owasp.Esapi
             IEncoder encoder = null;
 
             if (!string.IsNullOrEmpty(encoderConfig.Type)) {
-                Type encoderType = Type.GetType(EsapiConfig.Instance.Encoder.Type, true);
-                encoder = (IEncoder)Activator.CreateInstance(encoderType);
+                encoder = ObjectBuilder.Build<IEncoder>(encoderConfig.Type);
             }
             else {
                 // Create default encoder and load all local codec defs
@@ -131,8 +115,8 @@ namespace Owasp.Esapi
                 string failMessage = string.Format("Failed to load codec \"{0}\"", codecElement.Name);
 
                 try {
-                    Type codecType = Type.GetType(codecElement.Type, true);
-                    LoadCodec(encoder, codecType, codecElement.Name);
+                    ICodec codec = ObjectBuilder.BuildInstance<ICodec>(codecElement);
+                    encoder.AddCodec(codecElement.Name, codec);
                 }
                 catch (Exception exp) {
                     Esapi.Logger.Warning(LogLevels.WARN, failMessage, exp);
@@ -154,8 +138,7 @@ namespace Owasp.Esapi
             Debug.Assert(encryptorConfig != null);
 
             if (!string.IsNullOrEmpty(encryptorConfig.Type)) {
-                Type encryptorType = Type.GetType(encryptorConfig.Type, true);
-                return (IEncryptor)Activator.CreateInstance(encryptorType);
+                return ObjectBuilder.Build<IEncryptor>(encryptorConfig.Type);
             }
             
             // Default
@@ -174,8 +157,7 @@ namespace Owasp.Esapi
             Debug.Assert(utilitiesConfig != null);
 
             if (!string.IsNullOrEmpty(utilitiesConfig.Type)) {
-                Type utilitiesType = Type.GetType(utilitiesConfig.Type, true);
-                return (IHttpUtilities)Activator.CreateInstance(utilitiesType);
+                return ObjectBuilder.Build<IHttpUtilities>(utilitiesConfig.Type);
             }
 
             // Default
@@ -194,8 +176,7 @@ namespace Owasp.Esapi
             Debug.Assert(randomizerConfig != null);
 
             if (!string.IsNullOrEmpty(randomizerConfig.Type)) {
-                Type randomizerType = Type.GetType(randomizerConfig.Type, true);
-                return (IRandomizer)Activator.CreateInstance(randomizerType);
+                return ObjectBuilder.Build<IRandomizer>(randomizerConfig.Type);
             }
 
             // Default
@@ -226,29 +207,14 @@ namespace Owasp.Esapi
                 ValidationRuleAttribute ruleAttr = (ValidationRuleAttribute)attrs[0];
 
                 if (ruleAttr.AutoLoad) {
-                    IValidationRule ruleInstance = (IValidationRule)Activator.CreateInstance(ruleType);
-
-                    validator.AddRule(ruleAttr.Name, ruleInstance);
+                    validator.AddRule(ruleAttr.Name, ObjectBuilder.Build<IValidationRule>(ruleType));
                     loaded = true;
                 }
             }
 
             return loaded;
         }
-        /// <summary>
-        /// Load named validation rule
-        /// </summary>
-        /// <param name="validator"></param>
-        /// <param name="ruleType"></param>
-        /// <param name="name"></param>
-        private static void LoadValidationRule(IValidator validator, Type ruleType, string name)
-        {
-            Debug.Assert(validator != null);
-            Debug.Assert(ruleType != null);
-            Debug.Assert(name != null);
 
-            validator.AddRule(name, (IValidationRule)Activator.CreateInstance(ruleType));
-        }
         /// <summary>
         /// Load assembly defined validation rules
         /// </summary>
@@ -280,8 +246,7 @@ namespace Owasp.Esapi
 
             // Create custom
             if (!string.IsNullOrEmpty(validatorConfig.Type)) {
-                Type validatorType = Type.GetType(validatorConfig.Type, true);
-                validator = (IValidator)Activator.CreateInstance(validatorType);
+                validator = ObjectBuilder.Build<IValidator>(validatorConfig.Type);
             }
             else {
                 // Create default and load local rules
@@ -309,8 +274,8 @@ namespace Owasp.Esapi
                 string failMessage = string.Format("Failed to load validation rule \"{0}\"", ruleElement.Name);
 
                 try {
-                    Type ruleType = Type.GetType(ruleElement.Type, true);
-                    LoadValidationRule(validator, ruleType, ruleElement.Name);
+                    IValidationRule rule = ObjectBuilder.BuildInstance<IValidationRule>(ruleElement);
+                    validator.AddRule(ruleElement.Name, rule);
                 }
                 catch (Exception exp) {
                     Esapi.Logger.Warning(LogLevels.WARN, failMessage, exp);
@@ -335,8 +300,7 @@ namespace Owasp.Esapi
 
             // Custom configuration
             if (!string.IsNullOrEmpty(securityConfig.Type)) {
-                Type configType = Type.GetType(securityConfig.Type, true);
-                return (ISecurityConfiguration)Activator.CreateInstance(configType);
+                return ObjectBuilder.Build<ISecurityConfiguration>(securityConfig.Type);
             }
 
             // Default
