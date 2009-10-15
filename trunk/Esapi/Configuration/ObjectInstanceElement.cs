@@ -68,11 +68,11 @@ namespace Owasp.Esapi.Configuration
         /// Gets or sets the properties.
         /// </summary>
         [ConfigurationProperty(PropertiesPropertyName, IsRequired = false, IsKey = false, IsDefaultCollection = false)]
-        public PropertyCollection Properties
+        public KeyValueConfigurationCollection PropertyValues
         {
             get
             {
-                return (PropertyCollection)base[PropertiesPropertyName];
+                return (KeyValueConfigurationCollection)base[PropertiesPropertyName];
             }
             set
             {
