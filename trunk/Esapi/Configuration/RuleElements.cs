@@ -6,58 +6,8 @@ namespace Owasp.Esapi.Configuration
     /// <summary>
     /// The RuleElement Configuration Element.
     /// </summary>
-    public partial class RuleElement : ConfigurationElement
+    public partial class RuleElement : ObjectInstanceElement
     {
-        #region type Property
-
-        /// <summary>
-        /// The XML name of the <see cref="type"/> property.
-        /// </summary>
-        internal const String typePropertyName = "type";
-
-        /// <summary>
-        /// Gets or sets the type.
-        /// </summary>
-        [ConfigurationProperty(typePropertyName, IsRequired = false, IsKey = false, IsDefaultCollection = false)]
-        public String type
-        {
-            get
-            {
-                return (String)base[typePropertyName];
-            }
-            set
-            {
-                base[typePropertyName] = value;
-            }
-        }
-
-        #endregion
-
-        #region Name Property
-
-        /// <summary>
-        /// The XML name of the <see cref="Name"/> property.
-        /// </summary>
-        internal const String NamePropertyName = "name";
-
-        /// <summary>
-        /// Gets or sets the Name.
-        /// </summary>
-        [ConfigurationProperty(NamePropertyName, IsRequired = true, IsKey = true, IsDefaultCollection = false)]
-        public String Name
-        {
-            get
-            {
-                return (String)base[NamePropertyName];
-            }
-            set
-            {
-                base[NamePropertyName] = value;
-            }
-        }
-
-        #endregion
-
         #region Mode Property
 
         /// <summary>
@@ -82,32 +32,6 @@ namespace Owasp.Esapi.Configuration
         }
 
         #endregion
-
-        #region properties Property
-
-        /// <summary>
-        /// The XML name of the <see cref="properties"/> property.
-        /// </summary>
-        internal const String propertiesPropertyName = "properties";
-
-        /// <summary>
-        /// Gets or sets the properties.
-        /// </summary>
-        [ConfigurationProperty(propertiesPropertyName, IsRequired = false, IsKey = false, IsDefaultCollection = false)]
-        public PropertyCollection properties
-        {
-            get
-            {
-                return (PropertyCollection)base[propertiesPropertyName];
-            }
-            set
-            {
-                base[propertiesPropertyName] = value;
-            }
-        }
-
-        #endregion
-
     }
 
     /// <summary>

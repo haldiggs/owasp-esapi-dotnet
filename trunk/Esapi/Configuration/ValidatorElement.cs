@@ -196,57 +196,7 @@ namespace Owasp.Esapi.Configuration
     /// <summary>
     /// The ValidationRuleElement Configuration Element.
     /// </summary>
-    public class ValidationRuleElement : ConfigurationElement
+    public class ValidationRuleElement : ObjectInstanceElement
     {
-        #region Type Property
-
-        /// <summary>
-        /// The XML name of the <see cref="Type"/> property.
-        /// </summary>
-        internal const string TypePropertyName = "type";
-
-        /// <summary>
-        /// Gets or sets the Type.
-        /// </summary>
-        [ConfigurationProperty(TypePropertyName, IsRequired = false, IsKey = false, IsDefaultCollection = false)]
-        public string Type
-        {
-            get
-            {
-                return (string)base[TypePropertyName];
-            }
-            set
-            {
-                base[TypePropertyName] = value;
-            }
-        }
-
-        #endregion
-
-        #region Name Property
-
-        /// <summary>
-        /// The XML name of the <see cref="Name"/> property.
-        /// </summary>
-        internal const string NamePropertyName = "name";
-
-        /// <summary>
-        /// Gets or sets the Name.
-        /// </summary>
-        [ConfigurationProperty(NamePropertyName, IsRequired = true, IsKey = true, IsDefaultCollection = false)]
-        public string Name
-        {
-            get
-            {
-                return (string)base[NamePropertyName];
-            }
-            set
-            {
-                base[NamePropertyName] = value;
-            }
-        }
-
-        #endregion
-
     }
 }
