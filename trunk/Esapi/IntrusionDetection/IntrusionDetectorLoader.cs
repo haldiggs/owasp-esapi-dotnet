@@ -27,26 +27,12 @@ namespace Owasp.Esapi.IntrusionDetection
                 ActionAttribute actionAttr = (ActionAttribute)attrs[0];
 
                 if (actionAttr.AutoLoad) {
-                    detector.AddAction(actionAttr.Name, (IAction)Activator.CreateInstance(action));
+                    detector.AddAction(actionAttr.Name, ObjectBuilder.Build<IAction>(action));
                     loaded = true;
                 }
             }
 
             return loaded;
-        }
-        /// <summary>
-        /// Load named action instance
-        /// </summary>
-        /// <param name="detector">Intrusion detector instance</param>
-        /// <param name="action">Action type</param>
-        /// <param name="name">Action name</param>
-        private static void LoadAction(IIntrusionDetector detector, Type action, string name)
-        {
-            Debug.Assert(detector != null);
-            Debug.Assert(action != null);
-            Debug.Assert(name != null);
-
-            detector.AddAction(name, (IAction)Activator.CreateInstance(action));
         }
 
         /// <summary>
@@ -79,8 +65,7 @@ namespace Owasp.Esapi.IntrusionDetection
             IIntrusionDetector detector = null;
 
             if (!string.IsNullOrEmpty(detectorConfig.Type)) {
-                Type detectorType = Type.GetType(detectorConfig.Type, true);
-                detector = (IIntrusionDetector)Activator.CreateInstance(detectorType);
+                detector = ObjectBuilder.Build<IIntrusionDetector>(detectorConfig.Type);
             }
             else {
                 // Create default and load all actions
@@ -106,8 +91,7 @@ namespace Owasp.Esapi.IntrusionDetection
                 string failMessage = string.Format("Failed to load action \"{0}\"", actionElement.Name);
 
                 try {
-                    Type actionType = Type.GetType(actionElement.Type, true);
-                    LoadAction(detector, actionType, actionElement.Name);
+                    detector.AddAction(actionElement.Name, ObjectBuilder.BuildInstance<IAction>(actionElement));
                 }
                 catch (Exception exp) {
                     Esapi.Logger.Warning(LogLevels.WARN, failMessage, exp);

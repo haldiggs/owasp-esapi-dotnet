@@ -61,6 +61,7 @@
     <Compile Include="Configuration\RuleContextElements.cs" />
     <Compile Include="Configuration\RuleElements.cs" />
     <Compile Include="Configuration\ObjectInstanceElement.cs" />
+    <Compile Include="event.cs" />
     <Compile Include="Interfaces\ActionArgs.cs" />
     <Compile Include="ActionAttribute.cs" />
     <Compile Include="CharSetValues.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="IntrusionDetection\Actions\RedirectAction.cs" />
     <Compile Include="IntrusionDetection\Actions\TransferAction.cs" />
     <Compile Include="IntrusionDetection\IntrusionConditionArgs.cs" />
+    <Compile Include="IntrusionDetection\IntrusionDetectionModule.cs" />
     <Compile Include="IntrusionDetection\IntrusionDetectorLoader.cs" />
     <Compile Include="IntrusionDetection\IntrusionRuleArgs.cs" />
     <Compile Include="IntrusionDetection\IntrusionActionArgs.cs" />
@@ -139,8 +141,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Errors.resx</DependentUpon>
     </Compile>
+    <Compile Include="Threshold.cs" />
     <Compile Include="ValidationRuleAttribute.cs" />
-    <Compile Include="IntrusionDetector.cs" />
+    <Compile Include="IntrusionDetection\IntrusionDetector.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Randomizer.cs" />
