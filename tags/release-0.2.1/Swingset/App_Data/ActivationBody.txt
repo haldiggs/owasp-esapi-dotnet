@@ -1,0 +1,1 @@
+﻿Please visit the following link to activate your account: @ActivationUrl
