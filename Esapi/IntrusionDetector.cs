@@ -1,40 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Security.Principal;
-using System.Text;
+using System.Collections;
+using System.Web.Security;
 using Owasp.Esapi.Errors;
 using Owasp.Esapi.Interfaces;
-using Owasp.Esapi.IntrusionDetection;
-using EM = Owasp.Esapi.Resources.Errors;
+using System.Collections.Generic;
 
 namespace Owasp.Esapi
 {
-    /// <summary>
-    /// Security event
-    /// </summary>
-    internal class Event
+    class Event
     {
-        private string          _key;
-        private List<DateTime>  _times;
+        public string key;
+        public ArrayList times = new ArrayList();
 
         public Event(string key)
         {
-            this._key = key;
-            _times =  new List<DateTime>();
+            this.key = key;
         }
         
-        public void Increment(int maxOccurences, TimeSpan maxTimeSpan)
+        public void Increment(int count, long interval)
         {
             DateTime now = DateTime.Now;
-            _times.Add(now);
-
-            while (_times.Count > maxOccurences)
-                _times.RemoveAt(_times.Count - 1);
-
-            if (_times.Count == maxOccurences) {
-                if (now - _times[maxOccurences - 1] < maxTimeSpan) {
-                    throw new IntrusionException(EM.IntrusionDetector_ThresholdExceeded, string.Format(EM.InstrusionDetector_ThresholdExceeded1, _key));
+            times.Insert(0, now);
+            while (times.Count > count)
+                times.RemoveAt(times.Count - 1);
+            if (times.Count == count)
+            {
+                DateTime past = (DateTime)times[count - 1];
+                long plong = past.Ticks;
+                long nlong = now.Ticks;
+                long i = interval * 10000 * 1000;
+                if (nlong - plong < interval * 60 * 10000 * 1000)
+                {
+                    throw new IntrusionException("Threshold exceeded", "Exceeded threshold for " + key);
                 }
             }
         }
@@ -49,22 +46,22 @@ namespace Owasp.Esapi
         /// <summary>
         /// The name of the event.
         /// </summary>
-        public readonly string Event;
+        public string Name = null;
 
         /// <summary>
         /// The number of occurences.
         /// </summary>
-        public readonly int MaxOccurences;
+        public int Count = 0;
 
         /// <summary>
         /// The interval allowed between events.
         /// </summary>
-        public readonly TimeSpan MaxTimeSpan;
+        public long Interval = 0;
 
         /// <summary>
         /// The list of actions associated with the threshold/
         /// </summary>
-        public readonly IList<string> Actions;
+        public IList Actions = null;
 
         /// <summary>
         /// Constructor for Threshold
@@ -72,34 +69,21 @@ namespace Owasp.Esapi
         /// <param name="name">
         /// Event name.
         /// </param>
-        /// <param name="maxOccurences">
+        /// <param name="count">
         /// Count of events allowed.
         /// </param>
-        /// <param name="maxTimeSpan">
+        /// <param name="interval">
         /// Interval between events allowed.
         /// </param>
         /// <param name="actions">
         /// Actions associated with threshold.
         /// </param>
-        public Threshold(string name, int maxOccurences, long maxTimeSpan, IEnumerable<string> actions)
+        public Threshold(string name, int count, long interval, IList actions)
         {
-            Event           = name;
-            MaxOccurences   = maxOccurences;
-            MaxTimeSpan     = TimeSpan.FromSeconds(maxTimeSpan);
-
-            Actions = new List<string>();
-            
-            // Add actions
-            if (actions != null) {                
-                foreach (string action in actions) {
-                    string actionName = (action != null ? action.Trim() : action);
-                    if (string.IsNullOrEmpty(actionName)) {
-                        continue;
-                    }
-
-                    Actions.Add(actionName);
-                }
-            }
+            this.Name = name;
+            this.Count = count;
+            this.Interval = interval;
+            this.Actions = actions;
         }
 
         /// <summary>
@@ -108,17 +92,7 @@ namespace Owasp.Esapi
         /// <returns>String representation of threshold.</returns>
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("Threshold: {0} - {1} in {2} seconds results in ", Event, MaxOccurences, MaxTimeSpan);
-
-            for (int i = 0; i < Actions.Count; ++i) {
-                if (i != 0) {
-                    sb.Append(", ");
-                }
-                sb.AppendFormat(Actions[i]);
-            }
-
-            return sb.ToString();
+            return "Threshold: " + Name + " - " + Count + " in " + Interval + " seconds results in " + Actions.ToString();
         }
     }
 
@@ -137,134 +111,15 @@ namespace Owasp.Esapi
     /// </remarks>
     public class IntrusionDetector : IIntrusionDetector
     {        
-        private static Dictionary<string, Dictionary<string, Event>> users = new Dictionary<string, Dictionary<string, Event>>();
-
         /// <summary>The logger. </summary>
-        private readonly ILogger _logger;        
-        private Dictionary<string, Threshold>   _thresholds;
-        private Dictionary<string, IAction>     _actions;
+        private static readonly ILogger logger;
+        private static Dictionary<string, Dictionary<string, Event>> users = new Dictionary<string, Dictionary<string, Event>>();
         
         /// <summary>
         /// Public constructor.
         /// </summary>
         public IntrusionDetector()
         {
-            _thresholds = new Dictionary<string,Threshold>();
-            _actions    = new Dictionary<string, IAction>();
-            _logger     = Esapi.Logger;
-        }
-
-        /// <summary>
-        /// Add action 
-        /// </summary>
-        /// <param name="name">Action unique name</param>
-        /// <param name="action">Action instance</param>
-        public void AddAction(string name, IAction action)
-        {
-            string actionName = (name != null ? name.Trim() : name);
-
-            if (string.IsNullOrEmpty(actionName)) {
-                throw new ArgumentException( EM.InstrusionDetector_InvalidActionName, "name");
-            }
-            if (action == null) {
-                throw new ArgumentNullException("action");
-            }
-            if (_actions.ContainsKey(actionName)) {
-                throw new ArgumentException(EM.IntrusionDetector_DuplicateActionName, "name");
-            }
-
-            _actions.Add(actionName, action);
-        }
-
-        /// <summary>
-        /// Remove action
-        /// </summary>
-        /// <param name="name">Action name</param>
-        /// <returns>True if succeeded, false otherwise</returns>
-        public bool RemoveAction(string name)
-        {
-            if (!_actions.ContainsKey(name)) {
-                return false;
-            }
-
-            // Make sure action is not referenced
-            foreach (Threshold threshold in _thresholds.Values) {
-                if (threshold.Actions.Contains(name)) {
-                    string message = string.Format(EM.IntrusionDetector_ActionIsReferenced1, name);
-                    throw new ArgumentException(message, "name");
-                }
-            }
-            
-            // Remove action
-            return _actions.Remove(name);
-        }
-
-        /// <summary>
-        /// Get action by name
-        /// </summary>
-        /// <param name="name">Action name</param>
-        /// <rereturns>Action if found, null otherwise</rereturns>
-        public IAction GetAction(string name)
-        {
-            IAction action;
-            _actions.TryGetValue(name, out action);
-
-            return action;
-        }
-
-        /// <summary>
-        /// Add event threshold
-        /// </summary>
-        /// <param name="threshold"></param>
-        public void AddThreshold(Threshold threshold)
-        {
-            if (threshold == null) {
-                throw new ArgumentNullException("threshold");
-            }
-            if (_thresholds.ContainsKey(threshold.Event)) {
-                throw new ArgumentException();
-            }
-
-            // Validate all required actions have been registered already
-            if (threshold.Actions != null) {
-                foreach (string name in threshold.Actions) {
-                    if (!_actions.ContainsKey(name)) {
-                        string message = string.Format(EM.IntrusionDetector_ActionNotFound1, name);
-                        throw new ArgumentException(message, "threshold");
-                    }
-                }
-            }
-
-            // Add threshold
-            _thresholds.Add(threshold.Event, threshold);
-        }
-
-        /// <summary>
-        /// Remove event threshold
-        /// </summary>
-        /// <param name="eventName"></param>
-        /// <returns></returns>
-        public bool RemoveThreshold(string eventName)
-        {
-            return _thresholds.Remove(eventName);
-        }
-
-        /// <summary>
-        /// Get event threshold
-        /// </summary>
-        /// <param name="eventName"></param>
-        /// <returns></returns>
-        private Threshold GetEventThreshold(string eventName)
-        {
-            Threshold threshold;
-            _thresholds.TryGetValue(eventName, out threshold);
-
-            // Event not found, create default
-            if (threshold == null) {
-                threshold = new Threshold(eventName, 0, 0, null);
-            }
-
-            return threshold;
         }
 
         // FIXME: ENHANCE consider allowing both per-user and per-application quotas
@@ -279,30 +134,42 @@ namespace Owasp.Esapi
         /// </seealso>
         public void AddException(Exception e)
         {
-            if (e is EnterpriseSecurityException) {
-                _logger.Warning(LogEventTypes.SECURITY, ((EnterpriseSecurityException)e).LogMessage, e);
+            if (e is EnterpriseSecurityException)
+            {
+                logger.Warning(LogEventTypes.SECURITY, ((EnterpriseSecurityException)e).LogMessage, e);
             }
-            else {                
-                _logger.Warning(LogEventTypes.SECURITY, e.Message, e);
+            else
+            {                
+                logger.Warning(LogEventTypes.SECURITY, e.Message, e);
             }
 
             String eventName = e.GetType().FullName;
 
-            if (e is IntrusionException) {
+            if (e is IntrusionException)
+            {
                 return;
             }
 
             // add the exception to the user's store, handle IntrusionException if thrown
-            try {
+            try
+            {
                 AddSecurityEvent(eventName);
             }
-            catch (IntrusionException) {
-                OnIntrusionDetected(eventName);
+            catch (IntrusionException)
+            {
+                Threshold quota = Esapi.SecurityConfiguration.GetQuota(eventName);
+                IEnumerator i = quota.Actions.GetEnumerator();                
+                while (i.MoveNext())
+                {                    
+                    string action = (string)i.Current;
+                    string message = "User exceeded quota of " + quota.Count + " per " + quota.Interval + " seconds for event " + eventName + ". Taking actions " + quota.Actions.ToString();
+                    TakeSecurityAction(action, message);
+                }
             }
         }
 
-        /// <summary> 
-        /// Adds the event to the IntrusionDetector.
+        /// <summary> Adds the event to the IntrusionDetector.
+        /// 
         /// </summary>
         /// <param name="eventName">The event to add.
         /// </param>
@@ -310,47 +177,47 @@ namespace Owasp.Esapi
         /// </seealso>
         public virtual void AddEvent(string eventName)
         {
-            _logger.Warning(LogEventTypes.SECURITY, string.Format(EM.InstrusionDetector_EventReceived1, eventName));
+            logger.Warning(LogEventTypes.SECURITY, "Security event " + eventName + " received");
 
             // add the event to the current user, which may trigger a detector 
-            try {
-                AddSecurityEvent(eventName);
+            try
+            {
+                AddSecurityEvent("event." + eventName);
             }
-            catch (IntrusionException) {
-                OnIntrusionDetected(eventName);
+            catch (IntrusionException)
+            {
+                Threshold quota = Esapi.SecurityConfiguration.GetQuota("event." + eventName);
+                IEnumerator i = quota.Actions.GetEnumerator();                
+                while (i.MoveNext())
+                {                    
+                    string action = (string)i.Current;
+                    string message = "User exceeded quota of " + quota.Count + " per " + quota.Interval + " seconds for event " + eventName + ". Taking actions " + quota.Actions.ToString();
+                    TakeSecurityAction(action, message);
+                }
             }
         }
 
         /// <summary>
-        /// Instrusion was detected
+        /// This method performs a security action based on an intrustion threshold.
         /// </summary>
-        /// <param name="eventName"></param>
-        private void OnIntrusionDetected(string eventName)
+        /// <param name="action">The action to take.</param>
+        /// <param name="message">The message to log regarding the action.</param>
+        private void TakeSecurityAction(string action, string message)
         {
-            Threshold quota = GetEventThreshold(eventName);
-            if (quota == null) {
-                throw new ArgumentException(EM.IntrusionDetector_UnknownEventName, "eventName");
+            if (action.Equals("log"))
+            {
+                logger.Fatal(LogEventTypes.SECURITY, "INTRUSION - " + message);
             }
-
-            // Build action args
-            IntrusionActionArgs args = new IntrusionActionArgs(quota);
-
-            // Take actions
-            foreach (string action in quota.Actions) {
-                // Log action execution
-                string message = string.Format(EM.InstrusionDetector_ExceededQuota4, quota.MaxOccurences, quota.MaxTimeSpan, eventName, action);                
-                _logger.Fatal(LogEventTypes.SECURITY, "INTRUSION - " + message);
-                                
-                // Get action instance
-                IAction actionInstance = null;
-                if (!_actions.TryGetValue(action, out actionInstance)) {
-                    message = string.Format(EM.IntrusionDetector_ActionNotFound1, action);
-                    throw new EnterpriseSecurityException(message, message);
+            if (Membership.GetUser() != null)
+            {
+                if (action.Equals("disable"))
+                {
+                    Membership.GetUser().IsApproved = false;
                 }
-                
-                // Execute action
-                // NOTE : we're not masking any action exceptions, they will be let to escape
-                actionInstance.Execute(args);
+                if (action.Equals("logout"))
+                {
+                    FormsAuthentication.SignOut();
+                }
             }
         }
 
@@ -360,32 +227,38 @@ namespace Owasp.Esapi
         /// <param name="eventName">
         /// The security event to add.
         /// </param>
-        private void AddSecurityEvent(string eventName)
+        public void AddSecurityEvent(string eventName)
         {
-            IPrincipal currentUser = Esapi.SecurityConfiguration.CurrentUser;
-            string username = (currentUser != null && currentUser.Identity != null ? currentUser.Identity.Name : "Anonymous");
+            string username = (Membership.GetUser() == null) ? "Anonymous" : Membership.GetUser().UserName;
 
-            // Get user events
             Dictionary<string, Event> events;
+
             if (!users.TryGetValue(username, out events)) {
                 events = new Dictionary<string, Event>();
                 users[username] = events;
             }
 
-            // Get user security event
             Event securityEvent;
+
             if (!events.TryGetValue(eventName, out securityEvent)) {
                 securityEvent = new Event(eventName);
                 events[eventName] = securityEvent;
             }
 
-            Threshold q = GetEventThreshold(eventName);
-            Debug.Assert(q != null);
-
-            if (q.MaxOccurences > 0) {
-                securityEvent.Increment(q.MaxOccurences, q.MaxTimeSpan);
+            Threshold q = Esapi.SecurityConfiguration.GetQuota(eventName);
+            
+            if (q.Count > 0) {
+                securityEvent.Increment(q.Count, q.Interval);
             }
 
+        }
+
+        /// <summary>
+        ///  Static constructor.
+        /// </summary>
+        static IntrusionDetector()
+        {
+            logger = Esapi.Logger;
         }
     }
 }

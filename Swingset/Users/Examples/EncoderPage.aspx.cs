@@ -1,5 +1,4 @@
 ﻿using System;
-using Owasp.Esapi.Codecs;
 
 namespace Owasp.Esapi.Swingset.Users.Examples
 {
@@ -13,12 +12,12 @@ namespace Owasp.Esapi.Swingset.Users.Examples
         protected void btnEncode_Click(object sender, EventArgs e)
         {
             String text = txtToEncode.Text;
-            txtHtml.Text = Esapi.Encoder.Encode(BuiltinCodecs.Html, text);
-            txtHtmlAttribute.Text = Esapi.Encoder.Encode(BuiltinCodecs.HtmlAttribute, text);
-            txtJavascript.Text = Esapi.Encoder.Encode(BuiltinCodecs.JavaScript, text);
-            txtVbScript.Text = Esapi.Encoder.Encode(BuiltinCodecs.VbScript, text);
-            txtXml.Text = Esapi.Encoder.Encode(BuiltinCodecs.Xml, text);
-            txtXmlAttribute.Text = Esapi.Encoder.Encode(BuiltinCodecs.XmlAttribute, text);            
+            txtHtml.Text = Esapi.Encoder.Encode(Encoder.HTML, text);
+            txtHtmlAttribute.Text = Esapi.Encoder.Encode(Encoder.HTML_ATTRIBUTE, text);
+            txtJavascript.Text = Esapi.Encoder.Encode(Encoder.JAVASCRIPT, text);
+            txtVbScript.Text = Esapi.Encoder.Encode(Encoder.VBSCRIPT, text);
+            txtXml.Text = Esapi.Encoder.Encode(Encoder.XML, text);
+            txtXmlAttribute.Text = Esapi.Encoder.Encode(Encoder.XML_ATTRIBUTE, text);            
         }
     }
 }

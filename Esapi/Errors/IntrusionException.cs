@@ -36,12 +36,12 @@ namespace Owasp.Esapi.Errors
         }
 
         /// <summary>The logger. </summary>
-        private static readonly ILogger logger;
+        protected internal static readonly ILogger logger;
         
         /// <summary>
         ///  The message for the log
         /// </summary>
-        private string _logMessage = null;
+        protected internal string _logMessage = null;
 
         /// <summary> Internal classes may throw an IntrusionException to the IntrusionDetector, which generates the appropriate log
         /// message.

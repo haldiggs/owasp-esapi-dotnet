@@ -16,7 +16,7 @@ namespace Owasp.Esapi.Swingset.Users.Examples
             txtGuid.Text = Esapi.Randomizer.GetRandomGUID().ToString();
             txtInteger.Text = Esapi.Randomizer.GetRandomInteger(Int32.MinValue, Int32.MaxValue).ToString();
             txtDouble.Text = Esapi.Randomizer.GetRandomDouble(0, 1).ToString();
-            txtString.Text = Esapi.Randomizer.GetRandomString(16, Owasp.Esapi.CharSetValues.Alphanumerics);
+            txtString.Text = Esapi.Randomizer.GetRandomString(16, Owasp.Esapi.Encoder.CHAR_ALPHANUMERICS);
             txtFilename.Text = Esapi.Randomizer.GetRandomFilename("esapi");
         }
     }

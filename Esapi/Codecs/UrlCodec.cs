@@ -7,8 +7,7 @@ namespace Owasp.Esapi.Codecs
     /// <summary>
     /// This class performs URL encoding.
     /// </summary>
-    [Codec(BuiltinCodecs.Url)]
-    public class UrlCodec : ICodec
+    public class UrlCodec:ICodec
     {
         #region ICodec Members
 

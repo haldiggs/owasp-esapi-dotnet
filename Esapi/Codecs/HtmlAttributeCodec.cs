@@ -8,8 +8,7 @@ namespace Owasp.Esapi.Codecs
     /// This class performs HTML attribute encoding. This is useful for encoding values that will be displayed in a browser
     /// as an HTML attribute (i.e. &lt;input text="untrusted data here"&gt;)
     /// </summary>
-    [Codec(BuiltinCodecs.HtmlAttribute)]
-    public class HtmlAttributeCodec : ICodec
+    public class HtmlAttributeCodec:ICodec
     {
         #region ICodec Members
 

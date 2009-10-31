@@ -8,8 +8,7 @@ namespace Owasp.Esapi.Codecs
     /// This class performs JavaScript encoding. This is useful for encoding values that will be displayed in a browser
     /// as JavaScript  (i.e. &lt;script&gt; "untrusted data here" &lt;/script&gt;)
     /// </summary>
-    [Codec(BuiltinCodecs.JavaScript)]
-    public class JavaScriptCodec : ICodec
+    public class JavaScriptCodec:ICodec
     {
         #region ICodec Members
 

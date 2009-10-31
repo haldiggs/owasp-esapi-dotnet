@@ -7,8 +7,7 @@ namespace Owasp.Esapi.Codecs
     /// <summary>
     /// This class performs XML encoding.
     /// </summary>
-    [Codec(BuiltinCodecs.Xml)]
-    public class XmlCodec : ICodec
+    public class XmlCodec:ICodec
     {
         #region ICodec Members
 

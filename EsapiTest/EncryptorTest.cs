@@ -3,9 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Owasp.Esapi;
 using Owasp.Esapi.Errors;
 using Owasp.Esapi.Interfaces;
-using Owasp.Esapi.Configuration;
-using Rhino.Mocks;
-using EsapiTest.Surrogates;
 
 namespace EsapiTest
 {
@@ -15,14 +12,54 @@ namespace EsapiTest
     /// </summary>
     [TestClass]
     public class EncryptorTest
-    {      
-        [TestInitialize]
-        public void InitializeTest()
+    {
+        public EncryptorTest()
         {
-            Esapi.Reset();
-            EsapiConfig.Reset();
+            //
+            // TODO: Add constructor logic here
+            //
         }
-        
+
+        private TestContext testContextInstance;
+
+        /// <summary>
+        ///Gets or sets the test context which provides
+        ///information about and functionality for the current test run.
+        ///</summary>
+        public TestContext TestContext
+        {
+            get
+            {
+                return testContextInstance;
+            }
+            set
+            {
+                testContextInstance = value;
+            }
+        }
+
+        #region Additional test attributes
+        //
+        // You can use the following additional attributes as you write your tests:
+        //
+        // Use ClassInitialize to run code before running the first test in the class
+        // [ClassInitialize()]
+        // public static void MyClassInitialize(TestContext testContext) { }
+        //
+        // Use ClassCleanup to run code after all tests in a class have run
+        // [ClassCleanup()]
+        // public static void MyClassCleanup() { }
+        //
+        // Use TestInitialize to run code before running each test 
+        // [TestInitialize()]
+        // public void MyTestInitialize() { }
+        //
+        // Use TestCleanup to run code after each test has run
+        // [TestCleanup()]
+        // public void MyTestCleanup() { }
+        //
+        #endregion
+
         /// <summary> Test of Hash method, of class Owasp.Esapi.Encryptor.</summary>
         [TestMethod]
         public void Test_Hash()
@@ -86,7 +123,7 @@ namespace EsapiTest
         {
             System.Console.Out.WriteLine("Sign");
             IEncryptor encryptor = Esapi.Encryptor;
-            string plaintext = Esapi.Randomizer.GetRandomString(32, Owasp.Esapi.CharSetValues.Alphanumerics);
+            string plaintext = Esapi.Randomizer.GetRandomString(32, Owasp.Esapi.Encoder.CHAR_ALPHANUMERICS);
             string signature = encryptor.Sign(plaintext);
             Assert.IsTrue(encryptor.VerifySignature(signature, plaintext));
             Assert.IsFalse(encryptor.VerifySignature(signature, "ridiculous"));
@@ -105,7 +142,7 @@ namespace EsapiTest
         {
             System.Console.Out.WriteLine("verifySignature");
             IEncryptor encryptor = Esapi.Encryptor;
-            string plaintext = Esapi.Randomizer.GetRandomString(32, Owasp.Esapi.CharSetValues.Alphanumerics);
+            string plaintext = Esapi.Randomizer.GetRandomString(32, Owasp.Esapi.Encoder.CHAR_ALPHANUMERICS);
             string signature = encryptor.Sign(plaintext);
             Assert.IsTrue(encryptor.VerifySignature(signature, plaintext));
         }
@@ -122,7 +159,7 @@ namespace EsapiTest
         {
             System.Console.Out.WriteLine("seal");
             IEncryptor encryptor = Esapi.Encryptor;
-            string plaintext = Esapi.Randomizer.GetRandomString(32, Owasp.Esapi.CharSetValues.Alphanumerics);
+            string plaintext = Esapi.Randomizer.GetRandomString(32, Owasp.Esapi.Encoder.CHAR_ALPHANUMERICS);
             string seal = encryptor.Seal(plaintext, encryptor.TimeStamp + 1000 * 60);
             encryptor.VerifySeal(seal);
         }
@@ -138,7 +175,7 @@ namespace EsapiTest
         {
             System.Console.Out.WriteLine("verifySeal");
             IEncryptor encryptor = Esapi.Encryptor;
-            string plaintext = Esapi.Randomizer.GetRandomString(32, Owasp.Esapi.CharSetValues.Alphanumerics);
+            string plaintext = Esapi.Randomizer.GetRandomString(32, Owasp.Esapi.Encoder.CHAR_ALPHANUMERICS);
             string seal = encryptor.Seal(plaintext, encryptor.TimeStamp + 1000 * 60);
             Assert.IsTrue(encryptor.VerifySeal(seal));
             Assert.IsFalse(encryptor.VerifySeal("ridiculous"));
@@ -173,30 +210,6 @@ namespace EsapiTest
             {
                 Assert.Fail();
             }
-        }
-
-        [TestMethod]
-        public void Test_LoadCustom()
-        {
-            MockRepository mocks = new MockRepository();
-
-            // Set new encryptor
-            EsapiConfig.Instance.Encryptor.Type = typeof(SurrogateEncryptor).AssemblyQualifiedName;
-
-            IEncryptor encryptor = Esapi.Encryptor;
-            Assert.IsTrue(encryptor.GetType().Equals(typeof(SurrogateEncryptor)));
-
-            // Do some calls
-            IEncryptor mockEncryptor = mocks.StrictMock<IEncryptor>();
-            ((SurrogateEncryptor)encryptor).Impl = mockEncryptor;
-
-            Expect.Call(mockEncryptor.VerifySeal(null)).Return(true);
-            Expect.Call(mockEncryptor.Seal(null, 0)).Return(null);
-            mocks.ReplayAll();
-
-            Assert.IsTrue(encryptor.VerifySeal(null));
-            Assert.IsNull(encryptor.Seal(null, 0));
-            mocks.VerifyAll();            
         }
     }
 }

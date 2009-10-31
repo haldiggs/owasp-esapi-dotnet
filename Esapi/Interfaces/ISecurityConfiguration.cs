@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using System.Security.Principal;
+﻿using System;
+using System.Collections;
 
 namespace Owasp.Esapi.Interfaces
 {
@@ -93,10 +93,77 @@ namespace Owasp.Esapi.Interfaces
             get;
         }
 
-        /// <summary>
-        /// Current user
+
+        /// <summary> 
+        /// The intrusion detection quota for a particular events.
         /// </summary>
-        IPrincipal CurrentUser
+        /// <param name="eventName">
+        /// The quote for a particular event name.
+        /// </param>
+        /// <returns> The threshold for the event.
+        /// </returns>
+        Threshold GetQuota(string eventName);
+
+        /// <summary>
+        /// The AccessController class.
+        /// </summary>
+        Type AccessControllerClass
+        {
+            get;
+        }
+
+        /// <summary>
+        /// The Encoder class.
+        /// </summary>
+        Type EncoderClass
+        {
+            get;
+        }
+
+        /// <summary>
+        /// The Encryptor class.
+        /// </summary>
+        Type EncryptorClass
+        {
+            get;
+        }
+
+        /// <summary>
+        /// The HTTP Utilties class.
+        /// </summary>
+        Type HttpUtilitiesClass
+        {
+            get;
+        }
+
+        /// <summary>
+        /// The IntrusionDetector class.
+        /// </summary>
+        Type IntrusionDetectorClass
+        {
+            get;
+        }
+
+        /// <summary>
+        /// The Logger class.
+        /// </summary>
+        Type LoggerClass
+        {
+            get;
+        }
+
+        /// <summary>
+        /// The Randomzier class.
+        /// </summary>
+        Type RandomizerClass
+        {
+            get;
+        }
+
+        /// <summary>
+        /// The Validator class.
+        /// </summary>
+        Type ValidatorClass
         {
             get;
         }

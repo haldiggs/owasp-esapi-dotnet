@@ -7,8 +7,7 @@ namespace Owasp.Esapi.Codecs
     /// <summary>
     /// This class performs Base64 encoding and decoding.
     /// </summary>
-    [Codec(BuiltinCodecs.Base64)]
-    public class Base64Codec : ICodec
+    public class Base64Codec:ICodec
     {
         #region ICodec Members
 

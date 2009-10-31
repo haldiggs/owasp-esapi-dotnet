@@ -6,18 +6,17 @@ namespace Owasp.Esapi.ValidationRules
     /// <summary>
     /// This class is for validating that text is valid according to a given regular expression pattern.
     /// </summary>
-    [ValidationRule(BuiltinValidationRules.Regex, AutoLoad = false)]
-    public class RegexValidationRule : IValidationRule
+    public class RegexValidationRule:IValidationRule
     {
-        private Regex _regex;
+        Regex regex;
         
         /// <summary>
         /// Constructor that accepts regular expression.
         /// </summary>
-        /// <param name="regex">The regular expression to validate against.</param>
-        public RegexValidationRule(string regex)
+        /// <param name="_regex">The regular expression to validate against.</param>
+        public RegexValidationRule(string _regex)
         {            
-            _regex = new Regex(regex);
+            regex = new Regex(_regex);
         }
 
         #region IValidationRule Members
@@ -33,7 +32,7 @@ namespace Owasp.Esapi.ValidationRules
                 return false;
             }
 
-            return _regex.IsMatch(input, 0);
+            return regex.IsMatch(input, 0);
         }
 
         #endregion

@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Security.Principal;
+using System.Collections.Specialized;
 using System.Text;
-using System.Threading;
-using System.Web;
-using Owasp.Esapi.Configuration;
+using System.Text.RegularExpressions;
 using Owasp.Esapi.Interfaces;
+using System.Collections.Generic;
 
 namespace Owasp.Esapi
 {
+
     /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration"/>
     /// <summary>
     /// Reference implementation of the <see cref="Owasp.Esapi.Interfaces.ISecurityConfiguration"/> interface
@@ -21,14 +20,13 @@ namespace Owasp.Esapi
     ///  </remarks>
     public class SecurityConfiguration : ISecurityConfiguration
     {
-        private SecurityConfigurationElement _settings;
 
         /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.MasterPassword"/>
         public string MasterPassword
         {
             get
             {
-                return _settings.Encryption.MasterPassword;
+                return properties[MASTER_PASSWORD];
             }
         }
 
@@ -37,7 +35,7 @@ namespace Owasp.Esapi
         {
             get
             {
-                return Encoding.ASCII.GetBytes(_settings.Encryption.MasterSalt);
+                return new ASCIIEncoding().GetBytes(MASTER_SALT);
             }
 
         }
@@ -47,8 +45,9 @@ namespace Owasp.Esapi
         {
             get
             {
-                string[] extensions = _settings.Application.UploadValidExtensions.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                return new List<string>(extensions);                
+                string def = ".zip,.pdf,.tar,.gz,.xls,.properties,.txt,.xml";
+                string[] extList = Regex.Split((properties[VALID_EXTENSIONS] == null ? def : properties[VALID_EXTENSIONS]), ",");
+                return new ArrayList(extList);
             }
 
         }
@@ -58,7 +57,8 @@ namespace Owasp.Esapi
         {
             get
             {
-                return _settings.Application.UploadMaxSize;
+                string bytes = properties[MAX_UPLOAD_FILE_BYTES] == null ? "50000" : properties[MAX_UPLOAD_FILE_BYTES];
+                return Int32.Parse(bytes);
             }
 
         }
@@ -68,7 +68,7 @@ namespace Owasp.Esapi
         {
             get
             {
-                return _settings.Algorithms.Encryption;
+                return properties[ENCRYPTION_ALGORITHM];
             }
 
         }
@@ -78,7 +78,7 @@ namespace Owasp.Esapi
         {
             get
             {
-                return _settings.Algorithms.Hash;
+                return properties[HASH_ALGORITHM];
             }
 
         }
@@ -88,7 +88,7 @@ namespace Owasp.Esapi
         {
             get
             {
-                return _settings.Application.CharacterEncoding;
+                return properties[CHARACTER_ENCODING];
             }
 
         }
@@ -98,7 +98,7 @@ namespace Owasp.Esapi
         {
             get
             {
-                return _settings.Algorithms.DigitalSignature;
+                return properties[DIGITAL_SIGNATURE_ALGORITHM];
             }
 
         }
@@ -108,7 +108,7 @@ namespace Owasp.Esapi
         {
             get
             {
-                return _settings.Algorithms.Random;
+                return properties[RANDOM_ALGORITHM];
             }
 
         }
@@ -118,7 +118,8 @@ namespace Owasp.Esapi
         {
             get
             {
-                return LogLevels.ParseLogLevel(_settings.Application.LogLevel);
+                string level = properties.Get(LOG_LEVEL);
+                return LogLevels.ParseLogLevel(level);
             }
         }
 
@@ -127,31 +128,183 @@ namespace Owasp.Esapi
         {
             get
             {
-                return _settings.Application.LogEncodingRequired;
+                string logEncodingRequired = properties.Get("LogEncodingRequired");
+                if (logEncodingRequired != null && logEncodingRequired.ToUpper().Equals("false".ToUpper()))
+                    return false;
+                return true;
             }
 
         }
+        
+        /// <summary>The properties. </summary>    
+        private NameValueCollection properties = new NameValueCollection();
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.CurrentUser"/>
-        public IPrincipal CurrentUser
+        /// <summary>The logger. </summary>                
+        private static readonly ILogger logger = Esapi.Logger;
+
+        /// <summary>
+        /// The key for the resources directory property.
+        /// </summary>
+        public const string RESOURCE_DIRECTORY = "Owasp.Esapi.Resources";
+
+        private const string MASTER_PASSWORD = "MasterPassword";
+
+        private const string MASTER_SALT = "MasterSalt";
+
+        private const string VALID_EXTENSIONS = "ValidExtensions";
+
+        private const string MAX_UPLOAD_FILE_BYTES = "MaxUploadFileBytes";
+        
+        private const string ENCRYPTION_ALGORITHM = "EncryptionAlgorithm";
+
+        private const string HASH_ALGORITHM = "HashAlgorithm";
+
+        private const string CHARACTER_ENCODING = "CharacterEncoding";
+
+        private const string RANDOM_ALGORITHM = "RandomAlgorithm";
+
+        private const string DIGITAL_SIGNATURE_ALGORITHM = "DigitalSignatureAlgorithm";
+
+        private const string RESPONSE_CONTENT_TYPE = "ResponseContentType";
+
+        private const string LOG_LEVEL = "LogLevel";
+
+        /// <summary>
+        /// The maximum length of a redirect URL
+        /// </summary>
+        protected const int MAX_REDIRECT_LOCATION = 1000;
+    
+        /// <summary>
+        /// The maximum length of a file name
+        /// </summary>
+        protected const int MAX_FILE_NAME_LENGTH = 1000;
+
+        /// <summary> Instantiates a new configuration.</summary>
+        public SecurityConfiguration()
+        {
+            LoadConfiguration();
+        }
+
+        /// <summary> Loads the configuration.</summary>        
+        private void LoadConfiguration()
+        {
+            properties = (NameValueCollection)System.Configuration.ConfigurationManager.GetSection("esapi");       
+            IEnumerator i = properties.GetEnumerator();            
+            while (i.MoveNext())
+            {                
+                string key = (string)i.Current;
+                Console.WriteLine("  |   " + key + "=" + properties[(string)key]);
+            }
+       }
+
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.GetQuota(string)" />
+        public Threshold GetQuota(string eventName)
+        {
+            int count = 0;
+            string countString = properties.Get(eventName + ".count");
+            if (countString != null)
+            {
+                count = Int32.Parse(countString);
+            }
+
+            int interval = 0;
+            string intervalString = properties.Get(eventName + ".interval");
+            if (intervalString != null)
+            {
+                interval = Int32.Parse(intervalString);
+            }
+
+            IList actions = new ArrayList();
+            string actionString = properties.Get(eventName + ".actions");
+            if (actionString != null)
+            {
+                string[] actionList = Regex.Split(actionString, ",");                
+                actions = new ArrayList(actionList);
+            }
+
+            Threshold q = new Threshold(eventName, count, interval, actions);
+            return q;
+        }
+
+        static readonly string ACCESS_CONTROLLER_CLASS = "AccessControllerClass";
+        static readonly string ENCODER_CLASS = "EncoderClass";
+        static readonly string ENCRYPTOR_CLASS = "EncyptorClass";
+        static readonly string HTTP_UTILITIES_CLASS = "HttpUtilitiesClass";
+        static readonly string INTRUSION_DETECTOR_CLASS = "IntrusionDetectorClass";
+        static readonly string LOGGER_CLASS = "LoggerClass";
+        static readonly string RANDOMIZER_CLASS = "RandomizerClass";
+        static readonly string VALIDATOR_CLASS = "ValidatorClass";
+
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.AccessControllerClass" />
+        public Type AccessControllerClass
         {
             get
             {
-                if (HttpContext.Current != null) {
-                    return HttpContext.Current.User;
-                }
-                return Thread.CurrentPrincipal;
+                return Type.GetType(properties[ACCESS_CONTROLLER_CLASS]);
             }
         }
 
-        /// <summary> Instantiates a new configuration.</summary>
-        internal SecurityConfiguration(SecurityConfigurationElement settings)
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.EncoderClass" />
+        public Type EncoderClass
         {
-            if (settings == null) {
-                throw new ArgumentNullException("settings");
+            get
+            {
+                return Type.GetType(properties[ENCODER_CLASS]);
             }
+        }
 
-            _settings = settings;
-        }        
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.EncryptorClass" />
+        public Type EncryptorClass
+        {
+            get
+            {
+                return Type.GetType(properties[ENCRYPTOR_CLASS]);
+            }
+        }
+
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.HttpUtilitiesClass" />
+        public Type HttpUtilitiesClass
+        {
+            get
+            {
+                return Type.GetType(properties[HTTP_UTILITIES_CLASS]);
+            }
+        }
+
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.IntrusionDetectorClass" />
+        public Type IntrusionDetectorClass
+        {
+            get
+            {
+                return Type.GetType(properties[INTRUSION_DETECTOR_CLASS]);
+            }
+        }
+
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.LoggerClass" />
+        public Type LoggerClass
+        {
+            get
+            {
+                return Type.GetType(properties[LOGGER_CLASS]);
+            }
+        }
+
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.RandomizerClass" />
+        public Type RandomizerClass
+        {
+            get
+            {
+                return Type.GetType(properties[RANDOMIZER_CLASS]);
+            }
+        }
+
+        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.ValidatorClass" />
+        public Type ValidatorClass
+        {
+            get
+            {
+                return Type.GetType(properties[VALIDATOR_CLASS]);
+            }
+        }
     }
 }

@@ -65,7 +65,7 @@ namespace EsapiTest
             IRandomizer randomizer = Esapi.Randomizer;
             for (int i = 0; i < 100; i++)
             {
-                string result = randomizer.GetRandomString(length, Owasp.Esapi.CharSetValues.Alphanumerics);
+                string result = randomizer.GetRandomString(length, Owasp.Esapi.Encoder.CHAR_ALPHANUMERICS);
                 Assert.AreEqual(length, result.Length);
             }
         }
