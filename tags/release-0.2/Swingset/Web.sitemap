@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+  <siteMapNode url="Login.aspx" title="Home"  description="" >
+        <siteMapNode url="ForgotPassword.aspx" title="Forgot Password"  description="" />        
+        <siteMapNode url="Register.aspx" title="Register"  description="" />
+        <siteMapNode url="/Users/Default.aspx" title="ESAPI Home">
+          <siteMapNode url="/Users/ChangePassword.aspx" title="Change Password"/>
+          <siteMapNode url="/Users/Examples/AccessControllerPage.aspx" title="Access Controller"/>
+          <siteMapNode url="/Users/Examples/AccessReferenceMapPage.aspx" title="Access Reference Map"/>
+          <siteMapNode url="/Users/Examples/EncoderPage.aspx" title="Encoder"/>
+          <siteMapNode url="/Users/Examples/EncryptorPage.aspx" title="Encryptor"/>
+          <siteMapNode url="/Users/Examples/HttpUtilitiesPage.aspx" title="HTTP Utilities"/>
+          <siteMapNode url="/Users/Examples/IntrusionDetectorPage.aspx" title="Intrusion Detector"/>
+          <siteMapNode url="/Users/Examples/RandomizerPage.aspx" title="Randomizer"/>
+          <siteMapNode url="/Users/Examples/ValidatorPage.aspx" title="Validator"/>
+        </siteMapNode>
+    </siteMapNode>
+</siteMap>

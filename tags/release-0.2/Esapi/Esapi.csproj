@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3824A00A-9C77-4679-8633-7C7CB2572FF2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Owasp.Esapi</RootNamespace>
+    <AssemblyName>Owasp.Esapi</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Owasp.Esapi.XML</DocumentationFile>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRules>-Microsoft.Naming#CA1702;-Microsoft.Naming#CA1709;-Microsoft.Naming#CA1704;-Microsoft.Naming#CA1707</CodeAnalysisRules>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AntiXSSLibrary, Version=3.0.3264.23865, Culture=neutral, PublicKeyToken=d127efab8a9c114f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft Information Security\Microsoft Anti-Cross Site Scripting Library v3.0 Beta\Library\AntiXSSLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Reference\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccessController.cs" />
+    <Compile Include="AccessReferenceMap.cs" />
+    <Compile Include="Codecs\Base64Codec.cs" />
+    <Compile Include="Codecs\HtmlAttributeCodec.cs" />
+    <Compile Include="Codecs\HtmlCodec.cs" />
+    <Compile Include="Interfaces\ICodec.cs" />
+    <Compile Include="Codecs\JavaScriptCodec.cs" />
+    <Compile Include="Codecs\UrlCodec.cs" />
+    <Compile Include="Codecs\VbScriptCodec.cs" />
+    <Compile Include="Codecs\XmlAttributeCodec.cs" />
+    <Compile Include="Codecs\XmlCodec.cs" />
+    <Compile Include="Encoder.cs" />
+    <Compile Include="Encryptor.cs" />
+    <Compile Include="Errors\AccessControlException.cs" />
+    <Compile Include="Errors\EncodingException.cs" />
+    <Compile Include="Errors\EncryptionException.cs" />
+    <Compile Include="Errors\EnterpriseSecurityException.cs" />
+    <Compile Include="Errors\IntegrityException.cs" />
+    <Compile Include="Errors\IntrusionException.cs" />
+    <Compile Include="Errors\ValidationException.cs" />
+    <Compile Include="Esapi.cs" />
+    <Compile Include="HttpUtilities.cs" />
+    <Compile Include="Interfaces\IAccessReferenceMap.cs" />
+    <Compile Include="Interfaces\IAccessController.cs" />
+    <Compile Include="Interfaces\IEncoder.cs" />
+    <Compile Include="Interfaces\IEncryptor.cs" />
+    <Compile Include="Interfaces\IHttpUtilities.cs" />
+    <Compile Include="Interfaces\IIntrusionDetector.cs" />
+    <Compile Include="Interfaces\ILogger.cs" />
+    <Compile Include="Interfaces\IRandomizer.cs" />
+    <Compile Include="Interfaces\ISecurityConfiguration.cs" />
+    <Compile Include="Interfaces\IValidator.cs">
+    </Compile>
+    <Compile Include="IntrusionDetector.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Randomizer.cs" />
+    <Compile Include="SecurityConfiguration.cs" />
+    <Compile Include="ValidationRules\CreditCardValidationRule.cs" />
+    <Compile Include="ValidationRules\DateValidationRule.cs" />
+    <Compile Include="ValidationRules\DoubleValidationRule.cs" />
+    <Compile Include="ValidationRules\IntegerValidationRule.cs" />
+    <Compile Include="Interfaces\IValidationRule.cs" />
+    <Compile Include="ValidationRules\PrintableValidationRule.cs" />
+    <Compile Include="ValidationRules\RegexValidationRule.cs" />
+    <Compile Include="Validator.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
