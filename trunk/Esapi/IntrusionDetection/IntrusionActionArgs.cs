@@ -15,6 +15,7 @@ namespace Owasp.Esapi.IntrusionDetection
         /// </summary>
         /// <param name="threshold"></param>
         public IntrusionActionArgs(Threshold threshold)
+            : base(threshold.Event)
         {
             if (threshold == null) {
                 throw new ArgumentNullException("threshold");

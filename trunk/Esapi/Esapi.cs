@@ -3,6 +3,7 @@ using Owasp.Esapi.Interfaces;
 using Owasp.Esapi.Configuration;
 using System.Threading;
 using Owasp.Esapi.IntrusionDetection;
+using Owasp.Esapi.Runtime;
 
 namespace Owasp.Esapi
 {
@@ -34,7 +35,7 @@ namespace Owasp.Esapi
 
         private static IValidator _validator;
         private static object _validatorLock = new object();
-
+                
         /// <summary>
         /// The IAccessController implementation.
         /// </summary>

@@ -22,7 +22,7 @@ namespace Owasp.Esapi.Swingset
             if (smpSwingset != null)
             {
                 smpSwingset.Visible = false;
-            }            
+            }
         }
 
         protected void EsapiLogin_LoggedIn(object sender, EventArgs e)

@@ -6,7 +6,7 @@ namespace Owasp.Esapi.Configuration
     /// A collection of ActionElement instances.
     /// </summary>
     [ConfigurationCollection(typeof(ActionElement), CollectionType = ConfigurationElementCollectionType.AddRemoveClearMapAlternate)]
-    public partial class ActionCollection : ConfigurationElementCollection
+    public partial class ActionCollection : AddinElementCollection
     {
         #region Constants
 
@@ -109,37 +109,12 @@ namespace Owasp.Esapi.Configuration
         }
 
         #endregion
-        #region Assemblies Property
-
-        /// <summary>
-        /// The XML name of the <see cref="Assemblies"/> property.
-        /// </summary>
-        internal const string AssembliesPropertyName = "assemblies";
-
-        /// <summary>
-        /// Gets or sets the Assemblies.
-        /// </summary>
-        [ConfigurationProperty(AssembliesPropertyName, IsRequired = false, IsKey = false, IsDefaultCollection = false)]
-        public AddinAssemblyCollection Assemblies
-        {
-            get
-            {
-                return (AddinAssemblyCollection)base[AssembliesPropertyName];
-            }
-            set
-            {
-                base[AssembliesPropertyName] = value;
-            }
-        }
-
-        #endregion
-
     }
 
     /// <summary>
     /// The ActionElement Configuration Element.
     /// </summary>
-    public class ActionElement : ObjectInstanceElement
+    public class ActionElement : AddinElement
     {
     }
 }

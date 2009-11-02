@@ -171,7 +171,7 @@ namespace Owasp.Esapi.Configuration
     /// <summary>
     /// The CodecElement Configuration Element.
     /// </summary>
-    public class CodecElement : ObjectInstanceElement
+    public class CodecElement : AddinElement
     {
     }
 }

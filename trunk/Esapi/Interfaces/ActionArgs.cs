@@ -15,7 +15,25 @@ namespace Owasp.Esapi.Interfaces
 
         static ActionArgs()
         {
-            Empty = new ActionArgs();
+            Empty = new ActionArgs(string.Empty);
+        }
+
+        private string _eventName;
+
+        /// <summary>
+        /// Initialize action arguments
+        /// </summary>
+        /// <param name="eventName"></param>
+        public ActionArgs(string eventName)
+        {
+            _eventName = eventName;
+        }
+        /// <summary>
+        /// Get event name
+        /// </summary>
+        public string Event
+        {
+            get { return _eventName; }
         }
     }
 }

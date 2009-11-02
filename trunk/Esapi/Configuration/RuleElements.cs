@@ -6,7 +6,7 @@ namespace Owasp.Esapi.Configuration
     /// <summary>
     /// The RuleElement Configuration Element.
     /// </summary>
-    public partial class RuleElement : ObjectInstanceElement
+    public partial class RuleElement : AddinElement
     {
         #region Mode Property
 
@@ -38,7 +38,7 @@ namespace Owasp.Esapi.Configuration
     /// A collection of RuleElement instances.
     /// </summary>
     [ConfigurationCollection(typeof(RuleElement), CollectionType = ConfigurationElementCollectionType.BasicMapAlternate, AddItemName = RuleCollection.RuleElementPropertyName)]
-    public partial class RuleCollection : ConfigurationElementCollection
+    public partial class RuleCollection : AddinElementCollection
     {
         #region Constants
 

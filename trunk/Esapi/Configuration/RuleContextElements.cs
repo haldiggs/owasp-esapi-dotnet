@@ -4,9 +4,9 @@ using System.Configuration;
 namespace Owasp.Esapi.Configuration
 {
     /// <summary>
-    /// The RuleContextElement Configuration Element.
+    /// The RuntimeContextElement Configuration Element.
     /// </summary>
-    public partial class RuleContextElement : ConfigurationElement
+    public partial class RuntimeContextElement : ConfigurationElement
     {
         #region Name Property
 
@@ -88,21 +88,21 @@ namespace Owasp.Esapi.Configuration
         /// <summary>
         /// The XML name of the <see cref="ChainedContexts"/> property.
         /// </summary>
-        internal const String ChainedContextsPropertyName = "chainedContexts";
+        internal const String SubContextsPropertyName = "subContexts";
 
         /// <summary>
         /// Gets or sets the ChainedContexts.
         /// </summary>
-        [ConfigurationProperty(ChainedContextsPropertyName, IsRequired = false, IsKey = false, IsDefaultCollection = false)]
-        public NamedCollection ChainedContexts
+        [ConfigurationProperty(SubContextsPropertyName, IsRequired = false, IsKey = false, IsDefaultCollection = false)]
+        public RuntimeContextCollection SubContexts
         {
             get
             {
-                return (NamedCollection)base[ChainedContextsPropertyName];
+                return (RuntimeContextCollection)base[SubContextsPropertyName];
             }
             set
             {
-                base[ChainedContextsPropertyName] = value;
+                base[SubContextsPropertyName] = value;
             }
         }
 
@@ -111,17 +111,17 @@ namespace Owasp.Esapi.Configuration
     }
 
     /// <summary>
-    /// A collection of RuleContextElement instances.
+    /// A collection of RuntimeContextElement instances.
     /// </summary>
-    [ConfigurationCollection(typeof(RuleContextElement), CollectionType = ConfigurationElementCollectionType.BasicMapAlternate, AddItemName = RuleContextCollection.RuleContextElementPropertyName)]
-    public partial class RuleContextCollection : ConfigurationElementCollection
+    [ConfigurationCollection(typeof(RuntimeContextElement), CollectionType = ConfigurationElementCollectionType.BasicMapAlternate, AddItemName = RuntimeContextCollection.RuntimeContextElementPropertyName)]
+    public partial class RuntimeContextCollection : ConfigurationElementCollection
     {
         #region Constants
 
         /// <summary>
-        /// The XML name of the individual <see cref="RuleContextElement"/> instances in this collection.
+        /// The XML name of the individual <see cref="RuntimeContextElement"/> instances in this collection.
         /// </summary>
-        internal const String RuleContextElementPropertyName = "contextElement";
+        internal const String RuntimeContextElementPropertyName = "contextElement";
 
         #endregion
 
@@ -148,7 +148,7 @@ namespace Owasp.Esapi.Configuration
         /// </returns>
         protected override Boolean IsElementName(String elementName)
         {
-            return (elementName == RuleContextElementPropertyName);
+            return (elementName == RuntimeContextElementPropertyName);
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace Owasp.Esapi.Configuration
         /// </returns>
         protected override Object GetElementKey(ConfigurationElement element)
         {
-            return ((RuleContextElement)element).Name;
+            return ((RuntimeContextElement)element).Name;
         }
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace Owasp.Esapi.Configuration
         /// </returns>
         protected override ConfigurationElement CreateNewElement()
         {
-            return new RuleContextElement();
+            return new RuntimeContextElement();
         }
 
         #endregion
@@ -179,14 +179,14 @@ namespace Owasp.Esapi.Configuration
         #region Indexer
 
         /// <summary>
-        /// Gets the <see cref="RuleContextElement"/> at the specified index.
+        /// Gets the <see cref="RuntimeContextElement"/> at the specified index.
         /// </summary>
-        /// <param name="index">The index of the <see cref="RuleContextElement"/> to retrieve</param>
-        public RuleContextElement this[int index]
+        /// <param name="index">The index of the <see cref="RuntimeContextElement"/> to retrieve</param>
+        public RuntimeContextElement this[int index]
         {
             get
             {
-                return (RuleContextElement)this.BaseGet(index);
+                return (RuntimeContextElement)this.BaseGet(index);
             }
         }
 
@@ -195,10 +195,10 @@ namespace Owasp.Esapi.Configuration
         #region Add
 
         /// <summary>
-        /// Adds the specified <see cref="RuleContextElement"/>.
+        /// Adds the specified <see cref="RuntimeContextElement"/>.
         /// </summary>
-        /// <param name="contextElement">The <see cref="RuleContextElement"/> to add.</param>
-        public void Add(RuleContextElement contextElement)
+        /// <param name="contextElement">The <see cref="RuntimeContextElement"/> to add.</param>
+        public void Add(RuntimeContextElement contextElement)
         {
             base.BaseAdd(contextElement);
         }
@@ -208,10 +208,10 @@ namespace Owasp.Esapi.Configuration
         #region Remove
 
         /// <summary>
-        /// Removes the specified <see cref="RuleContextElement"/>.
+        /// Removes the specified <see cref="RuntimeContextElement"/>.
         /// </summary>
-        /// <param name="contextElement">The <see cref="RuleContextElement"/> to remove.</param>
-        public void Remove(RuleContextElement contextElement)
+        /// <param name="contextElement">The <see cref="RuntimeContextElement"/> to remove.</param>
+        public void Remove(RuntimeContextElement contextElement)
         {
             base.BaseRemove(contextElement);
         }

@@ -196,7 +196,7 @@ namespace Owasp.Esapi.Configuration
     /// <summary>
     /// The ValidationRuleElement Configuration Element.
     /// </summary>
-    public class ValidationRuleElement : ObjectInstanceElement
+    public class ValidationRuleElement : AddinElement
     {
     }
 }

@@ -15,7 +15,25 @@ namespace Owasp.Esapi.Interfaces
 
         static RuleArgs()
         {
-            Empty = new RuleArgs();
+            Empty = new RuleArgs(string.Empty);
+        }
+
+        private string _eventName;
+
+        /// <summary>
+        /// Initialize rule arguments
+        /// </summary>
+        /// <param name="eventName"></param>
+        public RuleArgs(string eventName)
+        {
+            _eventName = eventName;
+        }
+        /// <summary>
+        /// Get event name
+        /// </summary>
+        public string Event
+        {
+            get { return _eventName; }
         }
     }
 }

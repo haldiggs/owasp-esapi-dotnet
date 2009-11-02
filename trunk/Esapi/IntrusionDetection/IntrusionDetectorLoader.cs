@@ -15,7 +15,7 @@ namespace Owasp.Esapi.IntrusionDetection
         /// <param name="detector">Intrusion detector instance</param>
         /// <param name="action">Action type</param>
         /// <returns></returns>
-        private static bool LoadAction(IIntrusionDetector detector, Type action)
+        private static bool LoadAction(IntrusionDetector detector, Type action)
         {
             Debug.Assert(detector != null);
             Debug.Assert(action != null);
@@ -41,7 +41,7 @@ namespace Owasp.Esapi.IntrusionDetection
         /// <param name="detector"></param>
         /// <param name="assembly"></param>
         /// <param name="typeMatch"></param>
-        private static void LoadActions(IIntrusionDetector detector, Assembly assembly, Regex typeMatch)
+        private static void LoadActions(IntrusionDetector detector, Assembly assembly, Regex typeMatch)
         {
             Debug.Assert(detector != null);
             Debug.Assert(assembly != null);
@@ -62,17 +62,14 @@ namespace Owasp.Esapi.IntrusionDetection
         {
             Debug.Assert(detectorConfig != null);
 
-            IIntrusionDetector detector = null;
-
             if (!string.IsNullOrEmpty(detectorConfig.Type)) {
-                detector = ObjectBuilder.Build<IIntrusionDetector>(detectorConfig.Type);
-            }
-            else {
-                // Create default and load all actions
-                detector = new IntrusionDetector();
-                LoadActions(detector, typeof(IntrusionDetector).Assembly, MatchHelper.WildcardToRegex(@"Owasp.Esapi.IntrusionDetection.Actions.*"));
+                return ObjectBuilder.Build<IIntrusionDetector>(detectorConfig.Type);
             }
 
+            // Create default and load all actions
+            IntrusionDetector detector = new IntrusionDetector();
+            LoadActions(detector, typeof(IntrusionDetector).Assembly, MatchHelper.WildcardToRegex(@"Owasp.Esapi.IntrusionDetection.Actions.*"));
+            
             // Load actions
             foreach (AddinAssemblyElement actionAssembly in detectorConfig.Actions.Assemblies) {
                 try {
@@ -91,7 +88,7 @@ namespace Owasp.Esapi.IntrusionDetection
                 string failMessage = string.Format("Failed to load action \"{0}\"", actionElement.Name);
 
                 try {
-                    detector.AddAction(actionElement.Name, ObjectBuilder.BuildInstance<IAction>(actionElement));
+                    detector.AddAction(actionElement.Name, AddinBuilder<IAction>.MakeInstance(actionElement));
                 }
                 catch (Exception exp) {
                     Esapi.Logger.Warning(LogLevels.WARN, failMessage, exp);

@@ -9,7 +9,7 @@ namespace Owasp.Esapi
     /// Marks a class as a codec; the class has to implement ICodec interface
     /// </remarks>
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
-    public sealed class CodecAttribute : NamedAddinAttribute
+    public sealed class CodecAttribute : AddinAttribute
     {
         /// <summary>
         /// Initialize codec attribute

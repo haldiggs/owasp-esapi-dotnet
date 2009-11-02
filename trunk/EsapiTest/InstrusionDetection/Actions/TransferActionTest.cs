@@ -35,7 +35,7 @@ namespace EsapiTest.InstrusionDetection.Actions
             // Block
             try {
                 Assert.AreNotEqual(HttpContext.Current.Request.RawUrl, action.Url);
-                action.Execute(new ActionArgs());
+                action.Execute(ActionArgs.Empty);
 
                 Assert.Fail("Request not terminated");
             }
