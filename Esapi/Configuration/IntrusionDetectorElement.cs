@@ -143,11 +143,11 @@ namespace Owasp.Esapi.Configuration
         /// Gets or sets the Contexts.
         /// </summary>
         [ConfigurationProperty(ContextsPropertyName, IsRequired = false, IsKey = false, IsDefaultCollection = false)]
-        public RuleContextCollection Contexts
+        public RuntimeContextCollection Contexts
         {
             get
             {
-                return (RuleContextCollection)base[ContextsPropertyName];
+                return (RuntimeContextCollection)base[ContextsPropertyName];
             }
             set
             {

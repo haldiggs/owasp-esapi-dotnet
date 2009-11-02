@@ -63,6 +63,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EncryptorTest.cs" />
     <Compile Include="RandomizerTest.cs" />
+    <Compile Include="Runtime\ObjectRepositoryMock.cs" />
+    <Compile Include="Runtime\TestContext.cs" />
+    <Compile Include="Runtime\TestRuntimeActions.cs" />
+    <Compile Include="Runtime\TestRuntimeConditions.cs" />
+    <Compile Include="Runtime\TestRuntimeContexts.cs" />
+    <Compile Include="Runtime\TestRuntimeRules.cs" />
     <Compile Include="Surrogates\AccessController.cs" />
     <Compile Include="Surrogates\Encoder.cs" />
     <Compile Include="Surrogates\Encryptor.cs" />

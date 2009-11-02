@@ -29,8 +29,10 @@ namespace Owasp.Esapi.IntrusionDetection
         /// <summary>
         /// Initialize rule arguments
         /// </summary>
+        /// <param name="eventName">Event name</param>
         /// <param name="stage">Request stage</param>
-        public IntrusionRuleArgs(RequestStage stage)
+        public IntrusionRuleArgs(string eventName, RequestStage stage)
+            : base(eventName)
         {
             _stage = stage;
         }

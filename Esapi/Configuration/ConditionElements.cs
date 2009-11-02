@@ -5,7 +5,7 @@ namespace Owasp.Esapi.Configuration
     /// <summary>
     /// The ConditionElement Configuration Element.
     /// </summary>
-    public partial class ConditionElement : ObjectInstanceElement
+    public partial class ConditionElement : AddinElement
     {
     }
 
@@ -13,7 +13,7 @@ namespace Owasp.Esapi.Configuration
     /// A collection of ConditionElement instances.
     /// </summary>
     [ConfigurationCollection(typeof(ConditionElement), CollectionType = ConfigurationElementCollectionType.BasicMapAlternate, AddItemName = ConditionCollection.ConditionElementPropertyName)]
-    public partial class ConditionCollection : ConfigurationElementCollection
+    public partial class ConditionCollection : AddinElementCollection
     {
         #region Constants
 

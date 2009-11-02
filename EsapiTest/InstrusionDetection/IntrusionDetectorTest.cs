@@ -8,6 +8,7 @@ using Owasp.Esapi.Interfaces;
 using Owasp.Esapi.IntrusionDetection.Actions;
 using Rhino.Mocks;
 using Rhino.Mocks.Constraints;
+using Owasp.Esapi.IntrusionDetection;
 
 namespace EsapiTest.InstrusionDetector
 {
@@ -42,11 +43,14 @@ namespace EsapiTest.InstrusionDetector
         {
             string evtName = typeof(ArgumentException).FullName;
 
+            IntrusionDetector detector = Esapi.IntrusionDetector as IntrusionDetector;
+            Assert.IsNotNull(detector);
+
             Threshold threshold = new Threshold(evtName, 1, 1, new[] { BuiltinActions.Log});
-            Esapi.IntrusionDetector.AddThreshold(threshold);
+            detector.AddThreshold(threshold);
 
             ArgumentException arg = new ArgumentException();
-            Esapi.IntrusionDetector.AddException(arg);
+            detector.AddException(arg);
         }
 
         [TestMethod]
@@ -62,8 +66,11 @@ namespace EsapiTest.InstrusionDetector
         {
             string evtName = Guid.NewGuid().ToString();
 
+            IntrusionDetector detector = Esapi.IntrusionDetector as IntrusionDetector;
+            Assert.IsNotNull(detector);
+
             Threshold threshold = new Threshold(evtName, 1, 1, new[] { BuiltinActions.FormsAuthenticationLogout });
-            Esapi.IntrusionDetector.AddThreshold(threshold);
+            detector.AddThreshold(threshold);
         }
 
         [TestMethod]
@@ -72,15 +79,21 @@ namespace EsapiTest.InstrusionDetector
         {
             string evtName = Guid.NewGuid().ToString();
 
+            IntrusionDetector detector = Esapi.IntrusionDetector as IntrusionDetector;
+            Assert.IsNotNull(detector);
+
             Threshold threshold = new Threshold(evtName, 1, 1, new[] { Guid.NewGuid().ToString() });
-            Esapi.IntrusionDetector.AddThreshold(threshold);
+            detector.AddThreshold(threshold);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Test_AddNullThreshold()
         {
-            Esapi.IntrusionDetector.AddThreshold(null);
+            IntrusionDetector detector = Esapi.IntrusionDetector as IntrusionDetector;
+            Assert.IsNotNull(detector);
+
+            detector.AddThreshold(null);
         }
 
         [TestMethod]
@@ -89,11 +102,14 @@ namespace EsapiTest.InstrusionDetector
         {
             string evtName = Guid.NewGuid().ToString();
 
+            IntrusionDetector detector = Esapi.IntrusionDetector as IntrusionDetector;
+            Assert.IsNotNull(detector);
+
             Threshold threshold = new Threshold(evtName, 1, 1, new[] { BuiltinActions.FormsAuthenticationLogout });
-            Esapi.IntrusionDetector.AddThreshold(threshold);
+            detector.AddThreshold(threshold);
 
             Threshold dup = new Threshold(evtName, 2, 2, null);
-            Esapi.IntrusionDetector.AddThreshold(dup);
+            detector.AddThreshold(dup);
         }
 
         [TestMethod]
@@ -101,10 +117,13 @@ namespace EsapiTest.InstrusionDetector
         {
             string evtName = Guid.NewGuid().ToString();
 
-            Threshold threshold = new Threshold(evtName, 1, 1, new[] { BuiltinActions.FormsAuthenticationLogout });
-            Esapi.IntrusionDetector.AddThreshold(threshold);
+            IntrusionDetector detector = Esapi.IntrusionDetector as IntrusionDetector;
+            Assert.IsNotNull(detector);
 
-            Assert.IsTrue( Esapi.IntrusionDetector.RemoveThreshold(evtName));
+            Threshold threshold = new Threshold(evtName, 1, 1, new[] { BuiltinActions.FormsAuthenticationLogout });
+            detector.AddThreshold(threshold);
+
+            Assert.IsTrue( detector.RemoveThreshold(evtName));
         }
 
         [TestMethod]
@@ -112,8 +131,11 @@ namespace EsapiTest.InstrusionDetector
         {
             string evtName = Guid.NewGuid().ToString();
 
+            IntrusionDetector detector = Esapi.IntrusionDetector as IntrusionDetector;
+            Assert.IsNotNull(detector);
+
             Threshold threshold = new Threshold(evtName, 1, 1, new[] { BuiltinActions.Log });
-            Esapi.IntrusionDetector.AddThreshold(threshold);
+            detector.AddThreshold(threshold);
 
             Esapi.IntrusionDetector.AddEvent(evtName);
         }
@@ -124,14 +146,20 @@ namespace EsapiTest.InstrusionDetector
         {
             MockRepository mocks = new MockRepository();
 
-            Esapi.IntrusionDetector.AddAction(null, mocks.StrictMock<IAction>());
+            IntrusionDetector detector = Esapi.IntrusionDetector as IntrusionDetector;
+            Assert.IsNotNull(detector);
+
+            detector.AddAction(null, mocks.StrictMock<IAction>());
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Test_AddNullAction()
         {
-            Esapi.IntrusionDetector.AddAction(Guid.NewGuid().ToString(), null);
+            IntrusionDetector detector = Esapi.IntrusionDetector as IntrusionDetector;
+            Assert.IsNotNull(detector);
+
+            detector.AddAction(Guid.NewGuid().ToString(), null);
         }
 
         [TestMethod]
@@ -141,10 +169,13 @@ namespace EsapiTest.InstrusionDetector
 
             string name = Guid.NewGuid().ToString();
 
-            Esapi.IntrusionDetector.AddAction(name, mocks.StrictMock<IAction>());
+            IntrusionDetector detector = Esapi.IntrusionDetector as IntrusionDetector;
+            Assert.IsNotNull(detector);
+
+            detector.AddAction(name, mocks.StrictMock<IAction>());
 
             try {
-                Esapi.IntrusionDetector.AddAction(name, mocks.StrictMock<IAction>());
+                detector.AddAction(name, mocks.StrictMock<IAction>());
                 Assert.Fail("Duplicated action added successfully");
             }
             catch (ArgumentException) {
@@ -158,8 +189,11 @@ namespace EsapiTest.InstrusionDetector
 
             string name = Guid.NewGuid().ToString();
 
-            Esapi.IntrusionDetector.AddAction(name, mocks.StrictMock<IAction>());
-            Assert.IsTrue(Esapi.IntrusionDetector.RemoveAction(name));
+            IntrusionDetector detector = Esapi.IntrusionDetector as IntrusionDetector;
+            Assert.IsNotNull(detector);
+
+            detector.AddAction(name, mocks.StrictMock<IAction>());
+            Assert.IsTrue(detector.RemoveAction(name));
         }
 
         [TestMethod]
@@ -167,20 +201,26 @@ namespace EsapiTest.InstrusionDetector
         {
             MockRepository mocks = new MockRepository();
 
+            IntrusionDetector detector = Esapi.IntrusionDetector as IntrusionDetector;
+            Assert.IsNotNull(detector);
+
             // Get valid
             string name = Guid.NewGuid().ToString();
-            Esapi.IntrusionDetector.AddAction(name, mocks.StrictMock<IAction>());
-            Assert.IsNotNull(Esapi.IntrusionDetector.GetAction(name));
+            detector.AddAction(name, mocks.StrictMock<IAction>());
+            Assert.IsNotNull(detector.GetAction(name));
 
             // Get invalid
-            Assert.IsNull(Esapi.IntrusionDetector.GetAction(Guid.NewGuid().ToString()));
+            Assert.IsNull(detector.GetAction(Guid.NewGuid().ToString()));
         }
 
         [TestMethod]
         public void Test_RemoveInvalidAction()
         {
+            IntrusionDetector detector = Esapi.IntrusionDetector as IntrusionDetector;
+            Assert.IsNotNull(detector);
+
             string name = Guid.NewGuid().ToString();
-            Assert.IsFalse(Esapi.IntrusionDetector.RemoveAction(name));
+            Assert.IsFalse(detector.RemoveAction(name));
         }
         
         [TestMethod]
@@ -190,13 +230,16 @@ namespace EsapiTest.InstrusionDetector
 
             string name = Guid.NewGuid().ToString();
 
-            Esapi.IntrusionDetector.AddAction(name, mocks.StrictMock<IAction>());
+            IntrusionDetector detector = Esapi.IntrusionDetector as IntrusionDetector;
+            Assert.IsNotNull(detector);
+
+            detector.AddAction(name, mocks.StrictMock<IAction>());
 
             Threshold threshold = new Threshold(Guid.NewGuid().ToString(), 1, 1, new[] { name });
-            Esapi.IntrusionDetector.AddThreshold(threshold);
+            detector.AddThreshold(threshold);
 
             try {
-                Esapi.IntrusionDetector.RemoveAction(name);
+                detector.RemoveAction(name);
                 Assert.Fail("Referenced action removed successfully");
             }
             catch (ArgumentException) {
@@ -216,6 +259,7 @@ namespace EsapiTest.InstrusionDetector
             Assert.IsTrue(detector.GetType().Equals(typeof(SurrogateIntrusionDetector)));
         }
 
+#if false
         /// <summary>
         /// Test loading of actions from a custom assembly
         /// </summary>
@@ -225,7 +269,7 @@ namespace EsapiTest.InstrusionDetector
             MockRepository mocks = new MockRepository();
 
             // Set new
-            EsapiConfig.Instance.IntrusionDetector.Type = typeof(SurrogateIntrusionDetector).AssemblyQualifiedName;
+            EsapiConfig.Instance.IntrusionDetector.Type = typeof(IntrusionDetector).AssemblyQualifiedName;
 
             // Set assemblies to load
             AddinAssemblyCollection addinAssemblies = new AddinAssemblyCollection();
@@ -329,5 +373,6 @@ namespace EsapiTest.InstrusionDetector
             Assert.IsTrue(detector.GetType().Equals(typeof(SurrogateIntrusionDetector)));
             mocks.VerifyAll();            
         }
+#endif
     }
 }

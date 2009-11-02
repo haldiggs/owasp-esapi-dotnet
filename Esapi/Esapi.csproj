@@ -45,6 +45,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
@@ -52,7 +55,10 @@
   <ItemGroup>
     <Compile Include="AccessController.cs" />
     <Compile Include="AccessReferenceMap.cs" />
+    <Compile Include="ActionsManager.cs" />
+    <Compile Include="AddinManager.cs" />
     <Compile Include="Configuration\ActionElements.cs" />
+    <Compile Include="Configuration\AddinElementCollection.cs" />
     <Compile Include="Configuration\ConditionElements.cs" />
     <Compile Include="Configuration\EventThresholdElement.cs" />
     <Compile Include="Configuration\ExecuteRuleElements.cs" />
@@ -60,7 +66,8 @@
     <Compile Include="Configuration\NamedElements.cs" />
     <Compile Include="Configuration\RuleContextElements.cs" />
     <Compile Include="Configuration\RuleElements.cs" />
-    <Compile Include="Configuration\ObjectInstanceElement.cs" />
+    <Compile Include="Configuration\AddinElement.cs" />
+    <Compile Include="EsapiRuntime.cs" />
     <Compile Include="event.cs" />
     <Compile Include="Interfaces\ActionArgs.cs" />
     <Compile Include="ActionAttribute.cs" />
@@ -134,13 +141,26 @@
     <Compile Include="IntrusionDetection\Conditions\UrlCondition.cs" />
     <Compile Include="IntrusionDetection\Conditions\UserCondition.cs" />
     <Compile Include="MatchHelper.cs" />
-    <Compile Include="NamedAddinAttribute.cs" />
+    <Compile Include="AddinAttribute.cs" />
     <Compile Include="ObjectBuilder.cs" />
     <Compile Include="Resources\Errors.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Errors.resx</DependentUpon>
     </Compile>
+    <Compile Include="Runtime\ContextActionsHandler.cs" />
+    <Compile Include="Runtime\ContextBoundAction.cs" />
+    <Compile Include="Runtime\ContextConditionsHandler.cs" />
+    <Compile Include="Runtime\ContextHandler.cs" />
+    <Compile Include="Runtime\ContextEvent.cs" />
+    <Compile Include="Runtime\ContextConditionHandler.cs" />
+    <Compile Include="Runtime\ContextRulesHandler.cs" />
+    <Compile Include="Runtime\ContextCollectionHandler.cs" />
+    <Compile Include="Runtime\IContextHandler.cs" />
+    <Compile Include="Runtime\ContextRuleHandler.cs" />
+    <Compile Include="Runtime\EvaluationCache.cs" />
+    <Compile Include="Runtime\IObjectRepository.cs" />
+    <Compile Include="Runtime\NamedObjectRepository.cs" />
     <Compile Include="Threshold.cs" />
     <Compile Include="ValidationRuleAttribute.cs" />
     <Compile Include="IntrusionDetection\IntrusionDetector.cs" />

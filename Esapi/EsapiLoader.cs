@@ -115,7 +115,7 @@ namespace Owasp.Esapi
                 string failMessage = string.Format("Failed to load codec \"{0}\"", codecElement.Name);
 
                 try {
-                    ICodec codec = ObjectBuilder.BuildInstance<ICodec>(codecElement);
+                    ICodec codec = AddinBuilder<ICodec>.MakeInstance(codecElement);
                     encoder.AddCodec(codecElement.Name, codec);
                 }
                 catch (Exception exp) {
@@ -274,7 +274,7 @@ namespace Owasp.Esapi
                 string failMessage = string.Format("Failed to load validation rule \"{0}\"", ruleElement.Name);
 
                 try {
-                    IValidationRule rule = ObjectBuilder.BuildInstance<IValidationRule>(ruleElement);
+                    IValidationRule rule = AddinBuilder<IValidationRule>.MakeInstance(ruleElement);
                     validator.AddRule(ruleElement.Name, rule);
                 }
                 catch (Exception exp) {

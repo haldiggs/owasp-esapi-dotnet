@@ -6,6 +6,7 @@ using Owasp.Esapi;
 using Owasp.Esapi.Configuration;
 using Owasp.Esapi.Interfaces;
 using Owasp.Esapi.IntrusionDetection.Actions;
+using Owasp.Esapi.IntrusionDetection;
 
 namespace EsapiTest.InstrusionDetection.Actions
 {
@@ -25,7 +26,8 @@ namespace EsapiTest.InstrusionDetection.Actions
         [TestMethod]
         public void Test_Execute()
         {
-            IIntrusionDetector detector = Esapi.IntrusionDetector;
+            IntrusionDetector detector = Esapi.IntrusionDetector as IntrusionDetector;
+            Assert.IsNotNull(detector);
 
             // Should be loaded by default
             BlockAction action = detector.GetAction(BuiltinActions.Block) as BlockAction;
@@ -39,7 +41,7 @@ namespace EsapiTest.InstrusionDetection.Actions
             // Block
             Assert.AreNotEqual(HttpContext.Current.Response.StatusCode, action.StatusCode);
             
-            action.Execute(new ActionArgs());
+            action.Execute(ActionArgs.Empty);
             Assert.AreEqual(HttpContext.Current.Response.StatusCode, action.StatusCode);
         }
 
