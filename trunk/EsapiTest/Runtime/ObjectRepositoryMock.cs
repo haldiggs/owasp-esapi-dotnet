@@ -51,7 +51,7 @@ namespace EsapiTest.Runtime
             where T : class
         {
             foreach (string k in from.Keys) {
-                to = to.Register(k, from[k]);
+                to.Register(k, from[k]);
             }
         }
         /// <summary>
@@ -66,7 +66,7 @@ namespace EsapiTest.Runtime
             Assert.AreEqual(source.Count, target.Count);
 
             foreach (string k in source.Keys) {
-                Assert.AreEqual(source[k], target[k]);
+                Assert.AreEqual(source[k], target.Get(k));
             }
         }
         /// <summary>
@@ -96,7 +96,7 @@ namespace EsapiTest.Runtime
             T t = mockFactory();
 
             objects.Register(name, t);
-            Assert.AreEqual(objects[name], t);
+            Assert.AreEqual(objects.Get(name), t);
 
             objects.Revoke(name);
             Assert.IsFalse(objects.Objects.Contains(t));

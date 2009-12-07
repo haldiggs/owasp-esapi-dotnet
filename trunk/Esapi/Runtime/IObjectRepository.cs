@@ -9,18 +9,24 @@ namespace Owasp.Esapi.Runtime
         where TObject : class
     {
         /// <summary>
+        /// Register object
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns>Generated ID</returns>
+        TId Register(TObject value);
+        /// <summary>
         /// Add object
         /// </summary>
         /// <param id="id">Object id</param>
         /// <param id="value">Object value</param>
         /// <returns></returns>
-        IObjectRepository<TId, TObject> Register(TId id, TObject value);
+        void Register(TId id, TObject value);
         /// <summary>
         /// Remove object
         /// </summary>
         /// <param id="id"></param>
         /// <returns></returns>
-        IObjectRepository<TId, TObject> Revoke(TId id);
+        void Revoke(TId id);
         /// <summary>
         /// Lookup object
         /// </summary>
@@ -45,6 +51,6 @@ namespace Owasp.Esapi.Runtime
         /// </summary>
         /// <param id="id"></param>
         /// <returns></returns>
-        TObject this[TId id] { get; }
+        TObject Get(TId id);
     }
 }

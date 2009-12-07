@@ -2,7 +2,6 @@
 using Owasp.Esapi.Interfaces;
 using Owasp.Esapi.Configuration;
 using System.Threading;
-using Owasp.Esapi.IntrusionDetection;
 using Owasp.Esapi.Runtime;
 
 namespace Owasp.Esapi
@@ -156,7 +155,7 @@ namespace Owasp.Esapi
                     lock (_instrusionDetectorLock) {
                         if (_intrusionDetector == null) {
                             Thread.MemoryBarrier();
-                            _intrusionDetector = IntrusionDetectorLoader.Load(EsapiConfig.Instance.IntrusionDetector);
+                            _intrusionDetector = EsapiLoader.LoadIntrusionDetector(EsapiConfig.Instance.IntrusionDetector);
                         }
                     }
                 }

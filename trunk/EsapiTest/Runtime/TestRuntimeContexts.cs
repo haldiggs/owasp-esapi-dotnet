@@ -17,59 +17,64 @@ namespace EsapiTest.Runtime
     public class TestRuntimeContexts
     {
         private MockRepository _mocks;
+        private EsapiRuntime _runtime;
 
         [TestInitialize]
         public void Initialize()
         {
             _mocks = new MockRepository();
-            EsapiRuntime.Reset();
+            _runtime = new EsapiRuntime();
         }
 
 
         [TestMethod]
         public void TestGetRuntime()
         {
-            EsapiRuntime runtime = EsapiRuntime.Current;
-            Assert.IsNotNull(runtime);
+            Assert.IsNotNull(_runtime);
         }
 
         [TestMethod]
-        public void TestFluentAddContexts()
+        public void TestAddContexts()
         {
-            EsapiRuntime runtime = EsapiRuntime.Current;
-            Assert.IsNotNull(runtime);
+            Assert.IsNotNull(_runtime);
 
             // Create and add contexts
-            IDictionary<string, Context> contexts = ObjectRepositoryMock.MockNamedObjects<Context>(
-                            () => _mocks.CreateMock<Context>(Guid.NewGuid().ToString()), 
-                            10);
+            IDictionary<string, IContext> contexts = ObjectRepositoryMock.MockNamedObjects<IContext>(_mocks, 10);
 
-            ObjectRepositoryMock.AddNamedObjects<Context>(contexts, runtime.Contexts);
-            ObjectRepositoryMock.AssertContains<Context>(contexts, runtime.Contexts);
+            // Add 
+            foreach (string key in contexts.Keys) {
+                _runtime.RegisterContext(key, contexts[key]);
+            }
+
+            // Verify
+            Assert.AreEqual(contexts.Count, _runtime.Contexts.Count);
+
+            foreach (string k in contexts.Keys) {
+                Assert.AreEqual(contexts[k], _runtime.LookupContext(k));
+            }
         }
 
         [TestMethod]
-        public void TestFluentAddInvalidContextParams()
+        public void TestAddInvalidContextParams()
         {
-            EsapiRuntime runtime = EsapiRuntime.Current;
-            Assert.IsNotNull(runtime);
+            Assert.IsNotNull(_runtime);
 
             try {
-                runtime.Contexts.Register(null,_mocks.StrictMock<Context>(Guid.NewGuid().ToString()));
+                _runtime.RegisterContext(null,_mocks.StrictMock<IContext>());
                 Assert.Fail("Null context name");
             }
             catch (ArgumentException) {
             }
 
             try {
-                runtime.Contexts.Register(string.Empty, _mocks.StrictMock<Context>(Guid.NewGuid().ToString()));
+                _runtime.RegisterContext(string.Empty, _mocks.StrictMock<IContext>());
                 Assert.Fail("Empty context name");
             }
             catch (ArgumentException) {
             }
 
             try {
-                runtime.Contexts.Register(Guid.NewGuid().ToString(), null);
+                _runtime.RegisterContext(Guid.NewGuid().ToString(), null);
                 Assert.Fail("Null context");
             }
             catch (ArgumentNullException) {
@@ -79,18 +84,17 @@ namespace EsapiTest.Runtime
         [TestMethod]
         public void TestContextAddInvalidParams()
         {
-            EsapiRuntime runtime = EsapiRuntime.Current;
-            Assert.IsNotNull(runtime);
+            Assert.IsNotNull(_runtime);
 
             try {
-                runtime.RegisterContext(null);
+                _runtime.CreateContext(null);
                 Assert.Fail("Null context name");
             }
             catch (ArgumentException) {
             }
 
             try {
-                runtime.RegisterContext(string.Empty);
+                _runtime.CreateContext(string.Empty);
                 Assert.Fail("Empty context name");
             }
             catch (ArgumentException) {
@@ -100,12 +104,15 @@ namespace EsapiTest.Runtime
         [TestMethod]
         public void TestRemoveContext()
         {
-            EsapiRuntime runtime = EsapiRuntime.Current;
-            Assert.IsNotNull(runtime);
+            Assert.IsNotNull(_runtime);
 
-            ObjectRepositoryMock.AssertMockAddRemove<Context>(
-                () => _mocks.CreateMock<Context>(Guid.NewGuid().ToString()), 
-                runtime.Contexts);
+            IContext ctx = _runtime.CreateContext();
+            Assert.IsNotNull(ctx);
+            Assert.AreEqual(1, _runtime.Contexts.Count);
+            Assert.AreEqual(ctx, _runtime.LookupContext(ctx.Name));
+
+            Assert.AreEqual(_runtime.RemoveContext(ctx.Name), ctx);
+            Assert.AreEqual(0, _runtime.Contexts.Count);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Owasp.Esapi.Runtime;
 
 namespace Owasp.Esapi.Interfaces
 {
@@ -6,27 +7,6 @@ namespace Owasp.Esapi.Interfaces
     /// </summary>
     public interface IIntrusionDetector
     {
-        /// <summary>
-        /// Add action 
-        /// </summary>
-        /// <param name="name">Action unique name</param>
-        /// <param name="action">Action instance</param>
-        void AddAction(string name, IAction action);
-
-        /// <summary>
-        /// Remove action
-        /// </summary>
-        /// <param name="name">Action unique name</param>
-        /// <returns>True if succeeded, false otherwise</returns>
-        bool RemoveAction(string name);
-
-        /// <summary>
-        /// Get action by name
-        /// </summary>
-        /// <param name="name">Action name</param>
-        /// <returns>Action if found, null otherwise</returns>
-        IAction GetAction(string name);
-
         /// <summary> 
         /// The intrusion detection quota for a particular event.
         /// </summary>

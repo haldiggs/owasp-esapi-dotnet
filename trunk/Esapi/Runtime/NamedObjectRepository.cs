@@ -37,29 +37,38 @@ namespace Owasp.Esapi.Runtime
         /// <summary>
         /// Register object
         /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public string Register(TObject value)
+        {
+            string id = Guid.NewGuid().ToString();
+            Register(id, value);
+            return id;
+        }
+        /// <summary>
+        /// Register object
+        /// </summary>
         /// <param id="id"></param>
         /// <param id="value"></param>
         /// <returns></returns>
-        public IObjectRepository<string, TObject> Register(string id, TObject value)
+        public void Register(string id, TObject value)
         {
-            if (string.IsNullOrEmpty(id)) {
+            if (string.IsNullOrEmpty(id) || _entries.ContainsKey(id)) {
                 throw new ArgumentException("Invalid id", "id");
             }
             if (value == null) {
                 throw new ArgumentNullException("value");
             }
             _entries[id] = value;
-            return this;
         }
         /// <summary>
         /// Revoke object
         /// </summary>
         /// <param id="id"></param>
         /// <returns></returns>
-        public IObjectRepository<string, TObject> Revoke(string id)
+        public void Revoke(string id)
         {
             _entries.Remove(id);
-            return this;
         }
         /// <summary>
         /// Lookup object
@@ -97,9 +106,9 @@ namespace Owasp.Esapi.Runtime
         /// </summary>
         /// <param id="id"></param>
         /// <returns></returns>
-        public TObject this[string id]
+        public TObject Get(string id)
         {
-            get { return _entries[id]; }
+            return _entries[id]; 
         }
 
         #endregion
