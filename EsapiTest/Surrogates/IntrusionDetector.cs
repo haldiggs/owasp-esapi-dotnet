@@ -1,4 +1,5 @@
 ﻿using Owasp.Esapi.Interfaces;
+using Owasp.Esapi.Runtime;
 
 namespace EsapiTest.Surrogates
 {
@@ -15,21 +16,6 @@ namespace EsapiTest.Surrogates
         }
 
         #region IIntrusionDetector Members
-
-        public void AddAction(string name, IAction action)
-        {
-            Impl.AddAction(name, action);
-        }
-
-        public bool RemoveAction(string name)
-        {
-            return Impl.RemoveAction(name);
-        }
-
-        public IAction GetAction(string name)
-        {
-            return Impl.GetAction(name);
-        }
 
         public void AddThreshold(Owasp.Esapi.Threshold threshold)
         {
@@ -61,7 +47,7 @@ namespace EsapiTest.Surrogates
 
         #region IAction Members
 
-        public void Execute(Owasp.Esapi.Interfaces.ActionArgs args)
+        public void Execute(ActionArgs args)
         {
             Impl.Execute(args);
         }

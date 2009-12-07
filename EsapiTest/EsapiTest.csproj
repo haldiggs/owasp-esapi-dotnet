@@ -52,11 +52,11 @@
   <ItemGroup>
     <Compile Include="AccessControllerTest.cs" />
     <Compile Include="AccessReferenceMapTest.cs" />
-    <Compile Include="InstrusionDetection\Actions\BlockActionTest.cs" />
     <Compile Include="EncoderTest.cs" />
     <Compile Include="HttpUtilitiesTest.cs" />
-    <Compile Include="InstrusionDetection\Actions\RedirectActionTest.cs" />
-    <Compile Include="InstrusionDetection\Actions\TransferActionTest.cs" />
+    <Compile Include="Runtime\Actions\BlockActionTest.cs" />
+    <Compile Include="Runtime\Actions\RedirectActionTest.cs" />
+    <Compile Include="Runtime\Actions\TransferActionTest.cs" />
     <Compile Include="InstrusionDetection\IntrusionDetectorTest.cs" />
     <Compile Include="LoggerTest.cs" />
     <Compile Include="MockHelpers.cs" />

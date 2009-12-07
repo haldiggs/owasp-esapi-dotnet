@@ -146,6 +146,37 @@ namespace Owasp.Esapi
         }
         #endregion
 
+        #region IntrusionDetector
+        /// <summary>
+        /// Load instrusion detector instance
+        /// </summary>
+        /// <param name="detectorConfig"></param>
+        /// <returns></returns>
+        internal static IIntrusionDetector LoadIntrusionDetector(IntrusionDetectorElement detectorConfig)
+        {
+            Debug.Assert(detectorConfig != null);
+
+            IIntrusionDetector detector = null;
+            if (!string.IsNullOrEmpty(detectorConfig.Type)) {
+                detector = ObjectBuilder.Build<IIntrusionDetector>(detectorConfig.Type);
+            }
+            else {
+                // Create default 
+                detector = new IntrusionDetector();
+            }
+
+            // Load event thresholds
+            foreach (ThresholdElement e in detectorConfig.EventThresholds) {
+                string[] actions = e.Actions.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+                Threshold threshold = new Threshold(e.Name, e.Count, e.Interval, actions);
+                detector.AddThreshold(threshold);
+            }
+
+            return detector;
+        }
+        #endregion
+
         #region HttpUtilities
         /// <summary>
         /// Load HTTP utilities
@@ -161,7 +192,7 @@ namespace Owasp.Esapi
             }
 
             // Default
-            return new HttpUtilities.HttpUtilities();
+            return new HttpUtilities();
         }
         #endregion
                

@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Text;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Rhino.Mocks;
-using Owasp.Esapi.Interfaces;
-using Owasp.Esapi;
 using Owasp.Esapi.Runtime;
+using Rhino.Mocks;
 
 namespace EsapiTest.Runtime
 {
@@ -17,48 +13,47 @@ namespace EsapiTest.Runtime
     public class TestRuntimeConditions
     {
         private MockRepository _mocks;
+        private EsapiRuntime _runtime;
 
         [TestInitialize]
         public void Initialize()
         {
             _mocks = new MockRepository();
-            EsapiRuntime.Reset();
+            _runtime = new EsapiRuntime();
         }
 
 
         [TestMethod]
         public void TestGetRuntime()
         {
-            EsapiRuntime runtime = EsapiRuntime.Current;
-            Assert.IsNotNull(runtime);
+            Assert.IsNotNull(_runtime);
         }
 
         [TestMethod]
         public void TestFluentAddConditions()
         {
-            EsapiRuntime runtime = EsapiRuntime.Current;
-            Assert.IsNotNull(runtime);
+            Assert.IsNotNull(_runtime);
 
             // Create and add conditions
             IDictionary<string, ICondition> conditions = ObjectRepositoryMock.MockNamedObjects<ICondition>(_mocks, 10);
 
-            ObjectRepositoryMock.AddNamedObjects<ICondition>(conditions, runtime.Conditions);
-            ObjectRepositoryMock.AssertContains<ICondition>(conditions, runtime.Conditions);
+            ObjectRepositoryMock.AddNamedObjects<ICondition>(conditions, _runtime.Conditions);
+            ObjectRepositoryMock.AssertContains<ICondition>(conditions, _runtime.Conditions);
 
             // Call conditions
-            ObjectRepositoryMock.ForEach<ICondition>(runtime.Conditions,
+            ObjectRepositoryMock.ForEach<ICondition>(_runtime.Conditions,
                 new Action<ICondition>(
                     delegate(ICondition condition)
                     {
-                        Expect.Call(condition.Evaluate(ConditionArgs.Empty)).Return(false);
+                        Expect.Call(condition.Evaluate(ConditionArgs.Emtpy)).Return(false);
                     }));
             _mocks.ReplayAll();
 
-            ObjectRepositoryMock.ForEach<ICondition>(runtime.Conditions,
+            ObjectRepositoryMock.ForEach<ICondition>(_runtime.Conditions,
                 new Action<ICondition>(
                     delegate(ICondition condition)
                     {
-                        Assert.IsFalse(condition.Evaluate(ConditionArgs.Empty));
+                        Assert.IsFalse(condition.Evaluate(ConditionArgs.Emtpy));
                     }));
             _mocks.VerifyAll();    
         }
@@ -66,25 +61,24 @@ namespace EsapiTest.Runtime
         [TestMethod]
         public void TestFluentAddInvalidConditionParams()
         {
-            EsapiRuntime runtime = EsapiRuntime.Current;
-            Assert.IsNotNull(runtime);
+            Assert.IsNotNull(_runtime);
 
             try {
-                runtime.Conditions.Register(null, _mocks.StrictMock<ICondition>());
+                _runtime.Conditions.Register(null, _mocks.StrictMock<ICondition>());
                 Assert.Fail("Null condition name");
             }
             catch (ArgumentException) {
             }
 
             try {
-                runtime.Conditions.Register(string.Empty, _mocks.StrictMock<ICondition>());
+                _runtime.Conditions.Register(string.Empty, _mocks.StrictMock<ICondition>());
                 Assert.Fail("Empty condition name");
             }
             catch (ArgumentException) {
             }
 
             try {
-                runtime.Conditions.Register(Guid.NewGuid().ToString(), null);
+                _runtime.Conditions.Register(Guid.NewGuid().ToString(), null);
                 Assert.Fail("Null condition");
             }
             catch (ArgumentNullException) {
@@ -94,10 +88,9 @@ namespace EsapiTest.Runtime
         [TestMethod]
         public void TestRemoveCondition()
         {
-            EsapiRuntime runtime = EsapiRuntime.Current;
-            Assert.IsNotNull(runtime);
+            Assert.IsNotNull(_runtime);
 
-            ObjectRepositoryMock.AssertMockAddRemove<ICondition>(_mocks, runtime.Conditions);
+            ObjectRepositoryMock.AssertMockAddRemove<ICondition>(_mocks, _runtime.Conditions);
         }
     }
 }
