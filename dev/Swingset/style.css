@@ -1,0 +1,70 @@
+﻿body
+{
+    font-family: Arial, Helvetica, sans-serif;   
+    margin: 1em auto;
+    width: 75%;
+    background-color: #CCCCCC;
+}
+
+input
+{
+    width: 7em;	
+}
+
+input[type='text'], input[type='password'], input[type='submit']
+{
+    width: 10em;
+}
+
+fieldset
+{
+	border: none;
+	padding: 1em;
+}
+
+select
+{
+	width: 20em;
+}
+
+#header
+{	
+	height: 40px;
+	background-color: #274194;	
+	color: White;	
+	font-size: x-large;	
+	margin: auto;
+	background-image: url('owasp-logo.gif');
+	background-repeat: no-repeat;
+	background-position: top left;
+	padding: 1em 0em 1em 4em;
+}
+
+.main
+{
+	background-color: #ffffff;	
+	border: 1px solid gray;
+	padding: 1em;
+}
+
+.breadcrumb
+{
+	display: block;
+	margin-bottom: 1em;
+}
+
+.validation_success
+{
+	font: green;
+}
+
+.login td
+{
+	padding: .2em 0em;
+}
+
+
+.login input[type='submit']
+{
+    width: 5em;
+}
