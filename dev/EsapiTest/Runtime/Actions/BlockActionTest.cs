@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web;
 using EsapiTest.Surrogates;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Owasp.Esapi;
 using Owasp.Esapi.Configuration;
 using Owasp.Esapi.Runtime;
@@ -12,17 +12,17 @@ namespace EsapiTest.Runtime.Actions
     /// <summary>
     /// Summary description for BlockActionTest
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class BlockActionTest
     {
-        [TestInitialize]
+        [SetUp]
         public void TestInitialize()
         {
             Esapi.Reset();
             EsapiConfig.Reset();
         }
 
-        [TestMethod]
+        [Test]
         public void Test_Execute()
         {
             IntrusionDetector detector = Esapi.IntrusionDetector as IntrusionDetector;
@@ -43,7 +43,7 @@ namespace EsapiTest.Runtime.Actions
             Assert.AreEqual(HttpContext.Current.Response.StatusCode, action.StatusCode);
         }
 
-        [TestMethod]
+        [Test]
         public void Test_SetStatusCode()
         {
             int statusCode = (new Random((int)DateTime.Now.Ticks)).Next();

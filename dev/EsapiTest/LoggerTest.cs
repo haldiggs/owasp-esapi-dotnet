@@ -1,12 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Owasp.Esapi;
+﻿using Owasp.Esapi;
+using NUnit.Framework;
 
 namespace EsapiTest
 {
     /// <summary>
     /// Summary description for LoggerTest
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class LoggerTest
     {
         private  ILogger logger;
@@ -56,7 +56,7 @@ namespace EsapiTest
         #endregion
 
         /// <summary> Test of Info method, of class Owasp.Esapi.Logger.</summary>
-        [TestMethod]
+        [Test]
         public void Test_Info()
         {
             System.Console.Out.WriteLine("Info");
@@ -67,7 +67,7 @@ namespace EsapiTest
         }
 
         /// <summary> Test of LogDebug method, of class Owasp.Esapi.Logger.</summary>
-        [TestMethod]
+        [Test]
         public void Test_LogDebug()
         {
             System.Console.Out.WriteLine("logDebug");
@@ -76,7 +76,7 @@ namespace EsapiTest
         }
 
         /// <summary> Test of Error method, of class Owasp.Esapi.Logger.</summary>
-        [TestMethod]
+        [Test]
         public void Test_Error()
         {
             System.Console.Out.WriteLine("Error");
@@ -85,7 +85,7 @@ namespace EsapiTest
         }
 
         /// <summary> Test of Warning method, of class Owasp.Esapi.Logger.</summary>
-        [TestMethod]
+        [Test]
         public void Test_Warning()
         {
             System.Console.Out.WriteLine("Warning");
@@ -94,7 +94,7 @@ namespace EsapiTest
         }
 
         /// <summary> Test of Fatal method, of class Owasp.Esapi.Logger.</summary>
-        [TestMethod]
+        [Test]
         public void Test_Fatal()
         {
             System.Console.Out.WriteLine("Fatal");
@@ -102,7 +102,7 @@ namespace EsapiTest
             logger.Fatal(LogEventTypes.SECURITY, "test message", null);
         }
 
-        [TestMethod]
+        [Test]
         public void Test_ParseLogLevel()
         {
             Assert.AreEqual(LogLevels.ParseLogLevel("OFF"), LogLevels.OFF);

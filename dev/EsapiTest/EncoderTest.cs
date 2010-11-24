@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using EsapiTest.Surrogates;
+using NUnit.Framework;
 using Owasp.Esapi;
 using Owasp.Esapi.Codecs;
 using Owasp.Esapi.Configuration;
 using Rhino.Mocks;
-using Rhino.Mocks.Constraints;
-using EsapiTest.Surrogates;
+using RMC = Rhino.Mocks.Constraints;
 
 namespace EsapiTest
 {
     /// <summary>
     /// Summary description for EncoderTest
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class EncoderTest
     {        
-        [TestInitialize]
+        [SetUp]
         public void InitializeTest()
         {
             Esapi.Reset();
@@ -30,7 +30,7 @@ namespace EsapiTest
         /// 
         /// </summary>
         /// <throws>  ValidationException </throws>
-        [TestMethod]
+        [Test]
         public void Test_Canonicalize()
         {
            
@@ -42,7 +42,7 @@ namespace EsapiTest
         /// <throws>  ValidationException </throws>
         /// <summary>             the validation exception
         /// </summary>
-        [TestMethod]
+        [Test]
         public void Test_Normalize()
         {
             System.Console.Out.WriteLine("Normalize");
@@ -50,7 +50,7 @@ namespace EsapiTest
         }
 
         /// <summary> Test of EncodeForHtml method, of class Owasp.Esapi.Encoder.</summary>
-        [TestMethod]
+        [Test]
         public void Test_EncodeForHtml()
         {
             System.Console.Out.WriteLine("EncodeForHtml");
@@ -69,7 +69,7 @@ namespace EsapiTest
         }
 
         /// <summary> Test of EncodeForHtmlAttribute method, of class Owasp.Esapi.Encoder.</summary>
-        [TestMethod]
+        [Test]
         public void Test_EncodeForHtmlAttribute()
         {
             System.Console.Out.WriteLine("EncodeForHtmlAttribute");
@@ -81,7 +81,7 @@ namespace EsapiTest
         }
 
         /// <summary> Test of EncodeForJavaScript method, of class Owasp.Esapi.Encoder.</summary>
-        [TestMethod]
+        [Test]
         public void Test_EncodeForJavaScript()
         {
             System.Console.Out.WriteLine("EncodeForJavaScript");
@@ -95,7 +95,7 @@ namespace EsapiTest
         /// <summary> Test of EncodeForVisualBasicScript method, of class
         /// Owasp.Esapi.Encoder.
         /// </summary>
-        [TestMethod]
+        [Test]
         public void Test_EncodeForVbScript()
         {
             System.Console.Out.WriteLine("EncodeForVbScript");
@@ -110,7 +110,7 @@ namespace EsapiTest
 
 
         /// <summary> Test of EncodeForXML method, of class Owasp.Esapi.Encoder.</summary>
-        [TestMethod]
+        [Test]
         public void Test_EncodeForXML()
         {
             System.Console.Out.WriteLine("EncodeForXML");
@@ -123,7 +123,7 @@ namespace EsapiTest
         }
         
         /// <summary> Test of EncodeForXMLAttribute method, of class Owasp.Esapi.Encoder.</summary>
-        [TestMethod]
+        [Test]
         public void Test_EncodeForXMLAttribute()
         {
             System.Console.Out.WriteLine("EncodeForXMLAttribute");
@@ -136,7 +136,7 @@ namespace EsapiTest
         }
 
         /// <summary> Test of EncodeForURL method, of class Owasp.Esapi.Encoder.</summary>
-        [TestMethod]
+        [Test]
         public void Test_EncodeForURL()
         {
             System.Console.Out.WriteLine("EncodeForURL");
@@ -146,7 +146,7 @@ namespace EsapiTest
         }
 
         /// <summary> Test of DecodeFromURL method, of class Owasp.Esapi.Encoder.</summary>
-        [TestMethod]
+        [Test]
         public void Test_DecodeFromURL()
         {
             System.Console.Out.WriteLine("DecodeFromURL");
@@ -164,7 +164,7 @@ namespace EsapiTest
         }
 
         /// <summary> Test of EncodeForBase64 method, of class Owasp.Esapi.Encoder.</summary>
-        [TestMethod]
+        [Test]
         public void Test_EncodeForBase64()
         {
             System.Console.Out.WriteLine("EncodeForBase64");
@@ -185,7 +185,7 @@ namespace EsapiTest
             }
         }
 
-        [TestMethod]
+        [Test]
         public void Test_AddCodec()
         {
             MockRepository mocks = new MockRepository();
@@ -194,10 +194,10 @@ namespace EsapiTest
             ICodec codec = mocks.StrictMock<ICodec>();
 
             Esapi.Encoder.AddCodec(codecName, codec);
-            Assert.ReferenceEquals(Esapi.Encoder.GetCodec(codecName), codec);        
+            Assert.AreSame(Esapi.Encoder.GetCodec(codecName), codec);        
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Test_AddWrongCodecName()
         {
@@ -206,7 +206,7 @@ namespace EsapiTest
             Esapi.Encoder.AddCodec(null, mocks.StrictMock<ICodec>());
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void Test_AddDuplicateCodec()
         {
@@ -218,7 +218,7 @@ namespace EsapiTest
             Esapi.Encoder.AddCodec(codecName, mocks.StrictMock<ICodec>());
         }
 
-        [TestMethod]
+        [Test]
         public void Test_RemoveCodec()
         {
             MockRepository mocks = new MockRepository();
@@ -227,13 +227,13 @@ namespace EsapiTest
             ICodec codec = mocks.StrictMock<ICodec>();
 
             Esapi.Encoder.AddCodec(codecName, codec);
-            Assert.ReferenceEquals(Esapi.Encoder.GetCodec(codecName), codec);      
+            Assert.AreSame(Esapi.Encoder.GetCodec(codecName), codec);      
 
             Esapi.Encoder.RemoveCodec(codecName);
             Assert.IsNull(Esapi.Encoder.GetCodec(codecName));
         }
 
-        [TestMethod]
+        [Test]
         public void Test_Encode()
         {
             MockRepository mocks = new MockRepository();
@@ -246,13 +246,13 @@ namespace EsapiTest
             mocks.ReplayAll();
 
             Esapi.Encoder.AddCodec(codecName, codec);
-            Assert.ReferenceEquals(Esapi.Encoder.GetCodec(codecName), codec);        
+            Assert.AreSame(Esapi.Encoder.GetCodec(codecName), codec);        
 
             Assert.AreEqual(testString, Esapi.Encoder.Encode(codecName, testString));
             mocks.VerifyAll();
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void Test_EncodeWrongCodecName()
         {
@@ -261,7 +261,7 @@ namespace EsapiTest
             Esapi.Encoder.Encode(codecName, "test");
         }
 
-        [TestMethod]
+        [Test]
         public void Test_Decode()
         {
             MockRepository mocks = new MockRepository();
@@ -274,13 +274,13 @@ namespace EsapiTest
             mocks.ReplayAll();
 
             Esapi.Encoder.AddCodec(codecName, codec);
-            Assert.ReferenceEquals(Esapi.Encoder.GetCodec(codecName), codec);        
+            Assert.AreSame(Esapi.Encoder.GetCodec(codecName), codec);        
 
             Assert.AreEqual(testString, Esapi.Encoder.Decode(codecName, testString));
             mocks.VerifyAll();
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void Test_DecodeWrongCodecName()
         {
@@ -289,7 +289,7 @@ namespace EsapiTest
             Esapi.Encoder.Decode(codecName, "test");
         }
 
-        [TestMethod]
+        [Test]
         public void Test_CanonicalizeNullCodec()
         {
             List<string>  codecs = new List<string>();
@@ -301,7 +301,7 @@ namespace EsapiTest
         /// <summary>
         /// Tests loading of configuration defined encoder
         /// </summary>
-        [TestMethod]
+        [Test]
         public void Test_LoadCustom()
         {
             // Set new
@@ -315,7 +315,7 @@ namespace EsapiTest
         /// Tests loading of assembly defined codecs in a configuration defined
         /// encoder
         /// </summary>
-        [TestMethod]        
+        [Test]        
         public void Test_LoadCustomAddinAssembly()
         {
             MockRepository mocks = new MockRepository();
@@ -332,14 +332,22 @@ namespace EsapiTest
             IEncoder mockEncoder = mocks.StrictMock<IEncoder>();
             
             // Load default
-            Expect.Call(delegate { mockEncoder.AddCodec(BuiltinCodecs.Base64, null); }).Constraints(Is.Equal(BuiltinCodecs.Base64), Is.Anything());
-            Expect.Call(delegate { mockEncoder.AddCodec(BuiltinCodecs.Html, null); }).Constraints(Is.Equal(BuiltinCodecs.Html), Is.Anything());
-            Expect.Call(delegate { mockEncoder.AddCodec(BuiltinCodecs.HtmlAttribute, null); }).Constraints(Is.Equal(BuiltinCodecs.HtmlAttribute), Is.Anything());
-            Expect.Call(delegate { mockEncoder.AddCodec(BuiltinCodecs.JavaScript, null); }).Constraints(Is.Equal(BuiltinCodecs.JavaScript), Is.Anything());
-            Expect.Call(delegate { mockEncoder.AddCodec(BuiltinCodecs.Url, null); }).Constraints(Is.Equal(BuiltinCodecs.Url), Is.Anything());
-            Expect.Call(delegate { mockEncoder.AddCodec(BuiltinCodecs.VbScript, null); }).Constraints(Is.Equal(BuiltinCodecs.VbScript), Is.Anything());
-            Expect.Call(delegate { mockEncoder.AddCodec(BuiltinCodecs.Xml, null); }).Constraints(Is.Equal(BuiltinCodecs.Xml), Is.Anything());
-            Expect.Call(delegate { mockEncoder.AddCodec(BuiltinCodecs.XmlAttribute, null); }).Constraints(Is.Equal(BuiltinCodecs.XmlAttribute), Is.Anything());
+            Expect.Call(delegate { mockEncoder.AddCodec(BuiltinCodecs.Base64, null); })
+                .Constraints(RMC.Is.Equal(BuiltinCodecs.Base64), RMC.Is.Anything());
+            Expect.Call(delegate { mockEncoder.AddCodec(BuiltinCodecs.Html, null); })
+                .Constraints(RMC.Is.Equal(BuiltinCodecs.Html), RMC.Is.Anything());
+            Expect.Call(delegate { mockEncoder.AddCodec(BuiltinCodecs.HtmlAttribute, null); })
+                .Constraints(RMC.Is.Equal(BuiltinCodecs.HtmlAttribute), RMC.Is.Anything());
+            Expect.Call(delegate { mockEncoder.AddCodec(BuiltinCodecs.JavaScript, null); })
+                .Constraints(RMC.Is.Equal(BuiltinCodecs.JavaScript), RMC.Is.Anything());
+            Expect.Call(delegate { mockEncoder.AddCodec(BuiltinCodecs.Url, null); })
+                .Constraints(RMC.Is.Equal(BuiltinCodecs.Url), RMC.Is.Anything());
+            Expect.Call(delegate { mockEncoder.AddCodec(BuiltinCodecs.VbScript, null); })
+                .Constraints(RMC.Is.Equal(BuiltinCodecs.VbScript), RMC.Is.Anything());
+            Expect.Call(delegate { mockEncoder.AddCodec(BuiltinCodecs.Xml, null); })
+                .Constraints(RMC.Is.Equal(BuiltinCodecs.Xml), RMC.Is.Anything());
+            Expect.Call(delegate { mockEncoder.AddCodec(BuiltinCodecs.XmlAttribute, null); })
+                .Constraints(RMC.Is.Equal(BuiltinCodecs.XmlAttribute), RMC.Is.Anything());
             mocks.ReplayAll();
 
             // Create and test
@@ -353,7 +361,7 @@ namespace EsapiTest
         /// <summary>
         /// Tests loading of configuration defined codecs 
         /// </summary>
-        [TestMethod]
+        [Test]
         public void Test_LoadCustomCodecs()
         {
             MockRepository mocks = new MockRepository();
@@ -376,7 +384,8 @@ namespace EsapiTest
 
             // Custom codecs are loaded and are of proper type
             foreach (string codecName in codecNames) {
-                Expect.Call(delegate { mockEncoder.AddCodec(codecName, null); }).Constraints(Is.Equal(codecName), Is.TypeOf<SurrogateCodec>());
+                Expect.Call(delegate { mockEncoder.AddCodec(codecName, null); })
+                    .Constraints(RMC.Is.Equal(codecName), RMC.Is.TypeOf<SurrogateCodec>());
             }
             mocks.ReplayAll();
 

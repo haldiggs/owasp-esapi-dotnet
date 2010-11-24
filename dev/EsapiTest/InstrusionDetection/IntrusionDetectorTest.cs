@@ -1,42 +1,40 @@
 ﻿using System;
 using EsapiTest.Surrogates;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Owasp.Esapi;
 using Owasp.Esapi.Configuration;
 using Owasp.Esapi.Errors;
-using Owasp.Esapi.Runtime;
 using Owasp.Esapi.Runtime.Actions;
-using Rhino.Mocks;
 
 namespace EsapiTest.InstrusionDetector
 {
     /// <summary>
     /// Summary description for IntrusionDetector
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class IntrusionDetectorTest
     {
-        [TestInitialize]
+        [SetUp]
         public void InitializeTests()
         {
             Esapi.Reset();
             EsapiConfig.Reset();
         }
                 
-        [TestMethod]
+        [Test]
         public void Test_AddException()
         {
             Esapi.IntrusionDetector.AddException(new IntrusionException("user message", "log message"));
         }
 
-        [TestMethod]
+        [Test]
         public void Test_AddESAPIException()
         {
             EnterpriseSecurityException secExp = new EnterpriseSecurityException();
             Esapi.IntrusionDetector.AddException(secExp);
         }
 
-        [TestMethod]
+        [Test]
         public void Test_AddExceptionSecurityEvent()
         {
             string evtName = typeof(ArgumentException).FullName;
@@ -51,7 +49,7 @@ namespace EsapiTest.InstrusionDetector
             detector.AddException(arg);
         }
 
-        [TestMethod]
+        [Test]
         public void Test_AddEvent()
         {
             string evtName = Guid.NewGuid().ToString();
@@ -59,7 +57,7 @@ namespace EsapiTest.InstrusionDetector
             Esapi.IntrusionDetector.AddEvent(evtName);
         }
 
-        [TestMethod]
+        [Test]
         public void Test_AddThreshold()
         {
             string evtName = Guid.NewGuid().ToString();
@@ -71,7 +69,7 @@ namespace EsapiTest.InstrusionDetector
             detector.AddThreshold(threshold);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void Test_AddThresholdMissingAction()
         {
@@ -84,7 +82,7 @@ namespace EsapiTest.InstrusionDetector
             detector.AddThreshold(threshold);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Test_AddNullThreshold()
         {
@@ -94,7 +92,7 @@ namespace EsapiTest.InstrusionDetector
             detector.AddThreshold(null);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void Test_AddDuplicateThreshold()
         {
@@ -110,7 +108,7 @@ namespace EsapiTest.InstrusionDetector
             detector.AddThreshold(dup);
         }
 
-        [TestMethod]
+        [Test]
         public void Test_RemoveThreshold()
         {
             string evtName = Guid.NewGuid().ToString();
@@ -124,7 +122,7 @@ namespace EsapiTest.InstrusionDetector
             Assert.IsTrue( detector.RemoveThreshold(evtName));
         }
 
-        [TestMethod]
+        [Test]
         public void Test_IntrusionDetected()
         {
             string evtName = Guid.NewGuid().ToString();
@@ -141,7 +139,7 @@ namespace EsapiTest.InstrusionDetector
         /// <summary>
         /// Test loading of a custom intrusion detector
         /// </summary>
-        [TestMethod]
+        [Test]
         public void Test_LoadCustom()
         {
             // Set new 

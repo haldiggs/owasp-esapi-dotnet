@@ -1,21 +1,21 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Owasp.Esapi;
-using Rhino.Mocks;
-using Owasp.Esapi.ValidationRules;
-using Owasp.Esapi.Configuration;
-using Rhino.Mocks.Constraints;
 using EsapiTest.Surrogates;
+using NUnit.Framework;
+using Owasp.Esapi;
+using Owasp.Esapi.Configuration;
+using Owasp.Esapi.ValidationRules;
+using Rhino.Mocks;
+using RMC = Rhino.Mocks.Constraints;
 
 namespace EsapiTest
 {
     /// <summary>
     /// Summary description for ValidatorTest
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class ValidatorTest
     {
-        [TestInitialize]
+        [SetUp]
         public void InitializeTest()
         {
             Esapi.Reset();
@@ -24,7 +24,7 @@ namespace EsapiTest
             SurrogateValidator.DefaultValidator = null;
         }
 
-        [TestMethod]
+        [Test]
         public void Test_CreditCardValidator()
         {            		
 		    IValidator validator = Esapi.Validator;
@@ -36,7 +36,7 @@ namespace EsapiTest
         }
 
         /// <summary> Test of IsValidDouble method, of class Owasp.Esapi.Validator.</summary>
-        [TestMethod]
+        [Test]
         public void Test_IsValidDouble()
         {
             IValidator validator = Esapi.Validator;
@@ -67,7 +67,7 @@ namespace EsapiTest
             Assert.IsFalse(validator.IsValid(BuiltinValidationRules.Double, null));            
         }
 
-        [TestMethod]
+        [Test]
         public void Test_DoubleRuleRange()
         {
             IValidator validator = Esapi.Validator;
@@ -118,7 +118,7 @@ namespace EsapiTest
             Assert.IsFalse(validator.IsValid(BuiltinValidationRules.Integer, null));
         }
 
-        [TestMethod]
+        [Test]
         public void Test_IntegerRuleRange()
         {
             IValidator validator = Esapi.Validator;
@@ -136,7 +136,7 @@ namespace EsapiTest
         }
 
         /// <summary> Test of GetValidDate method, of class Owasp.Esapi.Validator.</summary>
-        [TestMethod]
+        [Test]
         public void Test_GetValidDate()
         {            
             IValidator validator = Esapi.Validator;
@@ -151,7 +151,7 @@ namespace EsapiTest
         }
 
 
-        [TestMethod]
+        [Test]
         public void Test_DateRuleRange()
         {
             IValidator validator = Esapi.Validator;
@@ -176,7 +176,7 @@ namespace EsapiTest
             Assert.IsFalse(validator.IsValid(id, now.AddDays(11).ToString()));
         }
 
-        [TestMethod]
+        [Test]
         public void Test_StringRule()
         {
             IValidator validator = Esapi.Validator;
@@ -208,7 +208,7 @@ namespace EsapiTest
             Assert.IsTrue(validator.IsValid(id, "23"));
         }
 
-        [TestMethod]
+        [Test]
         public void Test_StringRuleRange()
         {
             IValidator validator = Esapi.Validator;
@@ -226,7 +226,7 @@ namespace EsapiTest
         }
         
         /// <summary> Test of IsValidPrintable method, of class Owasp.Esapi.Validator.</summary>
-        [TestMethod]
+        [Test]
         public void Test_IsValidPrintable()
         {            
             IValidator validator = Esapi.Validator;
@@ -240,7 +240,7 @@ namespace EsapiTest
             Assert.IsFalse(validator.IsValid(BuiltinValidationRules.Printable, null));
         }
 
-        [TestMethod]
+        [Test]
         public void Test_AddRule()
         {
             MockRepository mocks = new MockRepository();            
@@ -249,10 +249,10 @@ namespace EsapiTest
             string test = Guid.NewGuid().ToString();
 
             Esapi.Validator.AddRule(test, rule);
-            Assert.ReferenceEquals(Esapi.Validator.GetRule(test), rule);
+            Assert.AreSame(Esapi.Validator.GetRule(test), rule);
         }
 
-        [TestMethod]
+        [Test]
         public void Test_RemoveRule()
         {
             MockRepository mocks = new MockRepository();
@@ -261,13 +261,13 @@ namespace EsapiTest
             string test = Guid.NewGuid().ToString();
 
             Esapi.Validator.AddRule(test, rule);
-            Assert.ReferenceEquals(Esapi.Validator.GetRule(test), rule);
+            Assert.AreSame(Esapi.Validator.GetRule(test), rule);
 
             Esapi.Validator.RemoveRule(test);
             Assert.IsNull(Esapi.Validator.GetRule(test));
         }
 
-        [TestMethod]
+        [Test]
         public void Test_IsValid()
         {
             MockRepository mocks = new MockRepository();
@@ -279,7 +279,7 @@ namespace EsapiTest
             mocks.ReplayAll();
 
             Esapi.Validator.AddRule(test, rule);
-            Assert.ReferenceEquals(Esapi.Validator.GetRule(test), rule);
+            Assert.AreSame(Esapi.Validator.GetRule(test), rule);
 
             Assert.IsTrue(Esapi.Validator.IsValid(test, test));
             mocks.VerifyAll();
@@ -288,7 +288,7 @@ namespace EsapiTest
         /// <summary>
         /// Tests loading of configuration defined validator
         /// </summary>
-        [TestMethod]
+        [Test]
         public void Test_LoadCustom()
         {
             // Set new
@@ -302,7 +302,7 @@ namespace EsapiTest
         /// Tests loading of assembly defined rules in a configuration defined
         /// validator
         /// </summary>
-        [TestMethod]
+        [Test]
         public void Test_LoadCustomAddinAssembly()
         {
             MockRepository mocks = new MockRepository();
@@ -319,11 +319,16 @@ namespace EsapiTest
             IValidator mockValidator = mocks.StrictMock<IValidator>();
 
             // Load default
-            Expect.Call(delegate { mockValidator.AddRule(BuiltinValidationRules.CreditCard, null); }).Constraints(Is.Equal(BuiltinValidationRules.CreditCard), Is.Anything());
-            Expect.Call(delegate { mockValidator.AddRule(BuiltinValidationRules.Date, null); }).Constraints(Is.Equal(BuiltinValidationRules.Date), Is.Anything());
-            Expect.Call(delegate { mockValidator.AddRule(BuiltinValidationRules.Double, null); }).Constraints(Is.Equal(BuiltinValidationRules.Double), Is.Anything());
-            Expect.Call(delegate { mockValidator.AddRule(BuiltinValidationRules.Integer, null); }).Constraints(Is.Equal(BuiltinValidationRules.Integer), Is.Anything());
-            Expect.Call(delegate { mockValidator.AddRule(BuiltinValidationRules.Printable, null); }).Constraints(Is.Equal(BuiltinValidationRules.Printable), Is.Anything());            
+            Expect.Call(delegate { mockValidator.AddRule(BuiltinValidationRules.CreditCard, null); })
+                .Constraints(RMC.Is.Equal(BuiltinValidationRules.CreditCard), RMC.Is.Anything());
+            Expect.Call(delegate { mockValidator.AddRule(BuiltinValidationRules.Date, null); })
+                .Constraints(RMC.Is.Equal(BuiltinValidationRules.Date), RMC.Is.Anything());
+            Expect.Call(delegate { mockValidator.AddRule(BuiltinValidationRules.Double, null); })
+                .Constraints(RMC.Is.Equal(BuiltinValidationRules.Double), RMC.Is.Anything());
+            Expect.Call(delegate { mockValidator.AddRule(BuiltinValidationRules.Integer, null); })
+                .Constraints(RMC.Is.Equal(BuiltinValidationRules.Integer), RMC.Is.Anything());
+            Expect.Call(delegate { mockValidator.AddRule(BuiltinValidationRules.Printable, null); })
+                .Constraints(RMC.Is.Equal(BuiltinValidationRules.Printable), RMC.Is.Anything());            
             mocks.ReplayAll();
 
             // Create and test
@@ -337,7 +342,7 @@ namespace EsapiTest
         /// <summary>
         /// Tests loading of configuration defined codecs 
         /// </summary>
-        [TestMethod]
+        [Test]
         public void Test_LoadCustomCodecs()
         {
             MockRepository mocks = new MockRepository();
@@ -360,7 +365,8 @@ namespace EsapiTest
 
             // Custom rules are loaded and are of proper type
             foreach (string ruleName in ruleNames) {
-                Expect.Call(delegate { mockValidator.AddRule(ruleName, null); }).Constraints(Is.Equal(ruleName), Is.TypeOf<SurrogateValidationRule>());
+                Expect.Call(delegate { mockValidator.AddRule(ruleName, null); })
+                    .Constraints(RMC.Is.Equal(ruleName), RMC.Is.TypeOf<SurrogateValidationRule>());
             }
             mocks.ReplayAll();
 

@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Owasp.Esapi;
+using NUnit.Framework;
 
 namespace EsapiTest
 {
     /// <summary>
     /// Summary description for Randomizer
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class RandomizerTest
     {
         public RandomizerTest()
@@ -56,7 +56,7 @@ namespace EsapiTest
         //
         #endregion
         /// <summary> Test of GetRandomString method, of class Owasp.Esapi.Randomizer.</summary>
-        [TestMethod]
+        [Test]
         public void Test_GetRandomString()
         {
             System.Console.Out.WriteLine("GetRandomString");
@@ -70,7 +70,7 @@ namespace EsapiTest
         }
 
         /// <summary> Test of GetRandomInteger method, of class Owasp.Esapi.Randomizer.</summary>
-        [TestMethod]
+        [Test]
         public void Test_GetRandomInteger()
         {
             System.Console.Out.WriteLine("GetRandomInteger");
@@ -91,7 +91,7 @@ namespace EsapiTest
         }
 
         /// <summary> Test of GetRandomDouble method, of class Owasp.Esapi.Randomizer.</summary>
-        [TestMethod]
+        [Test]
         public void Test_GetRandomDouble()
         {
             System.Console.Out.WriteLine("GetRandomDouble");
@@ -113,7 +113,7 @@ namespace EsapiTest
 
 
         /// <summary> Test of GetRandomGUID method, of class Owasp.Esapi.Randomizer.</summary>
-        [TestMethod]
+        [Test]
         public void Test_GetRandomGUID()
         {
             System.Console.Out.WriteLine("GetRandomGUID");

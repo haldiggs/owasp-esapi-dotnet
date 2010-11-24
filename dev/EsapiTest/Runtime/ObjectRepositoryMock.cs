@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Owasp.Esapi.Runtime;
 using Rhino.Mocks;
+using NUnit.Framework;
 
 namespace EsapiTest.Runtime
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web;
 using EsapiTest.Surrogates;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Owasp.Esapi;
 using Owasp.Esapi.Configuration;
 using Owasp.Esapi.Runtime;
@@ -9,17 +9,17 @@ using Owasp.Esapi.Runtime.Actions;
 
 namespace EsapiTest.Runtime.Actions
 {
-    [TestClass]
+    [TestFixture]
     public class RedirectActionTest
     {
-        [TestInitialize]
+        [SetUp]
         public void TestInitialize()
         {
             Esapi.Reset();
             EsapiConfig.Reset();
         }
 
-        [TestMethod]
+        [Test]
         public void Test_Execute()
         {
             IIntrusionDetector detector = Esapi.IntrusionDetector; 
@@ -47,7 +47,7 @@ namespace EsapiTest.Runtime.Actions
             }
         }
 
-        [TestMethod]
+        [Test]
         public void Test_Create()
         {
             string url = Guid.NewGuid().ToString();
@@ -56,7 +56,7 @@ namespace EsapiTest.Runtime.Actions
             Assert.AreEqual(action.Url, url);
         }
 
-        [TestMethod]
+        [Test]
         public void Test_InvalidCreate()
         {
             try {

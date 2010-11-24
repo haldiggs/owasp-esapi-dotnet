@@ -1,10 +1,10 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Owasp.Esapi;
 using Owasp.Esapi.Errors;
 using Owasp.Esapi.Configuration;
 using Rhino.Mocks;
 using EsapiTest.Surrogates;
+using NUnit.Framework;
 
 namespace EsapiTest
 {
@@ -12,10 +12,10 @@ namespace EsapiTest
     /// <summary> The Class EncryptorTest.
     /// 
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class EncryptorTest
     {      
-        [TestInitialize]
+        [SetUp]
         public void InitializeTest()
         {
             Esapi.Reset();
@@ -23,7 +23,7 @@ namespace EsapiTest
         }
         
         /// <summary> Test of Hash method, of class Owasp.Esapi.Encryptor.</summary>
-        [TestMethod]
+        [Test]
         public void Test_Hash()
         {
             System.Console.Out.WriteLine("hash");
@@ -42,7 +42,7 @@ namespace EsapiTest
         /// <throws>  EncryptionException </throws>
         /// <summary>             the encryption exception
         /// </summary>
-        [TestMethod]
+        [Test]
         public void Test_Encrypt()
         {
             System.Console.Out.WriteLine("Encrypt");
@@ -54,7 +54,7 @@ namespace EsapiTest
         }
 
         /// <summary> Test of decrypt method, of class Owasp.Esapi.Encryptor.</summary>
-        [TestMethod]
+        [Test]
         public void Test_Decrypt()
         {
             System.Console.Out.WriteLine("decrypt");
@@ -80,7 +80,7 @@ namespace EsapiTest
         /// <summary>             the encryption exception
         /// </summary>
 
-        [TestMethod]
+        [Test]
         public void Test_Sign()
         {
             System.Console.Out.WriteLine("Sign");
@@ -99,7 +99,7 @@ namespace EsapiTest
         /// <summary>             the encryption exception
         /// </summary>
 
-        [TestMethod]
+        [Test]
         public void Test_VerifySignature()
         {
             System.Console.Out.WriteLine("verifySignature");
@@ -116,7 +116,7 @@ namespace EsapiTest
         /// <throws>  EncryptionException </throws>
         /// <summary>             the encryption exception
         /// </summary>
-        [TestMethod]
+        [Test]
         public void Test_Seal()
         {
             System.Console.Out.WriteLine("seal");
@@ -132,7 +132,7 @@ namespace EsapiTest
         /// <throws>  EncryptionException </throws>
         /// <summary>             the encryption exception
         /// </summary>
-        [TestMethod]
+        [Test]
         public void Test_VerifySeal()
         {
             System.Console.Out.WriteLine("verifySeal");
@@ -148,7 +148,7 @@ namespace EsapiTest
 
 
         /// <summary> Test of decrypt method, of class Owasp.Esapi.Encryptor.</summary>
-        [TestMethod]
+        [Test]
         public void Test_MulitpleInstances()
         {
             System.Console.Out.WriteLine("multiple instances");
@@ -174,7 +174,7 @@ namespace EsapiTest
             }
         }
 
-        [TestMethod]
+        [Test]
         public void Test_LoadCustom()
         {
             MockRepository mocks = new MockRepository();

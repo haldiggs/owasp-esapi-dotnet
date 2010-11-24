@@ -6,28 +6,27 @@ using System.Web;
 using EsapiTest.Surrogates;
 using log4net;
 using log4net.Appender;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Owasp.Esapi;
 using Owasp.Esapi.Configuration;
 using Owasp.Esapi.Errors;
-using System.Web.SessionState;
 
 namespace EsapiTest
 {
     /// <summary>
     /// Summary description for HttpUtilitiesTest
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class HttpUtilitiesTest
     {
-        [TestInitialize]
+        [SetUp]
         public void TestInitialize()
         {
             Esapi.Reset();
             EsapiConfig.Reset();
         }
 
-        [TestMethod]
+        [Test]
         public void Test_AddCsrfToken()
         {
             MockHttpContext.InitializeCurrentContext();
@@ -39,7 +38,7 @@ namespace EsapiTest
             Assert.AreEqual(page.ViewStateUserKey, HttpContext.Current.Session.SessionID);
         }
 
-        [TestMethod]
+        [Test]
         public void Test_AddCsrfTokenHref()
         {
             MockHttpContext.InitializeCurrentContext();
@@ -50,7 +49,7 @@ namespace EsapiTest
             Assert.IsTrue(csrfUri.Query.Contains(HttpUtilities.CSRF_TOKEN_NAME));
         }
 
-        [TestMethod]
+        [Test]
         public void Test_LoadCustom()
         {
             EsapiConfig.Instance.HttpUtilities.Type = typeof(SurrogateHttpUtilities).AssemblyQualifiedName;
@@ -59,7 +58,7 @@ namespace EsapiTest
             Assert.AreEqual(utilities.GetType(), typeof(SurrogateHttpUtilities));
         }
 
-        [TestMethod]
+        [Test]
         public void Test_LogHttpRequest()
         {
             // Force log initialization
@@ -88,7 +87,7 @@ namespace EsapiTest
             Assert.IsTrue(sb.ToString().Contains(userIdentity));
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Test_LogNullHttpRequest()
         {
@@ -96,7 +95,7 @@ namespace EsapiTest
             Esapi.HttpUtilities.LogHttpRequest(null, Esapi.Logger, null);            
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Test_LogHttpRequestNullLogger()
         {
@@ -104,7 +103,7 @@ namespace EsapiTest
             Esapi.HttpUtilities.LogHttpRequest(HttpContext.Current.Request, null, null);            
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(AccessControlException))]
         public void Test_SecureRequest()
         {
@@ -112,14 +111,14 @@ namespace EsapiTest
             Esapi.HttpUtilities.AssertSecureRequest(HttpContext.Current.Request);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Test_NullSecureRequest()
         {
             Esapi.HttpUtilities.AssertSecureRequest(null);
         }
 
-        //[TestMethod]
+        //[Test]
         //public void Test_AddNoCacheHeaders()
         //{
         //    MockHttpContext.InitializeCurrentContext();

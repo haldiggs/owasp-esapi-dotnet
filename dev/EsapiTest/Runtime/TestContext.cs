@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Rhino.Mocks;
 using Owasp.Esapi.Runtime;
+using Rhino.Mocks;
+using NUnit.Framework;
 
 namespace EsapiTest.Runtime
 {
@@ -34,7 +31,7 @@ namespace EsapiTest.Runtime
     /// <summary>
     /// Summary description for TestContext
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class TestContext
     {
         private MockRepository _mocks;
@@ -44,7 +41,7 @@ namespace EsapiTest.Runtime
         private readonly string AID = Guid.NewGuid().ToString();
         private readonly string RID = Guid.NewGuid().ToString();
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             _mocks = new MockRepository();
@@ -53,7 +50,7 @@ namespace EsapiTest.Runtime
             InitializeRuntime();
         }
 
-        [TestCleanup]
+        [TearDown]
         public void TearDown()
         {
         }
@@ -67,7 +64,7 @@ namespace EsapiTest.Runtime
             _runtime.Rules.Register(RID, _mocks.StrictMock<IRule>());
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void TestAddDuplicateContext()
         {
@@ -79,7 +76,7 @@ namespace EsapiTest.Runtime
             _runtime.CreateContext(contextId);
         }
 
-        [TestMethod]
+        [Test]
         public void TestContextFailInit()
         {
             try {
@@ -97,7 +94,7 @@ namespace EsapiTest.Runtime
             }
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void TestAddDuplicateSubContext()
         {
@@ -111,7 +108,7 @@ namespace EsapiTest.Runtime
             parent.CreateSubContext(subcontextId);
         }
 
-        [TestMethod]
+        [Test]
         public void TestContextMatchTrueCondition()
         {
             Assert.IsNotNull(_runtime);

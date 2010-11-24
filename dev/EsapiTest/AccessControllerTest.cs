@@ -1,19 +1,19 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Security.Principal;
+using System.Threading;
+using EsapiTest.Surrogates;
+using NUnit.Framework;
 using Owasp.Esapi;
 using Owasp.Esapi.Configuration;
 using Owasp.Esapi.Errors;
 using Rhino.Mocks;
-using System.Security.Principal;
-using System.Threading;
-using EsapiTest.Surrogates;
 
 namespace EsapiTest
 {
     /// <summary>
     /// Summary description for AccessControllerTest
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class AccessControllerTest
     {
         private void SetCurrentUser(string subject)
@@ -23,7 +23,7 @@ namespace EsapiTest
                                             null;
         }
     
-        [TestInitialize]
+        [SetUp]
         public void InitializeTests()
         {
             // Reset cached data
@@ -32,7 +32,7 @@ namespace EsapiTest
             SetCurrentUser(null);
         }
 
-        [TestMethod]
+        [Test]
         public void Test_AccessControllerAddRule()
         {
             string test = Guid.NewGuid().ToString();
@@ -41,7 +41,7 @@ namespace EsapiTest
             Assert.IsTrue(Esapi.AccessController.IsAuthorized(test, test, test));
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(EnterpriseSecurityException))]
         public void Test_AddDuplicateRule()
         {
@@ -51,7 +51,7 @@ namespace EsapiTest
             Esapi.AccessController.AddRule(test, test, test);
         }
 
-        [TestMethod]        
+        [Test]        
         public void Test_AddRuleNullParams()
         {
             try {
@@ -76,7 +76,7 @@ namespace EsapiTest
             }
         }
 
-        [TestMethod]        
+        [Test]        
         public void Test_IsAuthorizedResource()
         {
             Guid    action = Guid.NewGuid(), resource = Guid.NewGuid();
@@ -93,7 +93,7 @@ namespace EsapiTest
             Assert.IsFalse(Esapi.AccessController.IsAuthorized(action, Guid.NewGuid()));
         }
 
-        [TestMethod]
+        [Test]
         public void Test_IsAuthorizedSubject()
         {
             Guid action = Guid.NewGuid(), resource = Guid.NewGuid(), subject = Guid.NewGuid();
@@ -104,7 +104,7 @@ namespace EsapiTest
             Assert.IsFalse(Esapi.AccessController.IsAuthorized(Guid.NewGuid(), action, resource));
         }
 
-        [TestMethod]
+        [Test]
         public void Test_IsAuthorizedNullParams()
         {
             try {
@@ -129,7 +129,7 @@ namespace EsapiTest
             }
         }
                 
-        [TestMethod]
+        [Test]
         public void Test_AccessControllerRemoveRule()
         {
             string test = Guid.NewGuid().ToString();
@@ -140,7 +140,7 @@ namespace EsapiTest
         }
 
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(EnterpriseSecurityException))]
         public void Test_RemoveRuleWrongSubject()
         {
@@ -150,7 +150,7 @@ namespace EsapiTest
             Esapi.AccessController.RemoveRule(string.Empty, test, test);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(EnterpriseSecurityException))]
         public void Test_RemoveRuleWrongAction()
         {
@@ -160,7 +160,7 @@ namespace EsapiTest
             Esapi.AccessController.RemoveRule(test, string.Empty, test);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(EnterpriseSecurityException))]
         public void Test_RemoveRuleWrongResource()
         {
@@ -170,7 +170,7 @@ namespace EsapiTest
             Esapi.AccessController.RemoveRule(test, test, string.Empty);
         }
 
-        [TestMethod]
+        [Test]
         public void Test_RemoveRuleNullParams()
         {
             try {
@@ -195,7 +195,7 @@ namespace EsapiTest
             }
         }
 
-        [TestMethod]
+        [Test]
         public void Test_LoadCustom()
         {
             MockRepository mocks = new MockRepository();

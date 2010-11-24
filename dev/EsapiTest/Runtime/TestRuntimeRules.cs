@@ -1,22 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Owasp.Esapi;
-using Rhino.Mocks;
+using NUnit.Framework;
 using Owasp.Esapi.Runtime;
+using Rhino.Mocks;
 
 namespace EsapiTest.Runtime
 {
     /// <summary>
     /// Summary description for TestRuntimeRules
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class TestRuntimeRules
     {
         private MockRepository _mocks;
         private EsapiRuntime _runtime;
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             _mocks = new MockRepository();
@@ -24,13 +22,13 @@ namespace EsapiTest.Runtime
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestGetRuntime()
         {
             Assert.IsNotNull(_runtime);
         }
 
-        [TestMethod]
+        [Test]
         public void TestFluentAddInvalidRuleParams()
         {
             Assert.IsNotNull(_runtime);
@@ -57,7 +55,7 @@ namespace EsapiTest.Runtime
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestRemoveRule()
         {
             Assert.IsNotNull(_runtime);

@@ -1,24 +1,21 @@
 ﻿using System;
-using System.Text;
 using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Rhino.Mocks;
-using Owasp.Esapi;
+using NUnit.Framework;
 using Owasp.Esapi.Runtime;
+using Rhino.Mocks;
 
 namespace EsapiTest.Runtime
 {
     /// <summary>
     /// Summary description for TestRuntimeContexts
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class TestRuntimeContexts
     {
         private MockRepository _mocks;
         private EsapiRuntime _runtime;
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             _mocks = new MockRepository();
@@ -26,13 +23,13 @@ namespace EsapiTest.Runtime
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestGetRuntime()
         {
             Assert.IsNotNull(_runtime);
         }
 
-        [TestMethod]
+        [Test]
         public void TestAddContexts()
         {
             Assert.IsNotNull(_runtime);
@@ -53,7 +50,7 @@ namespace EsapiTest.Runtime
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestAddInvalidContextParams()
         {
             Assert.IsNotNull(_runtime);
@@ -80,7 +77,7 @@ namespace EsapiTest.Runtime
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestContextAddInvalidParams()
         {
             Assert.IsNotNull(_runtime);
@@ -100,7 +97,7 @@ namespace EsapiTest.Runtime
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestRemoveContext()
         {
             Assert.IsNotNull(_runtime);

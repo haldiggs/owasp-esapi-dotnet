@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Owasp.Esapi.Runtime;
 using Rhino.Mocks;
 
@@ -9,13 +9,13 @@ namespace EsapiTest.Runtime
     /// <summary>
     /// Summary description for TestRuntimeConditions
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class TestRuntimeConditions
     {
         private MockRepository _mocks;
         private EsapiRuntime _runtime;
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             _mocks = new MockRepository();
@@ -23,13 +23,13 @@ namespace EsapiTest.Runtime
         }
 
 
-        [TestMethod]
+        [Test]
         public void TestGetRuntime()
         {
             Assert.IsNotNull(_runtime);
         }
 
-        [TestMethod]
+        [Test]
         public void TestFluentAddConditions()
         {
             Assert.IsNotNull(_runtime);
@@ -58,7 +58,7 @@ namespace EsapiTest.Runtime
             _mocks.VerifyAll();    
         }
 
-        [TestMethod]
+        [Test]
         public void TestFluentAddInvalidConditionParams()
         {
             Assert.IsNotNull(_runtime);
@@ -85,7 +85,7 @@ namespace EsapiTest.Runtime
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestRemoveCondition()
         {
             Assert.IsNotNull(_runtime);

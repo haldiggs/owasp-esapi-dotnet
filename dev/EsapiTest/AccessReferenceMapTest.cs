@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Owasp.Esapi;
 using Owasp.Esapi.Errors;
+using NUnit.Framework;
+
 namespace EsapiTest
 {
     /// <summary>
     /// Summary description for AccessReferenceMapTest
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class AccessReferenceMapTest
     {
 
@@ -67,7 +68,7 @@ namespace EsapiTest
          /// <summary>
          /// Set up an access reference map
          /// </summary>
-         [TestInitialize()]
+         [SetUp]
          public void MyTestInitialize() 
          {             
              account1 = new Account(1000, "test1");
@@ -86,7 +87,7 @@ namespace EsapiTest
         //
         #endregion
 
-        [TestMethod]
+        [Test]
         public void Test_Update()
         {
             System.Console.Out.WriteLine("Update");
@@ -106,7 +107,7 @@ namespace EsapiTest
             Assert.AreEqual(indirect, newIndirect);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Test_UpdateNull()
         {
@@ -115,7 +116,7 @@ namespace EsapiTest
 
 
         /// <summary> Test of GetDirectReferences method, of class Owasp.Esapi.AccessReferenceMap.</summary>        
-        [TestMethod]
+        [Test]
         public void Test_GetDirectReferences()
         {
             System.Console.Out.WriteLine("GetDirectReferences");
@@ -133,7 +134,7 @@ namespace EsapiTest
 
 
         /// <summary> Test of GetDirectRefrences method, of class Owasp.Esapi.AccessReferenceMap.</summary>        
-        [TestMethod]
+        [Test]
         public void Test_GetIndirectReferences()
         {
             System.Console.Out.WriteLine("GetIndirectreferences");
@@ -152,7 +153,7 @@ namespace EsapiTest
         /// <summary> Test of getIndirectReference method, of class
         /// Owasp.Esapi.AccessReferenceMap.
         /// </summary>        
-        [TestMethod]
+        [Test]
         public void Test_GetIndirectReference()
         {
             System.Console.Out.WriteLine("GetIndirectReference");
@@ -175,28 +176,28 @@ namespace EsapiTest
             arm.GetDirectReference("invalid");            
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Test_GetDirectReferenceNull()
         {
             arm.GetDirectReference(null);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Test_GetIndirectReferenceNull()
         {
             arm.GetIndirectReference(null);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Test_AddDirectReferenceNull()
         {
             arm.AddDirectReference(null);
         }
 
-        [TestMethod]
+        [Test]
         public void Test_AddDirectReference()
         {
             Guid direct = Guid.NewGuid();
@@ -205,14 +206,14 @@ namespace EsapiTest
             Assert.AreEqual(arm.GetDirectReference(indirect), direct);
         }
 
-        [TestMethod]
+        [Test]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Test_RemoveDirectReferenceNull()
         {
             arm.RemoveDirectReference(null);
         }
 
-        [TestMethod]
+        [Test]
         public void Test_RemoveDirectReference()
         {
             Guid direct = Guid.NewGuid();
