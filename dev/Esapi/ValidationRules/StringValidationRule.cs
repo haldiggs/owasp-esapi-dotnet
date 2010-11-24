@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Owasp.Esapi.Interfaces;
 using System.Text.RegularExpressions;
 using EM = Owasp.Esapi.Resources.Errors;
 using Owasp.Esapi.Errors;

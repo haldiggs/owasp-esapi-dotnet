@@ -1,5 +1,6 @@
 ﻿using System;
-namespace Owasp.Esapi.Interfaces
+
+namespace Owasp.Esapi
 {
     /// <summary>
     ///  The ICodec interface defines a set of methods for encoding and decoding application level encoding schemes, 

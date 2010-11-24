@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Owasp.Esapi;
-using Owasp.Esapi.Interfaces;
 
 namespace EsapiTest
 {

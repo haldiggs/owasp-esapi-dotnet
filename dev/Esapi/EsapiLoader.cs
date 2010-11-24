@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using Owasp.Esapi.Interfaces;
 using Owasp.Esapi.Configuration;
 using System;
 using System.Reflection;

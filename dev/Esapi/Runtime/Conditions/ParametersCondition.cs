@@ -1,5 +1,4 @@
 ﻿using System;
-using Owasp.Esapi.Interfaces;
 using Owasp.Esapi.Runtime;
 
 namespace Owasp.Esapi.Runtime.Conditions

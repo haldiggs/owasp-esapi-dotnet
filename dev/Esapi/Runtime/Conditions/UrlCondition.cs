@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using Owasp.Esapi.Interfaces;
 using Owasp.Esapi.Runtime;
 using System.Web;
 

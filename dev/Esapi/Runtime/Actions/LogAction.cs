@@ -1,5 +1,4 @@
 ﻿using System;
-using Owasp.Esapi.Interfaces;
 using EM = Owasp.Esapi.Resources.Errors;
 using Owasp.Esapi.Runtime;
 using Owasp.Esapi.Errors;

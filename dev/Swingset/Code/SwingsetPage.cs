@@ -1,5 +1,5 @@
 ﻿using System;
-using Owasp.Esapi.Interfaces;
+using Owasp.Esapi;
 
 namespace Owasp.Esapi.Swingset
 {

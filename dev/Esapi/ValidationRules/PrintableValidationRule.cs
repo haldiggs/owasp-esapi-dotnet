@@ -1,5 +1,4 @@
-﻿using Owasp.Esapi.Interfaces;
-
+﻿
 namespace Owasp.Esapi.ValidationRules
 {
     /// <summary>

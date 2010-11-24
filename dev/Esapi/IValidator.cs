@@ -1,5 +1,5 @@
 ﻿
-namespace Owasp.Esapi.Interfaces
+namespace Owasp.Esapi
 {
     /// <summary>
     /// The IValidator interface defines a set of methods for validating untrusted input.
@@ -17,11 +17,11 @@ namespace Owasp.Esapi.Interfaces
 
         /// <summary>
         /// Adds a rule object with the associated rule name key. This rule can be used to
-        /// validate data later using the <see cref="Owasp.Esapi.Interfaces.IValidator.IsValid(string, string)"/> method.
+        /// validate data later using the <see cref="Owasp.Esapi.IValidator.IsValid(string, string)"/> method.
         /// </summary>
         /// <param name="name">The rule name key to use for the new rule.</param>
         /// <param name="rule">
-        ///     The rule object, which implements <see cref="Owasp.Esapi.Interfaces.IValidationRule"/>
+        ///     The rule object, which implements <see cref="Owasp.Esapi.IValidationRule"/>
         /// </param>
         void AddRule(string name, IValidationRule rule);
 
@@ -30,7 +30,7 @@ namespace Owasp.Esapi.Interfaces
         /// </summary>
         /// <param name="name">The rule name key to lookuip.</param>
         /// <returns>
-        /// The <see cref="Owasp.Esapi.Interfaces.IValidationRule"/> object associated witht the rule name
+        /// The <see cref="Owasp.Esapi.IValidationRule"/> object associated witht the rule name
         /// key
         /// </returns>
         IValidationRule GetRule(string name);

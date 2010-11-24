@@ -1,5 +1,5 @@
 ﻿
-namespace Owasp.Esapi.Interfaces
+namespace Owasp.Esapi
 {
 
     /// <summary> The IEncryptor interface provides a set of methods for performing common

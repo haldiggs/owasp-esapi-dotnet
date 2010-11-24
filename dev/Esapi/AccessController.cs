@@ -3,14 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Principal;
 using Owasp.Esapi.Errors;
-using Owasp.Esapi.Interfaces;
 using EM = Owasp.Esapi.Resources.Errors;
 
 namespace Owasp.Esapi
 {
-    /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessController"/>
+    /// <inheritdoc cref="Owasp.Esapi.IAccessController"/>
     /// <summary>
-    /// Reference implementation of the <see cref="Owasp.Esapi.Interfaces.IAccessController"/> interface. It simply
+    /// Reference implementation of the <see cref="Owasp.Esapi.IAccessController"/> interface. It simply
     /// stores the access control rules in nested collections.
     /// </summary>
     public class AccessController : IAccessController
@@ -25,7 +24,7 @@ namespace Owasp.Esapi
             resourceToSubjectsMap = new Dictionary<object, Dictionary<object, ArrayList>>();
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessController.IsAuthorized(object, object)"/>
+        /// <inheritdoc cref="Owasp.Esapi.IAccessController.IsAuthorized(object, object)"/>
         public bool IsAuthorized(object action, object resource)
         {
             IPrincipal currentUser = Esapi.SecurityConfiguration.CurrentUser;
@@ -37,7 +36,7 @@ namespace Owasp.Esapi
             return IsAuthorized(currentUser.Identity.Name, action, resource);
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessController.IsAuthorized(object, object, object)"/>
+        /// <inheritdoc cref="Owasp.Esapi.IAccessController.IsAuthorized(object, object, object)"/>
         public bool IsAuthorized(object subject, object action, object resource)
         {
             if (subject == null || action == null || resource == null) {
@@ -57,7 +56,7 @@ namespace Owasp.Esapi
             return false;
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessController.AddRule(object, object, object)"/>
+        /// <inheritdoc cref="Owasp.Esapi.IAccessController.AddRule(object, object, object)"/>
         public void AddRule(object subject, object action, object resource)
         {
             if (subject == null || action == null || resource == null) {
@@ -85,7 +84,7 @@ namespace Owasp.Esapi
             }
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessController.RemoveRule(object, object, object)"/>
+        /// <inheritdoc cref="Owasp.Esapi.IAccessController.RemoveRule(object, object, object)"/>
         public void RemoveRule(object subject, object action, object resource)
         {
             if (subject == null || action == null || resource == null) {

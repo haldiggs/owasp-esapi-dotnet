@@ -5,7 +5,6 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Rhino.Mocks;
 using Owasp.Esapi.Runtime;
-using Owasp.Esapi.Interfaces;
 
 namespace EsapiTest.Runtime
 {

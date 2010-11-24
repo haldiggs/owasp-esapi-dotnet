@@ -1,4 +1,4 @@
-﻿namespace Owasp.Esapi.Interfaces
+﻿namespace Owasp.Esapi
 {
     /// <summary>
     /// A class that implements IValidationRule performs validation of a single 

@@ -3,7 +3,6 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Owasp.Esapi.Interfaces;
 using Rhino.Mocks;
 using Owasp.Esapi;
 using Owasp.Esapi.Runtime;

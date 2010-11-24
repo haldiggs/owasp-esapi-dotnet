@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Owasp.Esapi.Interfaces
+namespace Owasp.Esapi
 {
     /// <summary> The IRandomizer interface defines a set of methods for creating
     /// cryptographically random numbers and strings.

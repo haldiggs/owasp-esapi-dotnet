@@ -6,13 +6,12 @@ using System.Text;
 using System.Threading;
 using System.Web;
 using Owasp.Esapi.Configuration;
-using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi
 {
-    /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration"/>
+    /// <inheritdoc cref="Owasp.Esapi.ISecurityConfiguration"/>
     /// <summary>
-    /// Reference implementation of the <see cref="Owasp.Esapi.Interfaces.ISecurityConfiguration"/> interface
+    /// Reference implementation of the <see cref="Owasp.Esapi.ISecurityConfiguration"/> interface
     /// manages all the settings used by the ESAPI in a single place.
     /// </summary>
     /// <remarks>
@@ -23,7 +22,7 @@ namespace Owasp.Esapi
     {
         private SecurityConfigurationElement _settings;
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.MasterPassword"/>
+        /// <inheritdoc cref="Owasp.Esapi.ISecurityConfiguration.MasterPassword"/>
         public string MasterPassword
         {
             get
@@ -32,7 +31,7 @@ namespace Owasp.Esapi
             }
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.MasterSalt"/>
+        /// <inheritdoc cref="Owasp.Esapi.ISecurityConfiguration.MasterSalt"/>
         public byte[] MasterSalt
         {
             get
@@ -42,7 +41,7 @@ namespace Owasp.Esapi
 
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.AllowedFileExtensions"/>
+        /// <inheritdoc cref="Owasp.Esapi.ISecurityConfiguration.AllowedFileExtensions"/>
         public IList AllowedFileExtensions
         {
             get
@@ -53,7 +52,7 @@ namespace Owasp.Esapi
 
         }
        
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.AllowedFileUploadSize"/>
+        /// <inheritdoc cref="Owasp.Esapi.ISecurityConfiguration.AllowedFileUploadSize"/>
         public int AllowedFileUploadSize
         {
             get
@@ -63,7 +62,7 @@ namespace Owasp.Esapi
 
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.EncryptionAlgorithm"/>
+        /// <inheritdoc cref="Owasp.Esapi.ISecurityConfiguration.EncryptionAlgorithm"/>
         public string EncryptionAlgorithm
         {
             get
@@ -73,7 +72,7 @@ namespace Owasp.Esapi
 
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.HashAlgorithm"/>
+        /// <inheritdoc cref="Owasp.Esapi.ISecurityConfiguration.HashAlgorithm"/>
         public string HashAlgorithm
         {
             get
@@ -83,7 +82,7 @@ namespace Owasp.Esapi
 
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.CharacterEncoding"/>
+        /// <inheritdoc cref="Owasp.Esapi.ISecurityConfiguration.CharacterEncoding"/>
         public string CharacterEncoding
         {
             get
@@ -93,7 +92,7 @@ namespace Owasp.Esapi
 
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.DigitalSignatureAlgorithm"/>
+        /// <inheritdoc cref="Owasp.Esapi.ISecurityConfiguration.DigitalSignatureAlgorithm"/>
         public string DigitalSignatureAlgorithm
         {
             get
@@ -103,7 +102,7 @@ namespace Owasp.Esapi
 
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.RandomAlgorithm"/>
+        /// <inheritdoc cref="Owasp.Esapi.ISecurityConfiguration.RandomAlgorithm"/>
         public string RandomAlgorithm
         {
             get
@@ -113,7 +112,7 @@ namespace Owasp.Esapi
 
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.LogLevel"/>
+        /// <inheritdoc cref="Owasp.Esapi.ISecurityConfiguration.LogLevel"/>
         public int LogLevel
         {
             get
@@ -122,7 +121,7 @@ namespace Owasp.Esapi
             }
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.LogEncodingRequired"/>
+        /// <inheritdoc cref="Owasp.Esapi.ISecurityConfiguration.LogEncodingRequired"/>
         public bool LogEncodingRequired
         {
             get
@@ -132,7 +131,7 @@ namespace Owasp.Esapi
 
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ISecurityConfiguration.CurrentUser"/>
+        /// <inheritdoc cref="Owasp.Esapi.ISecurityConfiguration.CurrentUser"/>
         public IPrincipal CurrentUser
         {
             get

@@ -2,12 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using Owasp.Esapi.Errors;
-using Owasp.Esapi.Interfaces;
 using EM = Owasp.Esapi.Resources.Errors;
 
 namespace Owasp.Esapi
 {
-    /// <inheritdoc  cref="Owasp.Esapi.Interfaces.IEncoder" />
+    /// <inheritdoc  cref="Owasp.Esapi.IEncoder" />
     /// <summary> 
     /// Reference implementation of the IEncoder interface.
     /// </summary>
@@ -16,13 +15,13 @@ namespace Owasp.Esapi
         private readonly ILogger logger = Esapi.Logger;
         private Dictionary<string, ICodec> codecs = new Dictionary<string, ICodec>();
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncoder.Canonicalize(string, bool)" />
+        /// <inheritdoc cref="Owasp.Esapi.IEncoder.Canonicalize(string, bool)" />
         public string Canonicalize(string input, bool strict)
         {
             return Canonicalize(codecs.Keys, input, strict);
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncoder.Canonicalize(IEnumerable&lt;string&gt;, string, bool)" />
+        /// <inheritdoc cref="Owasp.Esapi.IEncoder.Canonicalize(IEnumerable&lt;string&gt;, string, bool)" />
         public string Canonicalize(IEnumerable<string> codecNames, string input, bool strict)
         {
             if (codecNames == null) {
@@ -84,13 +83,13 @@ namespace Owasp.Esapi
             return working; 
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncoder.Normalize(string)" />
+        /// <inheritdoc cref="Owasp.Esapi.IEncoder.Normalize(string)" />
         public string Normalize(string input)
         {
             return input.Normalize();
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncoder.Encode(string, string)" />
+        /// <inheritdoc cref="Owasp.Esapi.IEncoder.Encode(string, string)" />
         public string Encode(string codecName, string input)
         {
             ICodec codec = GetCodec(codecName);
@@ -101,7 +100,7 @@ namespace Owasp.Esapi
             return codec.Encode(input);
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncoder.Decode(string, string)" />
+        /// <inheritdoc cref="Owasp.Esapi.IEncoder.Decode(string, string)" />
         public string Decode(string codecName, string input)
         {
             ICodec codec = GetCodec(codecName);
@@ -112,7 +111,7 @@ namespace Owasp.Esapi
             return codec.Decode(input);
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncoder.GetCodec(string)" />
+        /// <inheritdoc cref="Owasp.Esapi.IEncoder.GetCodec(string)" />
         public ICodec GetCodec(string codecName)
         {
             if (codecName == null) {
@@ -124,7 +123,7 @@ namespace Owasp.Esapi
             return codec;
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncoder.AddCodec(string, ICodec)" />
+        /// <inheritdoc cref="Owasp.Esapi.IEncoder.AddCodec(string, ICodec)" />
         public void AddCodec(string codecName, ICodec codec)
         {
             if (codecName == null) {
@@ -133,7 +132,7 @@ namespace Owasp.Esapi
             codecs.Add(codecName, codec);
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncoder.RemoveCodec(string)" />
+        /// <inheritdoc cref="Owasp.Esapi.IEncoder.RemoveCodec(string)" />
         public void RemoveCodec(string codecName)
         {
             codecs.Remove(codecName);

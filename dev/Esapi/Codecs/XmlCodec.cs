@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.Security.Application;
-using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi.Codecs
 {   

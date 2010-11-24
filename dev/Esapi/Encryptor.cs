@@ -3,13 +3,12 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using Owasp.Esapi.Errors;
-using Owasp.Esapi.Interfaces;
 using EM = Owasp.Esapi.Resources.Errors;
 
 namespace Owasp.Esapi
 {
-    /// <inheritdoc  cref="Owasp.Esapi.Interfaces.IEncryptor"/>
-    /// <summary>Reference implementation of the <see cref="Owasp.Esapi.Interfaces.IEncryptor"/> IEncryptor interface. This implementation
+    /// <inheritdoc  cref="Owasp.Esapi.IEncryptor"/>
+    /// <summary>Reference implementation of the <see cref="Owasp.Esapi.IEncryptor"/> IEncryptor interface. This implementation
     /// layers on the .NET provided cryptographic package. 
     /// Algorithms used are configurable in the configuration file.
     /// </summary> 
@@ -69,7 +68,7 @@ namespace Owasp.Esapi
             }
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncryptor.Hash(string, string)" />
+        /// <inheritdoc cref="Owasp.Esapi.IEncryptor.Hash(string, string)" />
         public string Hash(string plaintext, string salt)
         {            
             try
@@ -101,7 +100,7 @@ namespace Owasp.Esapi
             }
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncryptor.Encrypt(string)" />
+        /// <inheritdoc cref="Owasp.Esapi.IEncryptor.Encrypt(string)" />
         public string Encrypt(string plaintext)
         {            
              try
@@ -149,7 +148,7 @@ namespace Owasp.Esapi
            
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncryptor.Decrypt(string)" />
+        /// <inheritdoc cref="Owasp.Esapi.IEncryptor.Decrypt(string)" />
         public string Decrypt(string ciphertext)
         {
             // Note - Cipher is not threadsafe so we create one locally
@@ -198,7 +197,7 @@ namespace Owasp.Esapi
             }
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncryptor.Sign(string)" />
+        /// <inheritdoc cref="Owasp.Esapi.IEncryptor.Sign(string)" />
         public string Sign(string data)
         {
             if (data == null) {
@@ -215,7 +214,7 @@ namespace Owasp.Esapi
         }
 
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncryptor.VerifySignature(string, string)" />
+        /// <inheritdoc cref="Owasp.Esapi.IEncryptor.VerifySignature(string, string)" />
         public bool VerifySignature(string signature, string data)
         {
             try
@@ -240,7 +239,7 @@ namespace Owasp.Esapi
         /// </param>
         /// <returns> The seal value.
         /// </returns>
-        /// <seealso cref="Owasp.Esapi.Interfaces.IEncryptor.Seal(string, long)">
+        /// <seealso cref="Owasp.Esapi.IEncryptor.Seal(string, long)">
         /// </seealso>
         public string Seal(string data, long expiration)
         {
@@ -254,7 +253,7 @@ namespace Owasp.Esapi
             }
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncryptor.Unseal(string)" />
+        /// <inheritdoc cref="Owasp.Esapi.IEncryptor.Unseal(string)" />
         public String Unseal(String seal)
         {
             String plaintext = null;
@@ -286,7 +285,7 @@ namespace Owasp.Esapi
             return sealedValue;
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IEncryptor.VerifySeal(string)"/>
+        /// <inheritdoc cref="Owasp.Esapi.IEncryptor.VerifySeal(string)"/>
         public bool VerifySeal(string seal)
         {
             try

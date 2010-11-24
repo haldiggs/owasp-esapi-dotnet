@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections;
 using Owasp.Esapi.Errors;
-using Owasp.Esapi.Interfaces;
 using System.Collections.Generic;
 using EM = Owasp.Esapi.Resources.Errors;
 
 namespace Owasp.Esapi
 {
-    /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessReferenceMap"/>
+    /// <inheritdoc cref="Owasp.Esapi.IAccessReferenceMap"/>
     /// <summary>
-    /// Reference <see cref="Owasp.Esapi.Interfaces.IAccessReferenceMap"/> implementation uses short random strings to
+    /// Reference <see cref="Owasp.Esapi.IAccessReferenceMap"/> implementation uses short random strings to
     /// create a layer of indirection. Other possible implementations would use
     /// simple integers as indirect references.
     /// </summary>
@@ -39,19 +38,19 @@ namespace Owasp.Esapi
             Update(directReferences);
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessReferenceMap.GetDirectReferences()"/>
+        /// <inheritdoc cref="Owasp.Esapi.IAccessReferenceMap.GetDirectReferences()"/>
         public ICollection GetDirectReferences()
         {
             return dtoi.Keys;
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessReferenceMap.GetIndirectReferences()"/>
+        /// <inheritdoc cref="Owasp.Esapi.IAccessReferenceMap.GetIndirectReferences()"/>
         public ICollection GetIndirectReferences()
         {
             return itod.Keys;
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessReferenceMap.AddDirectReference(object)"/>
+        /// <inheritdoc cref="Owasp.Esapi.IAccessReferenceMap.AddDirectReference(object)"/>
         public string AddDirectReference(object direct)
         {
             if (direct == null) {
@@ -64,7 +63,7 @@ namespace Owasp.Esapi
             return indirect;
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessReferenceMap.RemoveDirectReference(object)"/>	
+        /// <inheritdoc cref="Owasp.Esapi.IAccessReferenceMap.RemoveDirectReference(object)"/>	
         public string RemoveDirectReference(object direct)
         {
             if (direct == null) {
@@ -80,7 +79,7 @@ namespace Owasp.Esapi
             return indirect;
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessReferenceMap.Update(ICollection)"/>
+        /// <inheritdoc cref="Owasp.Esapi.IAccessReferenceMap.Update(ICollection)"/>
         public void Update(ICollection directReferences)
         {
             if (directReferences == null) {
@@ -115,7 +114,7 @@ namespace Owasp.Esapi
             dtoi = dtoi_new;
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessReferenceMap.GetIndirectReference(object)"/>
+        /// <inheritdoc cref="Owasp.Esapi.IAccessReferenceMap.GetIndirectReference(object)"/>
         public string GetIndirectReference(Object directReference)
         {
             if (directReference == null) {
@@ -128,7 +127,7 @@ namespace Owasp.Esapi
             return indirect;
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IAccessReferenceMap.GetDirectReference(string)"/>
+        /// <inheritdoc cref="Owasp.Esapi.IAccessReferenceMap.GetDirectReference(string)"/>
         public object GetDirectReference(string indirectReference)
         {
             if (indirectReference == null) {

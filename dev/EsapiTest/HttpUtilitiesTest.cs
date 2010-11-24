@@ -10,7 +10,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Owasp.Esapi;
 using Owasp.Esapi.Configuration;
 using Owasp.Esapi.Errors;
-using Owasp.Esapi.Interfaces;
 using System.Web.SessionState;
 
 namespace EsapiTest

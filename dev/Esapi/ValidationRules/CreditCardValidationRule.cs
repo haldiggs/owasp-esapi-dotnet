@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text;
-using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi.ValidationRules
 {

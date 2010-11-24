@@ -1,5 +1,4 @@
 ﻿using System;
-using Owasp.Esapi.Interfaces;
 using Owasp.Esapi.Configuration;
 using System.Threading;
 using Owasp.Esapi.Runtime;

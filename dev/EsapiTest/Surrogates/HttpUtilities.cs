@@ -1,4 +1,4 @@
-﻿using Owasp.Esapi.Interfaces;
+﻿using Owasp.Esapi;
 using System.Web;
 using System.Collections.Generic;
 using System.Security.Principal;

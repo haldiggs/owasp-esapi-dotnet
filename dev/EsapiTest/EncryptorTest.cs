@@ -2,7 +2,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Owasp.Esapi;
 using Owasp.Esapi.Errors;
-using Owasp.Esapi.Interfaces;
 using Owasp.Esapi.Configuration;
 using Rhino.Mocks;
 using EsapiTest.Surrogates;

@@ -1,5 +1,4 @@
 ﻿using System.Text.RegularExpressions;
-using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi.ValidationRules
 {

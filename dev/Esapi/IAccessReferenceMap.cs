@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 
-namespace Owasp.Esapi.Interfaces
+namespace Owasp.Esapi
 {
     /// <summary>
     /// The IAccessReferenceMap interface is used to map from a set of internal direct object references to a 

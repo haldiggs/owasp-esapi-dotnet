@@ -5,7 +5,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Owasp.Esapi;
 using Owasp.Esapi.Codecs;
 using Owasp.Esapi.Configuration;
-using Owasp.Esapi.Interfaces;
 using Rhino.Mocks;
 using Rhino.Mocks.Constraints;
 using EsapiTest.Surrogates;

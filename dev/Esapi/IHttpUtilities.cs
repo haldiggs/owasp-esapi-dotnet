@@ -1,8 +1,7 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Web;
-using System.Security.Principal;
-namespace Owasp.Esapi.Interfaces
+
+namespace Owasp.Esapi
 {
     /// <summary>
     /// The IHttpUtilities interface is a collection of methods that provide additional security related to HTTP requests, responses, 
@@ -14,14 +13,14 @@ namespace Owasp.Esapi.Interfaces
         /// This method adds a CSRF token to all POST requests, automatically. This method should be called in a filter or
         /// front controller that is called for every request. Since POST requests are generally not idempotent, they should
         /// always be protected from CSRF. GET requests should follow an opt-in model for CSRF protection - see 
-        /// <see href="Owasp.Esapi.Interfaces.AddCsrfToken(string)"/>.
+        /// <see href="Owasp.Esapi.AddCsrfToken(string)"/>.
         /// </summary>
         void AddCsrfToken();       
 
         /// <summary>
         /// Adds a CSRF token to the URL for purposes of preventing CSRF attacks. This should be used for pages which accept
         /// GET requests and are not idempotent (have lasting side effects). This should work in correlation with the 
-        /// <see href="Owasp.Esapi.Interfaces.AddCsrfToken()"/> method. This method is an opt-in way to specify pages which
+        /// <see href="Owasp.Esapi.AddCsrfToken()"/> method. This method is an opt-in way to specify pages which
         /// accept GET requests and need to be protected against CSRF.
         /// </summary>
         /// <param name="href">The URL to which the CSRF token will be appended</param>

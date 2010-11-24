@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Owasp.Esapi.Interfaces
+namespace Owasp.Esapi
 {               
     /// <summary> The ILogger interface defines a set of methods that can be used to log events.
     /// </summary>  

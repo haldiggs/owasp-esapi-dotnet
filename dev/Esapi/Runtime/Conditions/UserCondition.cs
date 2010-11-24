@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
-using Owasp.Esapi.Interfaces;
 using Owasp.Esapi.Runtime;
 
 namespace Owasp.Esapi.Runtime.Conditions

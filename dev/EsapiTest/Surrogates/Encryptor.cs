@@ -1,4 +1,4 @@
-﻿using Owasp.Esapi.Interfaces;
+﻿using Owasp.Esapi;
 
 namespace EsapiTest.Surrogates
 {

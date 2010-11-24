@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Security.Principal;
 using log4net;
 using Owasp.Esapi.Codecs;
-using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi
 {
@@ -114,9 +113,9 @@ namespace Owasp.Esapi
         }
     }
 
-    /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger"/>
+    /// <inheritdoc cref="Owasp.Esapi.ILogger"/>
     /// <summary>
-    /// Reference implementation of the <see cref="Owasp.Esapi.Interfaces.ILogger" /> interface. This implementation uses the Log4Net logging package, 
+    /// Reference implementation of the <see cref="Owasp.Esapi.ILogger" /> interface. This implementation uses the Log4Net logging package, 
     /// and marks each log message with the currently logged in user and the word "SECURITY" for security related events.
     /// </summary>
     public class Logger : ILogger
@@ -246,7 +245,7 @@ namespace Owasp.Esapi
 
         private int level;
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.Level"/>
+        /// <inheritdoc cref="Owasp.Esapi.ILogger.Level"/>
         public int Level
         {
             get
@@ -260,7 +259,7 @@ namespace Owasp.Esapi
         }
 
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.Fatal(int, string)"/>
+        /// <inheritdoc cref="Owasp.Esapi.ILogger.Fatal(int, string)"/>
         public void Fatal(int type, string message)
         {
 
@@ -270,7 +269,7 @@ namespace Owasp.Esapi
             }
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.Fatal(int, string, Exception)"/>
+        /// <inheritdoc cref="Owasp.Esapi.ILogger.Fatal(int, string, Exception)"/>
         public void Fatal(int type, string message, Exception exception)
         {
             if (logger.IsFatalEnabled)
@@ -279,13 +278,13 @@ namespace Owasp.Esapi
             }
        }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.IsFatalEnabled()"/>
+        /// <inheritdoc cref="Owasp.Esapi.ILogger.IsFatalEnabled()"/>
         public bool IsFatalEnabled()
         {
             return (logger.IsFatalEnabled);
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.Error(int, string)"/>
+        /// <inheritdoc cref="Owasp.Esapi.ILogger.Error(int, string)"/>
         public void Error(int type, string message)
         {
             if (logger.IsErrorEnabled)
@@ -294,7 +293,7 @@ namespace Owasp.Esapi
             }
         }
         
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.Error(int, string, Exception)"/>
+        /// <inheritdoc cref="Owasp.Esapi.ILogger.Error(int, string, Exception)"/>
         public void Error(int type, string message, Exception throwable)
         {
             if (logger.IsErrorEnabled)
@@ -303,13 +302,13 @@ namespace Owasp.Esapi
             }          
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.IsErrorEnabled()"/>
+        /// <inheritdoc cref="Owasp.Esapi.ILogger.IsErrorEnabled()"/>
         public bool IsErrorEnabled()
         {
             return (logger.IsErrorEnabled);
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.Warning(int, string)"/>
+        /// <inheritdoc cref="Owasp.Esapi.ILogger.Warning(int, string)"/>
         public void Warning(int type, string message)
         {
             if (logger.IsWarnEnabled)
@@ -318,7 +317,7 @@ namespace Owasp.Esapi
             }
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.Warning(int, string, Exception)"/>
+        /// <inheritdoc cref="Owasp.Esapi.ILogger.Warning(int, string, Exception)"/>
         public void Warning(int type, string message, Exception throwable)
         {
             if (logger.IsWarnEnabled)
@@ -327,13 +326,13 @@ namespace Owasp.Esapi
             }
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.IsWarningEnabled()"/>
+        /// <inheritdoc cref="Owasp.Esapi.ILogger.IsWarningEnabled()"/>
         public bool IsWarningEnabled()
         {
             return (logger.IsWarnEnabled);
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.Info(int, string)"/>
+        /// <inheritdoc cref="Owasp.Esapi.ILogger.Info(int, string)"/>
         public void Info(int type, string message)
         {
             if (logger.IsInfoEnabled)
@@ -342,7 +341,7 @@ namespace Owasp.Esapi
             }
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.Info(int, string, Exception)"/>
+        /// <inheritdoc cref="Owasp.Esapi.ILogger.Info(int, string, Exception)"/>
         public void Info(int type, string message, Exception throwable)
         {
             if (logger.IsInfoEnabled)
@@ -352,13 +351,13 @@ namespace Owasp.Esapi
             
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.IsInfoEnabled()"/>
+        /// <inheritdoc cref="Owasp.Esapi.ILogger.IsInfoEnabled()"/>
         public bool IsInfoEnabled()
         {
             return logger.IsInfoEnabled;
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.Debug(int, string)"/>
+        /// <inheritdoc cref="Owasp.Esapi.ILogger.Debug(int, string)"/>
         public void Debug(int type, string message)
         {
             if (logger.IsDebugEnabled)
@@ -367,7 +366,7 @@ namespace Owasp.Esapi
             }
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.Debug(int, string, Exception)"/>
+        /// <inheritdoc cref="Owasp.Esapi.ILogger.Debug(int, string, Exception)"/>
         public void Debug(int type, string message, Exception throwable)
         {
             if (logger.IsDebugEnabled)
@@ -376,7 +375,7 @@ namespace Owasp.Esapi
             }
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.ILogger.IsDebugEnabled()"/>
+        /// <inheritdoc cref="Owasp.Esapi.ILogger.IsDebugEnabled()"/>
         public bool IsDebugEnabled()
         {
             return logger.IsDebugEnabled;

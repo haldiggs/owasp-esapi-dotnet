@@ -1,5 +1,4 @@
 ﻿using System;
-using Owasp.Esapi.Interfaces;
 using Owasp.Esapi.Runtime;
 using System.Web;
 using System.Web.UI;

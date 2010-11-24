@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Owasp.Esapi;
-using Owasp.Esapi.Interfaces;
 using Rhino.Mocks;
 using Owasp.Esapi.ValidationRules;
 using Owasp.Esapi.Configuration;

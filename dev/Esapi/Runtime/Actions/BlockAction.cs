@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Web;
-using Owasp.Esapi.Interfaces;
 using Owasp.Esapi.Runtime;
 
 namespace Owasp.Esapi.Runtime.Actions

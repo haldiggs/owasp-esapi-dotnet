@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi.Runtime
 {

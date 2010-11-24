@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Owasp.Esapi.Interfaces;
 
 namespace Owasp.Esapi
 {
-    /// <inheritdoc cref="Owasp.Esapi.Interfaces.IValidator" />
+    /// <inheritdoc cref="Owasp.Esapi.IValidator" />
     /// <summary>
-    /// Reference implementation of the <see cref="Owasp.Esapi.Interfaces.IValidator"/> interface. This implementation
+    /// Reference implementation of the <see cref="Owasp.Esapi.IValidator"/> interface. This implementation
     /// keeps the validation rules in a map. It also adds the default set of validation rules defined in the reference 
     /// implementation.
     /// </summary>
@@ -14,7 +13,7 @@ namespace Owasp.Esapi
     {
         private Dictionary<string, IValidationRule> rules = new Dictionary<string, IValidationRule>();
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IValidator.AddRule(string, IValidationRule)" />
+        /// <inheritdoc cref="Owasp.Esapi.IValidator.AddRule(string, IValidationRule)" />
         public void AddRule(string name, IValidationRule rule)
         {
             // NOTE: "name" will be validated by the dictionary
@@ -24,7 +23,7 @@ namespace Owasp.Esapi
             rules.Add(name, rule);
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IValidator.GetRule(string)" />
+        /// <inheritdoc cref="Owasp.Esapi.IValidator.GetRule(string)" />
         public IValidationRule GetRule(string name)
         {
             if (name == null) {
@@ -37,7 +36,7 @@ namespace Owasp.Esapi
             return rule;
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IValidator.RemoveRule(string)" />
+        /// <inheritdoc cref="Owasp.Esapi.IValidator.RemoveRule(string)" />
         public void RemoveRule(string name)
         {
             if (name == null) {
@@ -46,7 +45,7 @@ namespace Owasp.Esapi
             rules.Remove(name);
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IValidator.IsValid(string, string)" />
+        /// <inheritdoc cref="Owasp.Esapi.IValidator.IsValid(string, string)" />
         public bool IsValid(string ruleName, string input)
         {
             if (ruleName == null) {

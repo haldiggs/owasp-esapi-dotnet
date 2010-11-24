@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{3824A00A-9C77-4679-8633-7C7CB2572FF2}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -91,7 +91,7 @@
     <Compile Include="Runtime\ConditionArgs.cs" />
     <Compile Include="Runtime\EsapiRuntimeModule.cs" />
     <Compile Include="Runtime\IAction.cs" />
-    <Compile Include="Interfaces\ICodec.cs" />
+    <Compile Include="ICodec.cs" />
     <Compile Include="Codecs\JavaScriptCodec.cs" />
     <Compile Include="Codecs\UrlCodec.cs" />
     <Compile Include="Codecs\VbScriptCodec.cs" />
@@ -108,19 +108,19 @@
     <Compile Include="Errors\ValidationException.cs" />
     <Compile Include="Esapi.cs" />
     <Compile Include="HttpUtilities.cs" />
-    <Compile Include="Interfaces\IAccessReferenceMap.cs" />
-    <Compile Include="Interfaces\IAccessController.cs" />
+    <Compile Include="IAccessReferenceMap.cs" />
+    <Compile Include="IAccessController.cs" />
     <Compile Include="Runtime\ICondition.cs" />
-    <Compile Include="Interfaces\IEncoder.cs" />
-    <Compile Include="Interfaces\IEncryptor.cs" />
-    <Compile Include="Interfaces\IHttpUtilities.cs" />
-    <Compile Include="Interfaces\IIntrusionDetector.cs" />
-    <Compile Include="Interfaces\ILogger.cs" />
-    <Compile Include="Interfaces\IRandomizer.cs" />
+    <Compile Include="IEncoder.cs" />
+    <Compile Include="IEncryptor.cs" />
+    <Compile Include="IHttpUtilities.cs" />
+    <Compile Include="IIntrusionDetector.cs" />
+    <Compile Include="ILogger.cs" />
+    <Compile Include="IRandomizer.cs" />
     <Compile Include="Runtime\IContext.cs" />
     <Compile Include="Runtime\IRule.cs" />
-    <Compile Include="Interfaces\ISecurityConfiguration.cs" />
-    <Compile Include="Interfaces\IValidator.cs">
+    <Compile Include="ISecurityConfiguration.cs" />
+    <Compile Include="IValidator.cs">
     </Compile>
     <Compile Include="Runtime\IRuntime.cs" />
     <Compile Include="Runtime\RuleArgs.cs" />
@@ -163,7 +163,7 @@
     <Compile Include="ValidationRules\DateValidationRule.cs" />
     <Compile Include="ValidationRules\DoubleValidationRule.cs" />
     <Compile Include="ValidationRules\IntegerValidationRule.cs" />
-    <Compile Include="Interfaces\IValidationRule.cs" />
+    <Compile Include="IValidationRule.cs" />
     <Compile Include="ValidationRules\PrintableValidationRule.cs" />
     <Compile Include="ValidationRules\RegexValidationRule.cs" />
     <Compile Include="ValidationRules\StringValidationRule.cs" />

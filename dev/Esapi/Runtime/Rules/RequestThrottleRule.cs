@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Web;
 using System.Web.SessionState;
 using Owasp.Esapi.Errors;
-using Owasp.Esapi.Interfaces;
 using EM = Owasp.Esapi.Resources.Errors;
 using Owasp.Esapi.Runtime;
 

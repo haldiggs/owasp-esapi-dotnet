@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Owasp.Esapi.Interfaces
+namespace Owasp.Esapi
 {
     /// <summary>
     /// The IAccessController interface defines a set of methods that can be used in a wide variety of applications to  

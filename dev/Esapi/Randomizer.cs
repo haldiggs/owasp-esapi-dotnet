@@ -2,13 +2,12 @@
 using System.Security.Cryptography;
 using System.Text;
 using Owasp.Esapi.Errors;
-using Owasp.Esapi.Interfaces;
 using EM = Owasp.Esapi.Resources.Errors;
 
 namespace Owasp.Esapi
 {
-    /// <inheritdoc cref="Owasp.Esapi.Interfaces.IRandomizer" />
-    /// <summary> Reference implemenation of the <see cref="Owasp.Esapi.Interfaces.IRandomizer" /> interface. This implementation builds on the MSCAPI provider to provide a
+    /// <inheritdoc cref="Owasp.Esapi.IRandomizer" />
+    /// <summary> Reference implemenation of the <see cref="Owasp.Esapi.IRandomizer" /> interface. This implementation builds on the MSCAPI provider to provide a
     /// cryptographically strong source of entropy. The specific algorithm used is configurable in the ESAPI properties.
     /// </summary>
     public class Randomizer : IRandomizer
@@ -31,7 +30,7 @@ namespace Owasp.Esapi
             }
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IRandomizer.GetRandomBoolean()" />
+        /// <inheritdoc cref="Owasp.Esapi.IRandomizer.GetRandomBoolean()" />
         public bool GetRandomBoolean()
         {        
             byte[] randomByte = new byte[1];
@@ -40,7 +39,7 @@ namespace Owasp.Esapi
             
         }
         
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IRandomizer.GetRandomGUID()" />
+        /// <inheritdoc cref="Owasp.Esapi.IRandomizer.GetRandomGUID()" />
         public Guid GetRandomGUID()
         {
             string guidString = string.Format("{0}-{1}-{2}-{3}-{4}",
@@ -53,7 +52,7 @@ namespace Owasp.Esapi
 
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IRandomizer.GetRandomString(int, char[])" />
+        /// <inheritdoc cref="Owasp.Esapi.IRandomizer.GetRandomString(int, char[])" />
         public string GetRandomString(int length, char[] characterSet)
         {
             StringBuilder sb = new StringBuilder();
@@ -67,7 +66,7 @@ namespace Owasp.Esapi
             return nonce;
         }
         
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IRandomizer.GetRandomInteger(int, int)" />
+        /// <inheritdoc cref="Owasp.Esapi.IRandomizer.GetRandomInteger(int, int)" />
         public int GetRandomInteger(int min, int max)
         {           
             double range = (double) max - min;
@@ -79,7 +78,7 @@ namespace Owasp.Esapi
             return randomNumber;
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IRandomizer.GetRandomDouble(double, double)" />
+        /// <inheritdoc cref="Owasp.Esapi.IRandomizer.GetRandomDouble(double, double)" />
         public double GetRandomDouble(double min, double max)
         {
             // This method only gives you 32 bits of entropy (based of random int).
@@ -88,7 +87,7 @@ namespace Owasp.Esapi
             return random * factor + min;
         }
 
-        /// <inheritdoc cref="Owasp.Esapi.Interfaces.IRandomizer.GetRandomFilename(string)" />
+        /// <inheritdoc cref="Owasp.Esapi.IRandomizer.GetRandomFilename(string)" />
         public string GetRandomFilename(string extension)
         {
             return this.GetRandomString(12, CharSetValues.Alphanumerics) + "." + extension;

@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Security.Principal;
 using Owasp.Esapi.Errors;
-using Owasp.Esapi.Interfaces;
 using EM = Owasp.Esapi.Resources.Errors;
 using System.Web.Security;
 
 namespace Owasp.Esapi
 {    
-    /// <inheritdoc  cref="Owasp.Esapi.Interfaces.IIntrusionDetector"/>
-    /// <summary> Reference implementation of the <see cref="Owasp.Esapi.Interfaces.IIntrusionDetector"/> interface. 
+    /// <inheritdoc  cref="Owasp.Esapi.IIntrusionDetector"/>
+    /// <summary> Reference implementation of the <see cref="Owasp.Esapi.IIntrusionDetector"/> interface. 
     /// </summary>
     /// <remarks>
     /// This implementation monitors EnterpriseSecurityExceptions to see if any user
@@ -149,7 +148,7 @@ namespace Owasp.Esapi
         /// </summary>
         /// <param name="e">The exception to add.        
         /// </param>
-        /// <seealso cref="Owasp.Esapi.Interfaces.IIntrusionDetector.AddException(Exception)">
+        /// <seealso cref="Owasp.Esapi.IIntrusionDetector.AddException(Exception)">
         /// </seealso>
         public void AddException(Exception e)
         {
@@ -180,7 +179,7 @@ namespace Owasp.Esapi
         /// </summary>
         /// <param name="eventName">The event to add.
         /// </param>
-        /// <seealso cref="Owasp.Esapi.Interfaces.IIntrusionDetector.AddEvent(string)">
+        /// <seealso cref="Owasp.Esapi.IIntrusionDetector.AddEvent(string)">
         /// </seealso>
         public virtual void AddEvent(string eventName)
         {

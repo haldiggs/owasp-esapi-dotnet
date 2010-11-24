@@ -1,5 +1,4 @@
 ﻿using System;
-using Owasp.Esapi.Interfaces;
 using System.Text;
 
 namespace Owasp.Esapi.Codecs

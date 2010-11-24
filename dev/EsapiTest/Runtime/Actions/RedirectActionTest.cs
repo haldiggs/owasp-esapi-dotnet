@@ -4,7 +4,6 @@ using EsapiTest.Surrogates;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Owasp.Esapi;
 using Owasp.Esapi.Configuration;
-using Owasp.Esapi.Interfaces;
 using Owasp.Esapi.Runtime;
 using Owasp.Esapi.Runtime.Actions;
 
