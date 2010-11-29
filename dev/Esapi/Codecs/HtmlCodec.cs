@@ -19,6 +19,7 @@ namespace Owasp.Esapi.Codecs
         /// <returns>The encoded input.</returns>
         public string Encode(string input)
         {
+
             return AntiXss.HtmlEncode(input);
         }
 
