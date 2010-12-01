@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="AccessControllerTest.cs" />
     <Compile Include="AccessReferenceMapTest.cs" />
+    <Compile Include="Codecs\CodecTest.cs" />
     <Compile Include="EncoderTest.cs" />
     <Compile Include="HttpUtilitiesTest.cs" />
     <Compile Include="Runtime\Actions\BlockActionTest.cs" />
