@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 using Microsoft.Security.Application;
 
 namespace Owasp.Esapi.Codecs
@@ -20,7 +21,7 @@ namespace Owasp.Esapi.Codecs
         public string Encode(string input)
         {
 
-            return AntiXss.HtmlEncode(input);
+            return Microsoft.Security.Application.Encoder.HtmlEncode(input);
         }
 
         /// <summary>
@@ -31,7 +32,7 @@ namespace Owasp.Esapi.Codecs
         /// <remarks>This method is not implemented.</remarks>
         public string Decode(string input)
         {
-            throw new NotImplementedException();
+            return HttpUtility.HtmlDecode(input);            
         }
 
         #endregion
