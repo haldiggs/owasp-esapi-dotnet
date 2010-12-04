@@ -17,13 +17,58 @@ namespace EsapiTest.Codecs
     [TestFixture]
     class CodecTest
     {
-        private HtmlCodec HTMLCodec = new HtmlCodec();
+        private HtmlCodec HTMLCodec;
+
+
 
         [SetUp]
         public void InitializeTest()
         {
-            //None
+            HTMLCodec = new HtmlCodec();
         }
+
+
+        [Test]
+        public void testHtmlEncode()
+        {
+            Assert.AreEqual("test", HTMLCodec.Encode("test"));
+        }
+
+        [Test]
+        public void testHtmlEncodeChar()
+        {
+            Assert.AreEqual("&lt;", HTMLCodec.Encode("<"));
+        }
+
+        [Test]
+        public void testHtmlEncodeChar0x100()
+	    {
+		    char input = '\x100';
+		    String inStr = Convert.ToString(input);
+		    String expected = "&#x100;";
+		    String result;
+
+            result = HTMLCodec.Encode(inStr);
+		    // this should be escaped
+        	Assert.False(inStr.Equals(result));
+		    // UTF-8 encoded and then percent escaped
+        	Assert.AreEqual(expected, result);
+	    }
+
+        [Test]
+        public void testHtmlEncodeStr0x100()
+	    {
+		    char input = '\x100';
+            String inStr = Convert.ToString(input);
+		    String expected = "&#x100;";
+		    String result;
+
+            result = HTMLCodec.Encode(inStr);
+		    // this should be escaped
+            Assert.False(inStr.Equals(result));
+		    // UTF-8 encoded and then percent escaped
+        	Assert.AreEqual(expected, result);
+	    }
 
         [Test]
         public void Test_HtmlDecodeDecimalEntities()
@@ -46,12 +91,108 @@ namespace EsapiTest.Codecs
         [Test]
         public void Test_HtmlDecodeAmp()
         {
-            //Assert.AreEqual("&", HTMLCodec.Decode(char(c)));
+            Assert.AreEqual("&", HTMLCodec.Decode("&amp;"));
             Assert.AreEqual("&X", HTMLCodec.Decode("&amp;X"));
             Assert.AreEqual("&", HTMLCodec.Decode("&amp"));
-            Assert.AreEqual("&X",HTMLCodec.Decode("&ampX"));
+            Assert.AreEqual("&X",HTMLCodec.Decode("&ampX"));           
 
         }
+
+        [Test]
+        public void Test_HtmlDecodeLt()
+        {
+
+            Assert.AreEqual("<", HTMLCodec.Decode("&lt;"));
+            Assert.AreEqual("<X", HTMLCodec.Decode("&lt;X"));
+            Assert.AreEqual("<", HTMLCodec.Decode("&lt"));
+            Assert.AreEqual("<X", HTMLCodec.Decode("&ltX"));
+
+        }
+
+        [Test]
+        public void Test_HtmlDecodeSup1()
+        {
+            Assert.AreEqual("\u00B9", HTMLCodec.Decode("&sup1;"));
+            Assert.AreEqual("\u00B9X", HTMLCodec.Decode("&sup1;X"));
+            Assert.AreEqual("\u00B9", HTMLCodec.Decode("&sup1"));
+            Assert.AreEqual("\u00B9X", HTMLCodec.Decode("&sup1X"));
+
+        }
+
+        [Test]
+        public void Test_HtmlDecodeSup2()
+        {
+            Assert.AreEqual("\u00B9", HTMLCodec.Decode("&sup2;"));
+            Assert.AreEqual("\u00B9X", HTMLCodec.Decode("&sup2;X"));
+            Assert.AreEqual("\u00B9", HTMLCodec.Decode("&sup2"));
+            Assert.AreEqual("\u00B9X", HTMLCodec.Decode("&sup2X"));
+
+        }
+
+        [Test]
+        public void Test_HtmlDecodeSup3()
+        {
+            Assert.AreEqual("\u00B3", HTMLCodec.Decode("&sup3;"));
+            Assert.AreEqual("\u00B3X", HTMLCodec.Decode("&sup3;X"));
+            Assert.AreEqual("\u00B3", HTMLCodec.Decode("&sup3"));
+            Assert.AreEqual("\u00B3X", HTMLCodec.Decode("&sup3X"));
+
+        }
+
+        [Test]
+        public void Test_HtmlDecodeSup()
+        {
+            Assert.AreEqual("\u2283", HTMLCodec.Decode("&sup;"));
+            Assert.AreEqual("\u2283X", HTMLCodec.Decode("&sup;X"));
+            Assert.AreEqual("\u2283", HTMLCodec.Decode("&sup"));
+            Assert.AreEqual("\u2283X", HTMLCodec.Decode("&supX"));
+        }
+
+        [Test]
+        public void Test_HtmlDecodeSupe()
+        {
+            Assert.AreEqual("\u2287", HTMLCodec.Decode("&supe;"));
+            Assert.AreEqual("\u2287X", HTMLCodec.Decode("&supe;X"));
+            Assert.AreEqual("\u2287", HTMLCodec.Decode("&supe"));
+            Assert.AreEqual("\u2287X", HTMLCodec.Decode("&supeX"));
+        }
+
+        [Test]
+        public void Test_HtmlDecodePi()
+        {
+            Assert.AreEqual("\u03C0", HTMLCodec.Decode("&pi;"));
+            Assert.AreEqual("\u03C0X", HTMLCodec.Decode("&pi;X"));
+            Assert.AreEqual("\u03C0", HTMLCodec.Decode("&pi"));
+            Assert.AreEqual("\u03C0X", HTMLCodec.Decode("&piX"));
+        }
+
+        [Test]
+        public void Test_HtmlDecodePiv()
+        {
+            Assert.AreEqual("\u03D6", HTMLCodec.Decode("&piv;"));
+            Assert.AreEqual("\u03D6X", HTMLCodec.Decode("&piv;X"));
+            Assert.AreEqual("\u03D6", HTMLCodec.Decode("&piv"));
+            Assert.AreEqual("\u03D6X", HTMLCodec.Decode("&pivX"));
+        }
+
+        [Test]
+        public void Test_HtmlDecodeTheta()
+        {
+            Assert.AreEqual("\u03B8", HTMLCodec.Decode("&theta;"));
+            Assert.AreEqual("\u03B8X", HTMLCodec.Decode("&theta;X"));
+            Assert.AreEqual("\u03B8", HTMLCodec.Decode("&theta"));
+            Assert.AreEqual("\u03B8X", HTMLCodec.Decode("&thetaX"));
+        }
+
+        [Test]
+        public void Test_HtmlDecodeThetasym()
+        {
+            Assert.AreEqual("\u03D1", HTMLCodec.Decode("&thetasym;"));
+            Assert.AreEqual("\u03D1X", HTMLCodec.Decode("&thetasym;X"));
+            Assert.AreEqual("\u03D1", HTMLCodec.Decode("&thetasym"));
+            Assert.AreEqual("\u03D1X", HTMLCodec.Decode("&thetasymX"));
+        }
+
 
     }
 }
