@@ -27,7 +27,7 @@ namespace EsapiTest.Codecs
             HTMLCodec = new HtmlCodec();
         }
 
-
+        /*
         [Test]
         public void testHtmlEncode()
         {
@@ -45,6 +45,7 @@ namespace EsapiTest.Codecs
 	    {
 		    char input = '\x100';
 		    String inStr = Convert.ToString(input);
+            input = Convert.ToChar(inStr);
 		    String expected = "&#x100;";
 		    String result;
 
@@ -68,7 +69,7 @@ namespace EsapiTest.Codecs
             Assert.False(inStr.Equals(result));
 		    // UTF-8 encoded and then percent escaped
         	Assert.AreEqual(expected, result);
-	    }
+	    }*/
 
         [Test]
         public void Test_HtmlDecodeDecimalEntities()
