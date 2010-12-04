@@ -18,6 +18,7 @@ namespace EsapiTest.Codecs
     class CodecTest
     {
         private HtmlCodec HTMLCodec;
+        private UrlCodec URLCodec;
 
 
 
@@ -25,8 +26,12 @@ namespace EsapiTest.Codecs
         public void InitializeTest()
         {
             HTMLCodec = new HtmlCodec();
+            URLCodec = new UrlCodec();
         }
 
+
+
+        #region HTML Codec Test
         /*
         [Test]
         public void testHtmlEncode()
@@ -193,7 +198,29 @@ namespace EsapiTest.Codecs
             Assert.AreEqual("\u03D1", HTMLCodec.Decode("&thetasym"));
             Assert.AreEqual("\u03D1X", HTMLCodec.Decode("&thetasymX"));
         }
+        #endregion
 
 
+        #region URL Codec Test
+
+        [Test]
+        public void URL_EcodeTest()
+        {
+            Assert.AreEqual("%3c", URLCodec.Encode("<"));
+            Assert.AreEqual("%3cX", URLCodec.Encode("<X"));
+        }
+
+        [Test]
+        public void URL_DecodeTest()
+        {
+            Assert.AreEqual("<", URLCodec.Decode("%3c"));
+            Assert.AreEqual("<", URLCodec.Decode("%3C"));
+            Assert.AreEqual("<X", URLCodec.Decode("%3CX"));
+        }
+
+      
+
+
+        #endregion
     }
 }
