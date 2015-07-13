@@ -4,3 +4,6 @@
 /packages/
 Esapi/*.user
 EsapiTest/*.user
+Swingset/App_Data/Log.txt
+*.MDF
+*.LDF

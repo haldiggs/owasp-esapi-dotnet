@@ -8,14 +8,14 @@ namespace Owasp.Esapi.Swingset
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (User.IsInRole("user"))
-            {
-                Response.Redirect("Users/Default.aspx");
-            }
-            if (User.IsInRole("admin"))
-            {
-                Response.Redirect("Administrators/Default.aspx");
-            }
+			//if (User.IsInRole("user"))
+			//{
+			//	Response.Redirect("Users/Default.aspx");
+			//}
+			//if (User.IsInRole("admin"))
+			//{
+			//	Response.Redirect("Administrators/Default.aspx");
+			//}
             
             SiteMapPath smpSwingset;
             smpSwingset = (SiteMapPath) Master.FindControl("smpSwingset");
@@ -54,8 +54,7 @@ namespace Owasp.Esapi.Swingset
         }
 
         protected void EsapiLogin_Authenticate(object sender, AuthenticateEventArgs e)
-        {
-            
+        {            
             string userName = EsapiLogin.UserName;
             string password = EsapiLogin.Password;            
             if (Membership.GetUser(userName) != null && Membership.GetUser(userName).IsOnline)
