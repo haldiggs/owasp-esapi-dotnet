@@ -8,6 +8,9 @@ using Owasp.Esapi.Errors;
 
 namespace Owasp.Esapi.ValidationRules
 {
+	/// <summary>
+	/// 
+	/// </summary>
     [ValidationRule(BuiltinValidationRules.String, AutoLoad = false)]
     public class StringValidationRule : IValidationRule
     {

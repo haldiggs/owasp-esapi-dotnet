@@ -15,12 +15,11 @@ namespace Owasp.Esapi
     internal class AddinBuilder<TAddin>
         where TAddin : class
     {
-        /// <summary>
-        /// Build addin instance
-        /// </summary>
-        /// <typeparam name="T">Instance type</typeparam>
-        /// <param name="configuration">Instance configuratio</param>
-        /// <returns></returns>
+		/// <summary>
+		/// Build addin instance
+		/// </summary>
+		/// <param name="configuration">Instance configuration</param>
+		/// <returns></returns>
         public static TAddin MakeInstance(AddinElement configuration)
         {
             if (configuration == null) {

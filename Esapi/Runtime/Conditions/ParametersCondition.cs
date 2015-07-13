@@ -11,6 +11,11 @@ namespace Owasp.Esapi.Runtime.Conditions
     {
         #region ICondition Members
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="args"></param>
+		/// <returns></returns>
         public bool Evaluate(ConditionArgs args)
         {
             if (args == null) {

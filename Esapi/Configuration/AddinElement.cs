@@ -2,85 +2,85 @@
 
 namespace Owasp.Esapi.Configuration
 {
-    /// <summary>
-    /// The AddinElement Configuration Element.
-    /// </summary>
-    public partial class AddinElement : ConfigurationElement
-    {
-        #region Name Property
+	/// <summary>
+	/// The AddinElement Configuration Element.
+	/// </summary>
+	public partial class AddinElement : ConfigurationElement
+	{
+		#region Name Property
 
-        /// <summary>
-        /// The XML name of the <see cref="Name"/> property.
-        /// </summary>
-        internal const string NamePropertyName = "name";
+		/// <summary>
+		/// The XML name of the <see cref="Name"/> property.
+		/// </summary>
+		internal const string NamePropertyName = "name";
 
-        /// <summary>
-        /// Gets or sets the Name.
-        /// </summary>
-        [ConfigurationProperty(NamePropertyName, IsRequired = true, IsKey = true, IsDefaultCollection = false)]
-        public string Name
-        {
-            get
-            {
-                return (string)base[NamePropertyName];
-            }
-            set
-            {
-                base[NamePropertyName] = value;
-            }
-        }
+		/// <summary>
+		/// Gets or sets the Name.
+		/// </summary>
+		[ConfigurationProperty(NamePropertyName, IsRequired = true, IsKey = true, IsDefaultCollection = false)]
+		public string Name
+		{
+			get
+			{
+				return (string)base[NamePropertyName];
+			}
+			set
+			{
+				base[NamePropertyName] = value;
+			}
+		}
 
-        #endregion
+		#endregion
 
-        #region Type Property
+		#region Type Property
 
-        /// <summary>
-        /// The XML name of the <see cref="Type"/> property.
-        /// </summary>
-        internal const string TypePropertyName = "type";
+		/// <summary>
+		/// The XML name of the <see cref="Type"/> property.
+		/// </summary>
+		internal const string TypePropertyName = "type";
 
-        /// <summary>
-        /// Gets or sets the Type.
-        /// </summary>
-        [ConfigurationProperty(TypePropertyName, IsRequired = true, IsKey = false, IsDefaultCollection = false)]
-        public string Type
-        {
-            get
-            {
-                return (string)base[TypePropertyName];
-            }
-            set
-            {
-                base[TypePropertyName] = value;
-            }
-        }
+		/// <summary>
+		/// Gets or sets the Type.
+		/// </summary>
+		[ConfigurationProperty(TypePropertyName, IsRequired = true, IsKey = false, IsDefaultCollection = false)]
+		public string Type
+		{
+			get
+			{
+				return (string)base[TypePropertyName];
+			}
+			set
+			{
+				base[TypePropertyName] = value;
+			}
+		}
 
-        #endregion
+		#endregion
 
-        #region properties Property
+		#region properties Property
 
-        /// <summary>
-        /// The XML name of the <see cref="properties"/> property.
-        /// </summary>
-        internal const string PropertiesPropertyName = "properties";
+		/// <summary>
+		/// The XML name of the <see cref="PropertiesPropertyName"/> property.
+		/// </summary>
+		internal const string PropertiesPropertyName = "properties";
 
-        /// <summary>
-        /// Gets or sets the properties.
-        /// </summary>
-        [ConfigurationProperty(PropertiesPropertyName, IsRequired = false, IsKey = false, IsDefaultCollection = false)]
-        public KeyValueConfigurationCollection PropertyValues
-        {
-            get
-            {
-                return (KeyValueConfigurationCollection)base[PropertiesPropertyName];
-            }
-            set
-            {
-                base[PropertiesPropertyName] = value;
-            }
-        }
+		/// <summary>
+		/// Gets or sets the properties.
+		/// </summary>
+		[ConfigurationProperty(PropertiesPropertyName, IsRequired = false, IsKey = false, IsDefaultCollection = false)]
+		public KeyValueConfigurationCollection PropertyValues
+		{
+			get
+			{
+				return (KeyValueConfigurationCollection)base[PropertiesPropertyName];
+			}
+			set
+			{
+				base[PropertiesPropertyName] = value;
+			}
+		}
 
-        #endregion
+		#endregion
 
-    }
+	}
 }
